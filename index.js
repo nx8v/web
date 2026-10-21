@@ -1,0 +1,259 @@
+// NX8V situs — i18n ID/EN + menu mobile + salin kode
+(function () {
+  "use strict";
+
+  var I18N = {
+    id: {
+      "meta.title": "NX8V — Runtime JavaScript berbasis V8",
+      "meta.desc": "NX8V adalah runtime JavaScript open source yang menanamkan mesin V8 dan libuv dalam satu binary C++. Eksekusi script, REPL, HTTP server, dan scaffolding proyek tanpa dependensi.",
+      "skip": "Langsung ke konten",
+      "ui.menu.open": "Buka menu",
+      "ui.menu.close": "Tutup menu",
+      "ui.copy": "Salin kode",
+      "ui.copied": "Tersalin",
+      "nav.fitur": "Fitur",
+      "nav.modul": "Modul",
+      "nav.contoh": "Contoh",
+      "nav.mulai": "Mulai",
+      "nav.cta": "Mulai Cepat",
+      "nav.github": "GitHub",
+      "hero.title": "Runtime<br />JavaScript berbasis V8",
+      "hero.desc": "NX8V menanamkan mesin Google V8 dan event loop libuv dalam satu binary C++. Jalankan script, buka REPL interaktif, dan hidupkan HTTP server — cukup satu perintah, tanpa langkah konfigurasi.",
+      "hero.cta1": "Mulai Sekarang",
+      "hero.cta2": "Lihat Contoh",
+      "hero.meta": "C++17 · mesin V8 · libuv · satu executable",
+      "fit.title": "Fitur",
+      "fit.sub": "API inti yang tersedia langsung di dalam runtime.",
+      "fit.1.t": "Eksekusi script & REPL",
+      "fit.1.d": "Jalankan <code class=\"mono\">nx8v script.js</code> atau masuk REPL interaktif dengan <code class=\"mono\">nx8v</code> tanpa argumen.",
+      "fit.2.t": "Event loop libuv",
+      "fit.2.d": "<code class=\"mono\">Promise</code> dan <code class=\"mono\">async/await</code> bekerja secara native lewat microtask pump.",
+      "fit.3.t": "require() & ES Modules",
+      "fit.3.d": "CommonJS dengan cache (<code class=\"mono\">__filename</code>, <code class=\"mono\">__dirname</code>) plus <code class=\"mono\">import</code>/<code class=\"mono\">export</code> untuk file <code class=\"mono\">.mjs</code>.",
+      "fit.4.t": "fetch HTTPS & router",
+      "fit.4.d": "Fetch Promise-based HTTP/HTTPS, dan router ala Express dengan <code class=\"mono\">req.params</code> serta middleware.",
+      "fit.5.t": "WebSocket & stream",
+      "fit.5.d": "Server + client WebSocket (RFC 6455), dan stream <code class=\"mono\">Readable</code>/<code class=\"mono\">Writable</code>/<code class=\"mono\">Duplex</code> dengan <code class=\"mono\">pipe</code>.",
+      "fit.6.t": "Tooling, test & desktop",
+      "fit.6.d": "<code class=\"mono\">nx8v init/dev/start/stop/list</code>, test runner bawaan (<code class=\"mono\">test</code>/<code class=\"mono\">assert</code>), dan <code class=\"mono\">nx8v window</code> untuk jendela desktop WebView2.",
+      "mod.title": "Modul built-in",
+      "mod.sub": "Dua belas modul siap dipanggil lewat <code class=\"mono\">require()</code>, tanpa instalasi tambahan.",
+      "mod.caption": "Daftar modul built-in NX8V dan fungsinya",
+      "mod.th1": "Modul",
+      "mod.th2": "Isi",
+      "mod.fs": "<code class=\"mono\">readFileSync</code>, <code class=\"mono\">writeFile</code>, <code class=\"mono\">createReadStream</code>/<code class=\"mono\">createWriteStream</code>, sync maupun async",
+      "mod.http": "Server <code class=\"mono\">createServer</code> dan client <code class=\"mono\">get</code>/<code class=\"mono\">request</code>",
+      "mod.https": "Client HTTPS via WinHTTP (TLS 1.2/1.3 + cert store Windows)",
+      "mod.router": "<code class=\"mono\">app.get/post/put/delete</code> dengan <code class=\"mono\">req.params</code>, middleware, <code class=\"mono\">res.json/send/redirect</code>",
+      "mod.static": "Static file server: ETag/304, Range/206, HEAD, Cache-Control, anti path traversal",
+      "mod.stream": "<code class=\"mono\">Readable</code>/<code class=\"mono\">Writable</code>/<code class=\"mono\">Duplex</code>/<code class=\"mono\">PassThrough</code> + <code class=\"mono\">pipe</code>",
+      "mod.ws": "WebSocket server + client (RFC 6455): send, message, close",
+      "mod.fs": "<code class=\"mono\">readFileSync</code>, <code class=\"mono\">writeFile</code>, <code class=\"mono\">readdirSync</code>, sync maupun async",
+      "mod.path": "<code class=\"mono\">join</code>, <code class=\"mono\">resolve</code>, <code class=\"mono\">dirname</code>, <code class=\"mono\">parse</code>/<code class=\"mono\">format</code>",
+      "mod.os": "<code class=\"mono\">platform</code>, <code class=\"mono\">cpus</code>, <code class=\"mono\">freemem</code>, <code class=\"mono\">homedir</code>",
+      "mod.events": "<code class=\"mono\">EventEmitter</code>: on, once, emit, removeListener",
+      "mod.crypto": "<code class=\"mono\">createHash</code>, <code class=\"mono\">randomBytes</code>, <code class=\"mono\">randomUUID</code>",
+      "mod.url": "Parsing URL menjadi semua komponennya",
+      "ex.title": "Contoh kode",
+      "ex.sub": "Simpan sebagai file .js lalu eksekusi dengan <code class=\"mono\">nx8v</code>.",
+      "ex.tab.http": "HTTP server",
+      "ex.tab.events": "EventEmitter",
+      "ex.tab.fetch": "fetch",
+      "ex.tab.crypto": "crypto",
+      "qs.title": "Mulai dalam 60 detik",
+      "qs.sub": "Tiga langkah dari nol sampai HTTP server berjalan.",
+      "qs.1.t": "1. Pasang sekali",
+      "qs.1.d": "Binary masuk ke PATH user dan dapat dipanggil dari direktori mana pun.",
+      "qs.2.t": "2. Buat proyek",
+      "qs.2.d": "Wizard menghasilkan <code class=\"mono\">project.json</code>, <code class=\"mono\">server.js</code>, dan folder <code class=\"mono\">public/</code>.",
+      "qs.3.t": "3. Jalankan",
+      "qs.3.d": "Server statik aktif beserta contoh endpoint <code class=\"mono\">GET /api/hello</code>.",
+      "foot.copy": "© 2026 NX8V",
+    },
+    en: {
+      "meta.title": "NX8V — A JavaScript runtime powered by V8",
+      "meta.desc": "NX8V is an open source JavaScript runtime embedding the V8 engine and libuv in a single C++ binary. Script execution, REPL, HTTP server, and project scaffolding with zero dependencies.",
+      "skip": "Skip to main content",
+      "ui.menu.open": "Open menu",
+      "ui.menu.close": "Close menu",
+      "ui.copy": "Copy code",
+      "ui.copied": "Copied",
+      "nav.fitur": "Features",
+      "nav.modul": "Modules",
+      "nav.contoh": "Examples",
+      "nav.mulai": "Get started",
+      "nav.cta": "Quick start",
+      "nav.github": "GitHub",
+      "hero.title": "A JavaScript<br />runtime powered by V8",
+      "hero.desc": "NX8V embeds the Google V8 engine and the libuv event loop in a single C++ binary. Run scripts, drop into an interactive REPL, and spin up an HTTP server — one command, no setup steps.",
+      "hero.cta1": "Get started",
+      "hero.cta2": "See examples",
+      "hero.meta": "C++17 · V8 engine · libuv · single executable",
+      "fit.title": "Features",
+      "fit.sub": "Core APIs available right inside the runtime.",
+      "fit.1.t": "Script execution & REPL",
+      "fit.1.d": "Run <code class=\"mono\">nx8v script.js</code> or enter an interactive REPL with plain <code class=\"mono\">nx8v</code>.",
+      "fit.2.t": "libuv event loop",
+      "fit.2.d": "<code class=\"mono\">Promise</code> and <code class=\"mono\">async/await</code> work natively via the microtask pump.",
+      "fit.3.t": "require() & ES Modules",
+      "fit.3.d": "CommonJS with module cache (<code class=\"mono\">__filename</code>, <code class=\"mono\">__dirname</code>) plus <code class=\"mono\">import</code>/<code class=\"mono\">export</code> for <code class=\"mono\">.mjs</code> files.",
+      "fit.4.t": "HTTPS fetch & router",
+      "fit.4.d": "Promise-based HTTP/HTTPS fetch, plus an Express-style router with <code class=\"mono\">req.params</code> and middleware.",
+      "fit.5.t": "WebSocket & streams",
+      "fit.5.d": "WebSocket server + client (RFC 6455), and <code class=\"mono\">Readable</code>/<code class=\"mono\">Writable</code>/<code class=\"mono\">Duplex</code> streams with <code class=\"mono\">pipe</code>.",
+      "fit.6.t": "Tooling, test & desktop",
+      "fit.6.d": "<code class=\"mono\">nx8v init/dev/start/stop/list</code>, a built-in test runner (<code class=\"mono\">test</code>/<code class=\"mono\">assert</code>), and <code class=\"mono\">nx8v window</code> for a WebView2 desktop window.",
+      "mod.title": "Built-in modules",
+      "mod.sub": "Twelve modules ready to call via <code class=\"mono\">require()</code>, no extra installs.",
+      "mod.caption": "List of NX8V built-in modules and their contents",
+      "mod.th1": "Module",
+      "mod.th2": "Contents",
+      "mod.fs": "<code class=\"mono\">readFileSync</code>, <code class=\"mono\">writeFile</code>, <code class=\"mono\">createReadStream</code>/<code class=\"mono\">createWriteStream</code>, both sync and async",
+      "mod.http": "Server (<code class=\"mono\">createServer</code>) and client (<code class=\"mono\">get</code>/<code class=\"mono\">request</code>)",
+      "mod.https": "HTTPS client over WinHTTP (TLS 1.2/1.3 + Windows cert store)",
+      "mod.router": "<code class=\"mono\">app.get/post/put/delete</code> with <code class=\"mono\">req.params</code>, middleware, <code class=\"mono\">res.json/send/redirect</code>",
+      "mod.static": "Static file server: ETag/304, Range/206, HEAD, Cache-Control, path traversal protection",
+      "mod.stream": "<code class=\"mono\">Readable</code>/<code class=\"mono\">Writable</code>/<code class=\"mono\">Duplex</code>/<code class=\"mono\">PassThrough</code> + <code class=\"mono\">pipe</code>",
+      "mod.ws": "WebSocket server + client (RFC 6455): send, message, close",
+      "mod.fs": "<code class=\"mono\">readFileSync</code>, <code class=\"mono\">writeFile</code>, <code class=\"mono\">readdirSync</code>, both sync and async",
+      "mod.path": "<code class=\"mono\">join</code>, <code class=\"mono\">resolve</code>, <code class=\"mono\">dirname</code>, <code class=\"mono\">parse</code>/<code class=\"mono\">format</code>",
+      "mod.os": "<code class=\"mono\">platform</code>, <code class=\"mono\">cpus</code>, <code class=\"mono\">freemem</code>, <code class=\"mono\">homedir</code>",
+      "mod.events": "<code class=\"mono\">EventEmitter</code>: on, once, emit, removeListener",
+      "mod.crypto": "<code class=\"mono\">createHash</code>, <code class=\"mono\">randomBytes</code>, <code class=\"mono\">randomUUID</code>",
+      "mod.url": "Parses a URL into all of its components",
+      "ex.title": "Code examples",
+      "ex.sub": "Save as a .js file, then run it with <code class=\"mono\">nx8v</code>.",
+      "ex.tab.http": "HTTP server",
+      "ex.tab.events": "EventEmitter",
+      "ex.tab.fetch": "fetch",
+      "ex.tab.crypto": "crypto",
+      "qs.title": "Up and running in 60 seconds",
+      "qs.sub": "Three steps from zero to a running HTTP server.",
+      "qs.1.t": "1. Install once",
+      "qs.1.d": "The binary goes on the user PATH and can be called from any directory.",
+      "qs.2.t": "2. Create a project",
+      "qs.2.d": "The wizard generates <code class=\"mono\">project.json</code>, <code class=\"mono\">server.js</code>, and a <code class=\"mono\">public/</code> folder.",
+      "qs.3.t": "3. Run it",
+      "qs.3.d": "The static server starts together with a sample <code class=\"mono\">GET /api/hello</code> endpoint.",
+      "foot.copy": "© 2026 NX8V",
+    },
+  };
+
+  var lang = "id";
+
+  function t(key) {
+    return (I18N[lang] && I18N[lang][key]) || key;
+  }
+
+  function setLang(value) {
+    lang = I18N[value] ? value : "id";
+    var dict = I18N[lang];
+
+    document.querySelectorAll("[data-i18n]").forEach(function (el) {
+      const key = el.getAttribute("data-i18n");
+      if (dict[key] !== undefined) el.innerHTML = dict[key];
+    });
+
+    document.querySelectorAll("[data-i18n-attr]").forEach(function (el) {
+      el.getAttribute("data-i18n-attr").split(",").forEach(function (rule) {
+        const parts = rule.split("|");
+        if (parts.length === 2 && dict[parts[1]] !== undefined) {
+          el.setAttribute(parts[0], dict[parts[1]]);
+        }
+      });
+    });
+
+    if (dict["meta.title"]) document.title = dict["meta.title"];
+
+    document.documentElement.lang = lang;
+    document.querySelectorAll("[data-lang-btn]").forEach(function (btn) {
+      btn.classList.toggle("active", btn.getAttribute("data-lang-btn") === lang);
+    });
+
+    try { localStorage.setItem("nx8v-lang", lang); } catch (e) { /* mode privat */ }
+  }
+
+  // --- Menu mobile ---
+  var toggle = document.getElementById("toggle");
+  var menu = document.getElementById("menu");
+  if (toggle && menu) {
+    toggle.addEventListener("click", function () {
+      var open = menu.classList.toggle("open");
+      toggle.setAttribute("aria-expanded", String(open));
+      toggle.setAttribute("aria-label", open ? t("ui.menu.close") : t("ui.menu.open"));
+    });
+    menu.addEventListener("click", function (e) {
+      if (e.target.closest("a")) {
+        menu.classList.remove("open");
+        toggle.setAttribute("aria-expanded", "false");
+        toggle.setAttribute("aria-label", t("ui.menu.open"));
+      }
+    });
+  }
+
+  // --- Tab contoh kode ---
+  var tabs = document.querySelectorAll('[role="tab"]');
+  var panes = document.querySelectorAll('[role="tabpanel"]');
+  var runFile = document.getElementById("runFile");
+  tabs.forEach(function (tab) {
+    tab.addEventListener("click", function () {
+      tabs.forEach(function (tb) {
+        tb.classList.toggle("active", tb === tab);
+        tb.setAttribute("aria-selected", String(tb === tab));
+      });
+      panes.forEach(function (p) {
+        var show = p.id === tab.getAttribute("aria-controls");
+        p.classList.toggle("active", show);
+        p.hidden = !show;
+        if (show && runFile) runFile.textContent = p.dataset.name || "script.js";
+      });
+    });
+  });
+
+  // --- Salin kode panel aktif ---
+  var copyBtn = document.getElementById("copyBtn");
+  var activePane = document.querySelector(".pane.active");
+  if (copyBtn && activePane) {
+    copyBtn.addEventListener("click", function () {
+      var done = function () {
+        copyBtn.textContent = t("ui.copied");
+        copyBtn.classList.add("copy-done");
+        setTimeout(function () {
+          copyBtn.textContent = t("ui.copy");
+          copyBtn.classList.remove("copy-done");
+        }, 1500);
+      };
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(activePane.textContent).then(done, function () { copyViaFallback(activePane, done); });
+      } else {
+        copyViaFallback(activePane, done);
+      }
+    });
+  }
+
+  function copyViaFallback(node, done) {
+    var temp = document.createElement("textarea");
+    temp.value = node.textContent;
+    temp.setAttribute("readonly", "");
+    temp.style.position = "fixed";
+    temp.style.opacity = "0";
+    document.body.appendChild(temp);
+    temp.select();
+    try {
+      if (document.execCommand("copy")) done();
+    } catch (err) { /* abaikan */ }
+    document.body.removeChild(temp);
+  }
+
+  // --- Init bahasa ---
+  document.querySelectorAll("[data-lang-btn]").forEach(function (btn) {
+    btn.addEventListener("click", function () { setLang(btn.getAttribute("data-lang-btn")); });
+  });
+
+  try {
+    var saved = localStorage.getItem("nx8v-lang");
+    if (saved) { setLang(saved); return; }
+  } catch (e) { /* abaikan */ }
+  var browser = (navigator.language || "").slice(0, 2).toLowerCase();
+  setLang(browser === "en" ? "en" : "id");
+})();
