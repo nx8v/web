@@ -68,8 +68,44 @@ http.<span class="f">createServer</span>((req, res) =&gt; {
       </div>
     </section>
 
+    <!-- Dua jalur penggunaan -->
+    <section id="jalur" class="section alt">
+      <div class="container">
+        <h2 class="sec-title" data-i18n="pj.title">Dua jalur penggunaan</h2>
+        <p class="sec-sub" data-i18n="pj.sub">Pilih jalur: server web atau aplikasi desktop — runtime yang sama.</p>
+        <div class="cards two">
+          <article class="card path">
+            <h3 data-i18n="pj.1.t">Server &amp; web</h3>
+            <p data-i18n="pj.1.d">Jalankan aplikasi web penuh: HTTP/HTTPS, router, static file dengan ETag &amp; Range, WebSocket, dan komponen HTML partial.</p>
+            <ul class="path-list mono">
+              <li>http / https</li>
+              <li>router</li>
+              <li>static (ETag / Range)</li>
+              <li>websocket</li>
+              <li>html partial</li>
+              <li>dev hot-reload</li>
+            </ul>
+            <a class="path-link mono" href="server.md" data-i18n="pj.1.link">Baca server.md &#8594;</a>
+          </article>
+          <article class="card path">
+            <h3 data-i18n="pj.2.t">Desktop</h3>
+            <p data-i18n="pj.2.d"><code class="mono">nx8v window</code> membuka jendela WebView2 dengan bridge <code class="mono">window.nx8v</code> — aplikasi desktop ringan tanpa Electron.</p>
+            <ul class="path-list mono">
+              <li>webview2 window</li>
+              <li>bridge window.nx8v</li>
+              <li>dialog</li>
+              <li>tray</li>
+              <li>notification</li>
+              <li>multi-window</li>
+            </ul>
+            <a class="path-link mono" href="desktop.md" data-i18n="pj.2.link">Baca desktop.md &#8594;</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
     <!-- Fitur -->
-    <section id="fitur" class="section alt">
+    <section id="fitur" class="section">
       <div class="container">
         <h2 class="sec-title" data-i18n="fit.title">Fitur</h2>
         <p class="sec-sub" data-i18n="fit.sub">API inti yang tersedia langsung di dalam runtime.</p>
@@ -103,7 +139,7 @@ http.<span class="f">createServer</span>((req, res) =&gt; {
     </section>
 
     <!-- Modul -->
-    <section id="modul" class="section">
+    <section id="modul" class="section alt">
       <div class="container">
         <h2 class="sec-title" data-i18n="mod.title">Modul built-in</h2>
         <p class="sec-sub" data-i18n="mod.sub">Tujuh belas modul siap dipanggil lewat <code class="mono">require()</code>, tanpa instalasi tambahan.</p>
