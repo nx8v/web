@@ -52,13 +52,20 @@ nx8v window --title="Toko" --width=1200 --height=800
 |---|---|---|
 | `--url=` | `http://127.0.0.1:<port>/` | URL yang dibuka |
 | `--title=` | `nx8v` | judul jendela |
-| `--width=` | `1100` | lebar awal |
-| `--height=` | `760` | tinggi awal |
-| `--min-width=` | tidak dibatasi | lebar terkecil |
-| `--min-height=` | tidak dibatasi | tinggi terkecil |
-| `--x=` `--y=` | posisi Windows | pojok kiri atas jendela |
-| `--frameless` | berbingkai | tanpa bilah judul; seret area 36px atas untuk memindahkan |
-| `--icon=` | `icon.ico` di folder proyek, bila ada | ikon jendela |
+| `--width=` | `desktop.width`, atau `1100` | lebar jendela |
+| `--height=` | `desktop.height`, atau `760` | tinggi jendela |
+| `--state=` | `desktop.state`, atau `normal` | `normal`, `maximized`, atau `minimized` |
+| `--maximized` | | sama dengan `--state=maximized` |
+| `--minimized` | | sama dengan `--state=minimized` |
+| `--no-maximize` | `desktop.maximizable` | sembunyikan tombol maximize |
+| `--min-width=` | `desktop.minWidth` | lebar terkecil saat tepi ditarik |
+| `--min-height=` | `desktop.minHeight` | tinggi terkecil saat tepi ditarik |
+| `--x=` `--y=` | `desktop.x`, `desktop.y` | pojok kiri atas jendela |
+| `--center` | `desktop.center` | letakkan di tengah area kerja |
+| `--frameless` | `desktop.titlebar` | sama dengan `"titlebar": false` |
+| `--no-resize` | `desktop.resizable` | kunci ukuran; tepi jendela tidak bisa ditarik |
+| `--multi-instance` | `desktop.singleInstance` | izinkan lebih dari satu jendela untuk proyek yang sama |
+| `--icon=` | `nx8v.desktop.icon`, atau `icon.ico` | ikon jendela (png, jpg, webp, bmp, ico) |
 
 Tanpa argumen, NX8V membaca `project.json` (`main` dan `nx8v.port`).
 
@@ -103,6 +110,21 @@ nx8v.close();
 | `maximize()` | maximize / restore |
 | `openDevTools()` | buka DevTools WebView2 |
 | `close()` | tutup aplikasi |
+
+### Title bar sendiri
+
+`"titlebar": false` menyembunyikan title bar Windows. Halaman menggambar bilahnya sendiri. Elemen `data-nx8v-drag` bisa diseret untuk memindahkan jendela. Tombol di dalamnya memakai `data-nx8v-nodrag` supaya tetap bisa diklik. `"titlebar": true` menampilkan title bar Windows.
+
+```html
+<header data-nx8v-drag>
+  <span>Aplikasi demo</span>
+  <button data-nx8v-nodrag onclick="nx8v.minimize()">—</button>
+  <button data-nx8v-nodrag onclick="nx8v.maximize()">□</button>
+  <button data-nx8v-nodrag onclick="nx8v.close()">×</button>
+</header>
+```
+
+`nx8v.setTitle(...)` tetap mengubah nama di taskbar. Tulisan di bilah halaman diatur oleh HTML. Contohnya ada di `example/public/titlebar.html`.
 
 Semua method jendela bersifat fire-and-forget (tidak mengembalikan Promise).
 Dialog dan tray mengembalikan Promise.
@@ -194,7 +216,9 @@ Perilaku penting:
 - **Klik kiri** ikon tray → jendela dimunculkan kembali
 - **Klik kanan** → menu konteks
 - Saat tray aktif, tombol close jendela **menyembunyikan ke tray** (bukan keluar)
-- Item **"Keluar"** selalu ditambahkan otomatis di bawah menu
+- `exit: false` meniadakan entri **Keluar**. `exitLabel` mengganti tulisannya. Tanpa itu, **Keluar** tetap ditambahkan.
+- Item menu: `{ label, id, enabled, checked, children }` atau `'-'`
+- Klik kanan di halaman diganti dengan `nx8v.contextMenu.set([...])`. `clear()` mengembalikan menu browser.
 
 ---
 
@@ -319,15 +343,10 @@ Untuk host → halaman wajib `PostWebMessageAsJson` (memakai
 
 ---
 
-## Rencana pembungkusan
+## Pembungkusan
 
-`nx8v package` hari ini menyalin folder mentah ke `dist/<nama>/`: exe nx8v yang
-berganti nama, `start.cmd`, dan berkas proyek. Ikon Explorer tetap ikon nx8v,
-karena ikon hanya dipasang saat jendela berjalan. Pengguna harus menjalankan
-`start.cmd` sendiri. Tidak ada pemasang, pintasan, atau nama artefak.
-
-Menu tray bisa diisi dari skrip, tetapi entri **Keluar** selalu ditambahkan dan
-tidak bisa dimatikan. Klik kanan di halaman masih menu browser.
+`nx8v package` membuat folder `dist/<nama>/` dan, bila `makensis` terpasang,
+satu berkas pemasang.
 
 ### `project.json`
 
@@ -335,7 +354,17 @@ tidak bisa dimatikan. Klik kanan di halaman masih menu browser.
 "nx8v": {
   "port": 4000,
   "desktop": {
-    "icon": "icon.ico",
+    "icon": "./public/assets/images/32x32.png",
+    "state": "normal",
+    "width": 1100,
+    "height": 560,
+    "minWidth": 640,
+    "minHeight": 400,
+    "center": true,
+    "maximizable": true,
+    "resizable": true,
+    "titlebar": true,
+    "singleInstance": true,
     "productName": "Aplikasi demo",
     "shortcutName": "Aplikasi demo",
     "artifactName": "Aplikasi-demo-Setup-${version}.exe"
@@ -345,7 +374,16 @@ tidak bisa dimatikan. Klik kanan di halaman masih menu browser.
 
 | Kunci | Pakai |
 |---|---|
-| `icon` | ikon jendela, ikon file exe, dan pintasan |
+| `icon` | png, jpg, webp, bmp, atau ico untuk jendela, exe, dan pintasan |
+| `state` | tampilan saat aplikasi diklik: `normal`, `maximized`, atau `minimized` |
+| `width`, `height` | ukuran jendela. Pada `normal` ini ukuran yang tampil. Pada `maximized` atau `minimized` ini ukuran setelah jendela dikembalikan |
+| `minWidth`, `minHeight` | batas terkecil saat pengguna menarik tepi jendela |
+| `x`, `y` | posisi pojok kiri atas. Bila ada, `center` diabaikan |
+| `center` | `true` menaruh jendela di tengah layar |
+| `maximizable` | `false` meniadakan tombol maximize. `state` yang `maximized` ikut dibuka sebagai `normal` |
+| `resizable` | `false` mengunci ukuran. Tombol maximize ikut hilang |
+| `titlebar` | `true` menampilkan title bar Windows. `false` menyembunyikannya; halaman memasang title bar sendiri |
+| `singleInstance` | `true` membuat klik kedua memunculkan jendela yang sudah ada |
 | `productName` | nama yang terlihat pengguna |
 | `shortcutName` | nama pintasan Start Menu dan desktop |
 | `artifactName` | nama berkas pemasang; `${version}` dan `${name}` diganti dari `project.json` |
@@ -354,7 +392,7 @@ tidak bisa dimatikan. Klik kanan di halaman masih menu browser.
 
 - Baca `desktop.icon`. Tanam ikon itu ke dalam exe hasil salinan, supaya Explorer menampilkannya.
 - Exe di samping `project.json`, bila dijalankan tanpa argumen, membuka `nx8v window`. `start.cmd` tidak wajib.
-- Salin `icon.ico` ke dalam folder paket.
+- Gambar ikon di `desktop.icon` ikut disalin. PNG tidak perlu diubah menjadi ico oleh pengguna.
 
 ### Tahap 2 — pemasang NSIS
 
