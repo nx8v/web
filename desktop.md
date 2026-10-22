@@ -281,8 +281,14 @@ dist/<nama>/
 ├── WebView2Loader.dll  # otomatis bila proyek memakai bridge
 ├── start.cmd
 └── README.txt
-dist/<artifactName>     # pemasang, misalnya Aplikasi-demo-Setup-1.0.0.exe
+dist/<artifactName>     # pemasang Windows, misalnya Aplikasi-demo-Setup-1.0.0.exe
+dist/<nama>-<versi>-linux-x64.tar.gz
 ```
+
+Satu perintah `nx8v package` menulis dua berkas unduhan, seperti folder rilis:
+pemasang Windows `Nama-Setup-versi.exe` dan arsip Linux `Nama-versi-linux-x64.tar.gz`.
+Di Linux: `tar -xzf` arsip itu, masuk ke foldernya, lalu `./start.sh`.
+Jendela desktop Linux belum ada, jadi paket Linux menjalankan server.
 
 `server.js`, `project.json`, dan `public/` tidak ikut sebagai berkas terpisah.
 Saat exe dijalankan, nx8v membuka isi itu dari dalam exe ke cache pribadi.
@@ -415,8 +421,8 @@ Untuk host → halaman wajib `PostWebMessageAsJson` (memakai
 - `nx8v package` selalu menulis berkas sesuai `artifactName`, misalnya `dist/Aplikasi-demo-Setup-1.0.0.exe`.
 - Klik dua kali berkas itu. Jendela pemasangan terbuka dalam bahasa Inggris: folder, pintasan, dan tombol Install. Tidak ada jendela terminal.
 - Aplikasi dipasang di folder yang dipilih. Bawaan `%LOCALAPPDATA%\<nama>`.
-- Pemasang membuat pintasan Start Menu dan desktop dengan `shortcutName`, plus entri hapus pemasangan.
-- Hapus pemasangan membuka jendela yang sama gayanya dengan pemasang (bahasa Inggris, bar kemajuan). Tidak ada `uninstall.cmd`.
+- Pemasang membuat pintasan Start Menu dan desktop dengan `shortcutName` bila kotak pintasan dicentang. Start Menu tidak berisi pintasan hapus.
+- Di folder pemasangan ada `Uninstall.exe`. Klik dua kali berkas itu untuk membuka jendela hapus. Pengaturan Windows > Aplikasi memakai berkas yang sama.
 - Folder tahap 1 tetap ada untuk dicoba tanpa memasang.
 - Skrip NSIS ikut ditulis. `makensis` hanya dijalankan bila ada di komputer.
 
