@@ -122,6 +122,20 @@ a:hover { color: var(--accent-strong); text-decoration: underline; }
 /* ================= hero ================= */
 .hero { padding: 84px 0 72px; }
 
+.hero-claim {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border: 1px solid #d3e3f5;
+  border-radius: 999px;
+  display: inline-block;
+  padding: 5px 14px;
+  margin: 0 0 18px;
+}
+
 .hero .grid {
   display: grid; grid-template-columns: 1.05fr 0.95fr;
   gap: 52px; align-items: center;
