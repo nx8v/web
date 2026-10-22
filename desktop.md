@@ -236,24 +236,33 @@ Muncul di pojok kanan bawah Windows.
 ## 7. Multi-window
 
 ```js
-// buka jendela baru
-nx8v.window.create({
+const satu = await nx8v.window.create({
+  id: 'satu',
   url: '/detail',
   title: 'Detail',
   width: 800,
   height: 600,
   center: true,
 });
+const dua = await nx8v.window.create({ id: 'dua', url: '/lain' });
+
+// Tutup satu jendela. Jendela "dua" dan jendela utama tetap terbuka.
+nx8v.window.close('satu');
+nx8v.window.close(dua);
 ```
+
+`create` mengembalikan id jendela. Tiap jendela butuh id sendiri. Bila `id` tidak diisi, nx8v mengisi `1`, `2`, `3`, dan seterusnya.
 
 | Opsi | Default |
 |---|---|
 | `url` | `location.href` (halaman saat ini) |
+| `id` | id untuk `window.close`. Otomatis `1`, `2`, … bila kosong |
 | `title` | `nx8v` |
 | `width` | `900` |
 | `height` | `640` |
 | `center` | `true`, jendela di tengah area kerja. `false` menyerahkan posisi ke Windows |
 | `x`, `y` | pojok kiri atas. Bila keduanya diisi, `center` diabaikan |
+| `maximizable` | `true`. `false` menghilangkan tombol maximize. Bila tidak diisi, mengikuti `project.json` |
 
 ---
 
@@ -268,14 +277,18 @@ Isi folder hasil:
 
 ```
 dist/<nama>/
-├── <nama>.exe          # salinan nx8v.exe dengan nama aplikasi
+├── <nama>.exe          # aplikasi ada di dalam exe
 ├── WebView2Loader.dll  # otomatis bila proyek memakai bridge
-├── project.json
-├── server.js
-├── public/ ...
-├── start.cmd           # launcher (mode window bila memakai bridge)
+├── start.cmd
 └── README.txt
+dist/<artifactName>     # pemasang, misalnya Aplikasi-demo-Setup-1.0.0.exe
 ```
+
+`server.js`, `project.json`, dan `public/` tidak ikut sebagai berkas terpisah.
+Saat exe dijalankan, nx8v membuka isi itu dari dalam exe ke cache pribadi.
+Pemasang dibuat oleh nx8v sendiri. Klik dua kali berkas setup: aplikasi dipasang
+di `%LOCALAPPDATA%\<nama>`, dengan pintasan desktop, Start Menu, dan entri hapus pemasangan.
+Skrip `.nsi` tetap ditulis. `makensis` hanya dipakai bila sudah terpasang.
 
 Deteksi otomatis: bila ada file `.js`/`.html` yang memuat `window.nx8v`,
 `nx8v.dialog`, atau `nx8v.setTitle`, paket dianggap aplikasi desktop —
@@ -348,8 +361,8 @@ Untuk host → halaman wajib `PostWebMessageAsJson` (memakai
 
 ## Pembungkusan
 
-`nx8v package` membuat folder `dist/<nama>/` dan, bila `makensis` terpasang,
-satu berkas pemasang.
+`nx8v package` membuat folder `dist/<nama>/` dan berkas pemasang
+`dist/<artifactName>`.
 
 ### `project.json`
 
@@ -397,12 +410,15 @@ satu berkas pemasang.
 - Exe di samping `project.json`, bila dijalankan tanpa argumen, membuka `nx8v window`. `start.cmd` tidak wajib.
 - Gambar ikon di `desktop.icon` ikut disalin. PNG tidak perlu diubah menjadi ico oleh pengguna.
 
-### Tahap 2 — pemasang NSIS
+### Tahap 2 — pemasang
 
-- `nx8v package` menulis skrip NSIS dari `project.json`, lalu memanggil `makensis` bila ada.
-- Hasilnya satu berkas sesuai `artifactName`, misalnya `dist/Aplikasi-demo-Setup-1.0.0.exe`.
+- `nx8v package` selalu menulis berkas sesuai `artifactName`, misalnya `dist/Aplikasi-demo-Setup-1.0.0.exe`.
+- Klik dua kali berkas itu. Jendela pemasangan terbuka dalam bahasa Inggris: folder, pintasan, dan tombol Install. Tidak ada jendela terminal.
+- Aplikasi dipasang di folder yang dipilih. Bawaan `%LOCALAPPDATA%\<nama>`.
 - Pemasang membuat pintasan Start Menu dan desktop dengan `shortcutName`, plus entri hapus pemasangan.
-- Folder mentah tahap 1 tetap ada untuk dicoba tanpa memasang.
+- Hapus pemasangan membuka jendela yang sama gayanya dengan pemasang (bahasa Inggris, bar kemajuan). Tidak ada `uninstall.cmd`.
+- Folder tahap 1 tetap ada untuk dicoba tanpa memasang.
+- Skrip NSIS ikut ditulis. `makensis` hanya dijalankan bila ada di komputer.
 
 ### Tahap 3 — menu yang mengikuti aplikasi
 
