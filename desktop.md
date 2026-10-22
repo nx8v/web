@@ -242,6 +242,7 @@ nx8v.window.create({
   title: 'Detail',
   width: 800,
   height: 600,
+  center: true,
 });
 ```
 
@@ -251,6 +252,8 @@ nx8v.window.create({
 | `title` | `nx8v` |
 | `width` | `900` |
 | `height` | `640` |
+| `center` | `true`, jendela di tengah area kerja. `false` menyerahkan posisi ke Windows |
+| `x`, `y` | pojok kiri atas. Bila keduanya diisi, `center` diabaikan |
 
 ---
 
