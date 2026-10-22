@@ -96,7 +96,7 @@ http.<span class="f">createServer</span>((req, res) =&gt; {
           </article>
           <article class="card">
             <h3 data-i18n="fit.6.t">Tooling, test &amp; desktop</h3>
-            <p data-i18n="fit.6.d"><code class="mono">nx8v init/dev/start/stop/list</code>, test runner bawaan (<code class="mono">test</code>/<code class="mono">assert</code>), dan <code class="mono">nx8v window</code> untuk jendela desktop WebView2.</p>
+            <p data-i18n="fit.6.d"><code class="mono">nx8v init/dev/start/stop/list/logs</code>, test runner bawaan, dan <code class="mono">nx8v window</code> — dialog, tray, notifikasi, multi-window — plus <code class="mono">nx8v package</code>.</p>
           </article>
         </div>
       </div>
@@ -106,7 +106,7 @@ http.<span class="f">createServer</span>((req, res) =&gt; {
     <section id="modul" class="section">
       <div class="container">
         <h2 class="sec-title" data-i18n="mod.title">Modul built-in</h2>
-        <p class="sec-sub" data-i18n="mod.sub">Dua belas modul siap dipanggil lewat <code class="mono">require()</code>, tanpa instalasi tambahan.</p>
+        <p class="sec-sub" data-i18n="mod.sub">Tujuh belas modul siap dipanggil lewat <code class="mono">require()</code>, tanpa instalasi tambahan.</p>
         <div class="tbl-wrap">
           <table>
             <caption class="visually-hidden" data-i18n="mod.caption">Daftar modul built-in NX8V dan fungsinya</caption>
@@ -114,9 +114,9 @@ http.<span class="f">createServer</span>((req, res) =&gt; {
               <tr><th scope="col" data-i18n="mod.th1">Modul</th><th scope="col" data-i18n="mod.th2">Isi</th></tr>
             </thead>
             <tbody>
-              <tr><th scope="row" class="mono">fs</th><td data-i18n="mod.fs"><code class="mono">readFileSync</code>, <code class="mono">writeFile</code>, <code class="mono">createReadStream</code>/<code class="mono">createWriteStream</code>, sync maupun async</td></tr>
+              <tr><th scope="row" class="mono">fs</th><td data-i18n="mod.fs"><code class="mono">readFileSync</code>/<code class="mono">writeFile</code>, <code class="mono">watch</code>, <code class="mono">rename</code>/<code class="mono">copyFile</code>/<code class="mono">rm</code>/<code class="mono">appendFile</code>, <code class="mono">createReadStream</code>/<code class="mono">createWriteStream</code>, sync &amp; async</td></tr>
               <tr><th scope="row" class="mono">path</th><td data-i18n="mod.path"><code class="mono">join</code>, <code class="mono">resolve</code>, <code class="mono">dirname</code>, <code class="mono">parse</code>/<code class="mono">format</code></td></tr>
-              <tr><th scope="row" class="mono">os</th><td data-i18n="mod.os"><code class="mono">platform</code>, <code class="mono">cpus</code>, <code class="mono">freemem</code>, <code class="mono">homedir</code></td></tr>
+              <tr><th scope="row" class="mono">os</th><td data-i18n="mod.os"><code class="mono">platform</code>, <code class="mono">cpus</code>, <code class="mono">freemem</code>, <code class="mono">homedir</code>, <code class="mono">networkInterfaces</code></td></tr>
               <tr><th scope="row" class="mono">url</th><td data-i18n="mod.url">Parsing URL menjadi semua komponennya</td></tr>
               <tr><th scope="row" class="mono">events</th><td data-i18n="mod.events"><code class="mono">EventEmitter</code>: on, once, emit, removeListener</td></tr>
               <tr><th scope="row" class="mono">http</th><td data-i18n="mod.http">Server <code class="mono">createServer</code> dan client <code class="mono">get</code>/<code class="mono">request</code></td></tr>
@@ -126,6 +126,11 @@ http.<span class="f">createServer</span>((req, res) =&gt; {
               <tr><th scope="row" class="mono">stream</th><td data-i18n="mod.stream"><code class="mono">Readable</code>/<code class="mono">Writable</code>/<code class="mono">Duplex</code>/<code class="mono">PassThrough</code> + <code class="mono">pipe</code></td></tr>
               <tr><th scope="row" class="mono">ws</th><td data-i18n="mod.ws">WebSocket server + client (RFC 6455): send, message, close</td></tr>
               <tr><th scope="row" class="mono">crypto</th><td data-i18n="mod.crypto"><code class="mono">createHash</code>, <code class="mono">randomBytes</code>, <code class="mono">randomUUID</code></td></tr>
+              <tr><th scope="row" class="mono">querystring</th><td data-i18n="mod.querystring"><code class="mono">parse</code>, <code class="mono">stringify</code>, <code class="mono">URLSearchParams</code></td></tr>
+              <tr><th scope="row" class="mono">zlib</th><td data-i18n="mod.zlib"><code class="mono">gzipSync</code>, <code class="mono">gunzipSync</code>, <code class="mono">deflateSync</code>, <code class="mono">inflateSync</code></td></tr>
+              <tr><th scope="row" class="mono">net</th><td data-i18n="mod.net"><code class="mono">createServer</code>, <code class="mono">connect</code> — TCP mentah</td></tr>
+              <tr><th scope="row" class="mono">dns</th><td data-i18n="mod.dns"><code class="mono">lookup</code>, <code class="mono">resolve</code>, <code class="mono">resolve4</code></td></tr>
+              <tr><th scope="row" class="mono">child_process</th><td data-i18n="mod.child_process"><code class="mono">exec</code>, <code class="mono">spawn</code></td></tr>
             </tbody>
           </table>
         </div>

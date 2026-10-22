@@ -1,4 +1,4 @@
-// NX8V situs — i18n ID/EN + menu mobile + salin kode
+// NX8V situs — i18n ID/EN + menu mobile + tab kode + salin kode
 (function () {
   "use strict";
 
@@ -35,25 +35,29 @@
       "fit.5.t": "WebSocket & stream",
       "fit.5.d": "Server + client WebSocket (RFC 6455), dan stream <code class=\"mono\">Readable</code>/<code class=\"mono\">Writable</code>/<code class=\"mono\">Duplex</code> dengan <code class=\"mono\">pipe</code>.",
       "fit.6.t": "Tooling, test & desktop",
-      "fit.6.d": "<code class=\"mono\">nx8v init/dev/start/stop/list</code>, test runner bawaan (<code class=\"mono\">test</code>/<code class=\"mono\">assert</code>), dan <code class=\"mono\">nx8v window</code> untuk jendela desktop WebView2.",
+      "fit.6.d": "<code class=\"mono\">nx8v init/dev/start/stop/list/logs</code>, test runner bawaan, dan <code class=\"mono\">nx8v window</code> — dialog, tray, notifikasi, multi-window — plus <code class=\"mono\">nx8v package</code>.",
       "mod.title": "Modul built-in",
-      "mod.sub": "Dua belas modul siap dipanggil lewat <code class=\"mono\">require()</code>, tanpa instalasi tambahan.",
+      "mod.sub": "Tujuh belas modul siap dipanggil lewat <code class=\"mono\">require()</code>, tanpa instalasi tambahan.",
       "mod.caption": "Daftar modul built-in NX8V dan fungsinya",
       "mod.th1": "Modul",
       "mod.th2": "Isi",
-      "mod.fs": "<code class=\"mono\">readFileSync</code>, <code class=\"mono\">writeFile</code>, <code class=\"mono\">createReadStream</code>/<code class=\"mono\">createWriteStream</code>, sync maupun async",
+      "mod.fs": "<code class=\"mono\">readFileSync</code>/<code class=\"mono\">writeFile</code>, <code class=\"mono\">watch</code>, <code class=\"mono\">rename</code>/<code class=\"mono\">copyFile</code>/<code class=\"mono\">rm</code>/<code class=\"mono\">appendFile</code>, <code class=\"mono\">createReadStream</code>/<code class=\"mono\">createWriteStream</code>, sync &amp; async",
+      "mod.path": "<code class=\"mono\">join</code>, <code class=\"mono\">resolve</code>, <code class=\"mono\">dirname</code>, <code class=\"mono\">parse</code>/<code class=\"mono\">format</code>",
+      "mod.os": "<code class=\"mono\">platform</code>, <code class=\"mono\">cpus</code>, <code class=\"mono\">freemem</code>, <code class=\"mono\">homedir</code>, <code class=\"mono\">networkInterfaces</code>",
+      "mod.url": "Parsing URL menjadi semua komponennya",
+      "mod.querystring": "<code class=\"mono\">parse</code>, <code class=\"mono\">stringify</code>, <code class=\"mono\">URLSearchParams</code>",
+      "mod.events": "<code class=\"mono\">EventEmitter</code>: on, once, emit, removeListener",
       "mod.http": "Server <code class=\"mono\">createServer</code> dan client <code class=\"mono\">get</code>/<code class=\"mono\">request</code>",
       "mod.https": "Client HTTPS via WinHTTP (TLS 1.2/1.3 + cert store Windows)",
       "mod.router": "<code class=\"mono\">app.get/post/put/delete</code> dengan <code class=\"mono\">req.params</code>, middleware, <code class=\"mono\">res.json/send/redirect</code>",
       "mod.static": "Static file server: ETag/304, Range/206, HEAD, Cache-Control, anti path traversal",
       "mod.stream": "<code class=\"mono\">Readable</code>/<code class=\"mono\">Writable</code>/<code class=\"mono\">Duplex</code>/<code class=\"mono\">PassThrough</code> + <code class=\"mono\">pipe</code>",
       "mod.ws": "WebSocket server + client (RFC 6455): send, message, close",
-      "mod.fs": "<code class=\"mono\">readFileSync</code>, <code class=\"mono\">writeFile</code>, <code class=\"mono\">readdirSync</code>, sync maupun async",
-      "mod.path": "<code class=\"mono\">join</code>, <code class=\"mono\">resolve</code>, <code class=\"mono\">dirname</code>, <code class=\"mono\">parse</code>/<code class=\"mono\">format</code>",
-      "mod.os": "<code class=\"mono\">platform</code>, <code class=\"mono\">cpus</code>, <code class=\"mono\">freemem</code>, <code class=\"mono\">homedir</code>",
-      "mod.events": "<code class=\"mono\">EventEmitter</code>: on, once, emit, removeListener",
       "mod.crypto": "<code class=\"mono\">createHash</code>, <code class=\"mono\">randomBytes</code>, <code class=\"mono\">randomUUID</code>",
-      "mod.url": "Parsing URL menjadi semua komponennya",
+      "mod.zlib": "<code class=\"mono\">gzipSync</code>, <code class=\"mono\">gunzipSync</code>, <code class=\"mono\">deflateSync</code>, <code class=\"mono\">inflateSync</code>",
+      "mod.net": "TCP mentah: <code class=\"mono\">createServer</code>, <code class=\"mono\">connect</code>",
+      "mod.dns": "<code class=\"mono\">lookup</code>, <code class=\"mono\">resolve</code>, <code class=\"mono\">resolve4</code>",
+      "mod.child_process": "<code class=\"mono\">exec</code>, <code class=\"mono\">spawn</code>",
       "ex.title": "Contoh kode",
       "ex.sub": "Simpan sebagai file .js lalu eksekusi dengan <code class=\"mono\">nx8v</code>.",
       "ex.tab.http": "HTTP server",
@@ -102,25 +106,29 @@
       "fit.5.t": "WebSocket & streams",
       "fit.5.d": "WebSocket server + client (RFC 6455), and <code class=\"mono\">Readable</code>/<code class=\"mono\">Writable</code>/<code class=\"mono\">Duplex</code> streams with <code class=\"mono\">pipe</code>.",
       "fit.6.t": "Tooling, test & desktop",
-      "fit.6.d": "<code class=\"mono\">nx8v init/dev/start/stop/list</code>, a built-in test runner (<code class=\"mono\">test</code>/<code class=\"mono\">assert</code>), and <code class=\"mono\">nx8v window</code> for a WebView2 desktop window.",
+      "fit.6.d": "<code class=\"mono\">nx8v init/dev/start/stop/list/logs</code>, a built-in test runner, and <code class=\"mono\">nx8v window</code> — dialogs, tray, notifications, multi-window — plus <code class=\"mono\">nx8v package</code>.",
       "mod.title": "Built-in modules",
-      "mod.sub": "Twelve modules ready to call via <code class=\"mono\">require()</code>, no extra installs.",
+      "mod.sub": "Seventeen modules ready to call via <code class=\"mono\">require()</code>, no extra installs.",
       "mod.caption": "List of NX8V built-in modules and their contents",
       "mod.th1": "Module",
       "mod.th2": "Contents",
-      "mod.fs": "<code class=\"mono\">readFileSync</code>, <code class=\"mono\">writeFile</code>, <code class=\"mono\">createReadStream</code>/<code class=\"mono\">createWriteStream</code>, both sync and async",
+      "mod.fs": "<code class=\"mono\">readFileSync</code>/<code class=\"mono\">writeFile</code>, <code class=\"mono\">watch</code>, <code class=\"mono\">rename</code>/<code class=\"mono\">copyFile</code>/<code class=\"mono\">rm</code>/<code class=\"mono\">appendFile</code>, <code class=\"mono\">createReadStream</code>/<code class=\"mono\">createWriteStream</code>, sync &amp; async",
+      "mod.path": "<code class=\"mono\">join</code>, <code class=\"mono\">resolve</code>, <code class=\"mono\">dirname</code>, <code class=\"mono\">parse</code>/<code class=\"mono\">format</code>",
+      "mod.os": "<code class=\"mono\">platform</code>, <code class=\"mono\">cpus</code>, <code class=\"mono\">freemem</code>, <code class=\"mono\">homedir</code>, <code class=\"mono\">networkInterfaces</code>",
+      "mod.url": "Parses a URL into all of its components",
+      "mod.querystring": "<code class=\"mono\">parse</code>, <code class=\"mono\">stringify</code>, <code class=\"mono\">URLSearchParams</code>",
+      "mod.events": "<code class=\"mono\">EventEmitter</code>: on, once, emit, removeListener",
       "mod.http": "Server (<code class=\"mono\">createServer</code>) and client (<code class=\"mono\">get</code>/<code class=\"mono\">request</code>)",
       "mod.https": "HTTPS client over WinHTTP (TLS 1.2/1.3 + Windows cert store)",
       "mod.router": "<code class=\"mono\">app.get/post/put/delete</code> with <code class=\"mono\">req.params</code>, middleware, <code class=\"mono\">res.json/send/redirect</code>",
       "mod.static": "Static file server: ETag/304, Range/206, HEAD, Cache-Control, path traversal protection",
       "mod.stream": "<code class=\"mono\">Readable</code>/<code class=\"mono\">Writable</code>/<code class=\"mono\">Duplex</code>/<code class=\"mono\">PassThrough</code> + <code class=\"mono\">pipe</code>",
       "mod.ws": "WebSocket server + client (RFC 6455): send, message, close",
-      "mod.fs": "<code class=\"mono\">readFileSync</code>, <code class=\"mono\">writeFile</code>, <code class=\"mono\">readdirSync</code>, both sync and async",
-      "mod.path": "<code class=\"mono\">join</code>, <code class=\"mono\">resolve</code>, <code class=\"mono\">dirname</code>, <code class=\"mono\">parse</code>/<code class=\"mono\">format</code>",
-      "mod.os": "<code class=\"mono\">platform</code>, <code class=\"mono\">cpus</code>, <code class=\"mono\">freemem</code>, <code class=\"mono\">homedir</code>",
-      "mod.events": "<code class=\"mono\">EventEmitter</code>: on, once, emit, removeListener",
       "mod.crypto": "<code class=\"mono\">createHash</code>, <code class=\"mono\">randomBytes</code>, <code class=\"mono\">randomUUID</code>",
-      "mod.url": "Parses a URL into all of its components",
+      "mod.zlib": "<code class=\"mono\">gzipSync</code>, <code class=\"mono\">gunzipSync</code>, <code class=\"mono\">deflateSync</code>, <code class=\"mono\">inflateSync</code>",
+      "mod.net": "Raw TCP: <code class=\"mono\">createServer</code>, <code class=\"mono\">connect</code>",
+      "mod.dns": "<code class=\"mono\">lookup</code>, <code class=\"mono\">resolve</code>, <code class=\"mono\">resolve4</code>",
+      "mod.child_process": "<code class=\"mono\">exec</code>, <code class=\"mono\">spawn</code>",
       "ex.title": "Code examples",
       "ex.sub": "Save as a .js file, then run it with <code class=\"mono\">nx8v</code>.",
       "ex.tab.http": "HTTP server",
@@ -150,13 +158,13 @@
     var dict = I18N[lang];
 
     document.querySelectorAll("[data-i18n]").forEach(function (el) {
-      const key = el.getAttribute("data-i18n");
+      var key = el.getAttribute("data-i18n");
       if (dict[key] !== undefined) el.innerHTML = dict[key];
     });
 
     document.querySelectorAll("[data-i18n-attr]").forEach(function (el) {
       el.getAttribute("data-i18n-attr").split(",").forEach(function (rule) {
-        const parts = rule.split("|");
+        var parts = rule.split("|");
         if (parts.length === 2 && dict[parts[1]] !== undefined) {
           el.setAttribute(parts[0], dict[parts[1]]);
         }
