@@ -100,20 +100,38 @@ Detail pemakaian tiap modul server-side ada di **[server.md](server.md)**.
 
 ## Instalasi global
 
+Runtime dipasang dari rilis GitHub [iyanrsaleh/nx8v](https://github.com/iyanrsaleh/nx8v/releases).
+Satu tag, misalnya `v0.1.0`, memuat dua berkas:
+
+| Berkas | Isi |
+|---|---|
+| `nx8v-win-x64.zip` | `nx8v.exe` untuk Windows |
+| `nx8v-linux-x64.tar.gz` | binary `nx8v` untuk Linux x64 |
+
 ```powershell
-# Windows
-powershell -ExecutionPolicy Bypass -File D:\NX8V\install.ps1
+# Windows — mengunduh nx8v-win-x64.zip ke %LOCALAPPDATA%\nx8v\bin
+powershell -ExecutionPolicy Bypass -Command "irm https://github.com/iyanrsaleh/nx8v/releases/latest/download/install.ps1 | iex"
 ```
 
-Menyalin `nx8v.exe` ke `%LOCALAPPDATA%\nx8v\bin` + menambah ke PATH user.
+```sh
+# Linux — mengunduh nx8v-linux-x64.tar.gz ke ~/.local/bin
+curl -fsSL https://github.com/iyanrsaleh/nx8v/releases/latest/download/install.sh | sh
+```
+
 **Buka terminal baru**, lalu `nx8v --version`, `nx8v init`, `nx8v dev`, dst.
 
-Mencabut: `powershell -ExecutionPolicy Bypass -File D:\NX8V\install.ps1 -Remove`
+Mencabut di Windows:
+
+```powershell
+Invoke-WebRequest https://github.com/iyanrsaleh/nx8v/releases/latest/download/install.ps1 -OutFile $env:TEMP\install-nx8v.ps1
+powershell -ExecutionPolicy Bypass -File $env:TEMP\install-nx8v.ps1 -Remove
+```
+
+Mencabut di Linux:
 
 ```sh
-# Linux/macOS
-./install.sh                    # ~/.local/bin
-sudo ./install.sh --service DIR # + unit systemd
+curl -fsSL https://github.com/iyanrsaleh/nx8v/releases/latest/download/install.sh -o /tmp/install-nx8v.sh
+sh /tmp/install-nx8v.sh --remove
 ```
 
 ---

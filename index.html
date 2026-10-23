@@ -207,7 +207,11 @@ console.<span class="f">log</span>(crypto.<span class="f">randomUUID</span>());<
           <li>
             <span class="s-ico"><i data-lucide="download"></i></span><h3 data-i18n="qs.1.t">1. Pasang sekali</h3>
             <p data-i18n="qs.1.d">Binary masuk ke PATH user dan dapat dipanggil dari direktori mana pun.</p>
-            <pre class="snip mono"><code>powershell -ExecutionPolicy Bypass -File D:\NX8V\install.ps1</code></pre>
+            <pre class="snip mono"><code># Windows
+powershell -ExecutionPolicy Bypass -Command "irm https://github.com/iyanrsaleh/nx8v/releases/latest/download/install.ps1 | iex"
+
+# Linux
+curl -fsSL https://github.com/iyanrsaleh/nx8v/releases/latest/download/install.sh | sh</code></pre>
           </li>
           <li>
             <span class="s-ico"><i data-lucide="file-plus-2"></i></span><h3 data-i18n="qs.2.t">2. Buat proyek</h3>
