@@ -160,16 +160,17 @@ Modul proyek ditaruh di `modules/`. Dua hal wajib:
 
 ```json
 "dependencies": {
-  "cotoh": "cotoh",
-  "photos": "photos"
+  "cotoh": "1.0.0",
+  "photos": "1.0.0"
 }
 ```
 
-Nilainya nama modul saja. NX8V membaca folder `modules/` di sebelah `project.json`.
+Kuncinya nama modul. Nilainya versi. Folder selalu `modules/` ditambah nama itu, jadi `"cotoh": "1.0.0"` berarti `modules/cotoh/index.js`.
 
 | Yang dibuat | Bentuk |
 |---|---|
-| Nama | `"cotoh": "cotoh"` |
+| Nama | kunci `cotoh` |
+| Versi | `1.0.0` |
 | Folder | `modules/cotoh` |
 | Berkas masuk | `modules/cotoh/index.js` |
 
