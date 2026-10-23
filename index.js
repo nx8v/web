@@ -8,8 +8,8 @@
 
   var I18N = {
     id: {
-      "meta.title": "NX8V — Runtime JavaScript berbasis V8",
-      "meta.desc": "NX8V adalah runtime JavaScript open source yang menanamkan mesin V8 dan libuv dalam satu binary C++. Eksekusi script, REPL, HTTP server, dan scaffolding proyek tanpa dependensi.",
+      "meta.title": "NX8V — Runtime aplikasi JavaScript yang mandiri",
+      "meta.desc": "NX8V adalah runtime aplikasi JavaScript yang mandiri — server dan desktop — dalam satu binary C++. Mesin V8, event loop libuv, HTTP/HTTPS, WebSocket, router, hingga jendela desktop. Tanpa dependensi.",
       "skip": "Langsung ke konten",
       "ui.menu.open": "Buka menu",
       "ui.menu.close": "Tutup menu",
@@ -24,7 +24,7 @@
       "nav.panduan": "Panduan",
       "hero.title": "Jalankan JavaScript.",
       "hero.claim": "Cukup HTML, CSS, JavaScript — sisanya NX8V.",
-      "hero.desc": "NX8V adalah runtime JavaScript open source dalam satu binary C++ — mesin V8, event loop libuv, HTTP/HTTPS, WebSocket, router, hingga jendela desktop. Satu perintah, tanpa dependensi, tanpa setup.",
+      "hero.desc": "Runtime aplikasi JavaScript yang mandiri — server dan desktop — dalam satu binary C++: mesin V8, event loop libuv, HTTP/HTTPS, WebSocket, router, hingga jendela desktop. Satu perintah, tanpa dependensi, tanpa setup.",
       "hero.cta1": "Unduh NX8V",
       "hero.cta2": "Lihat Contoh",
       "hero.meta": "C++17 · mesin V8 · libuv · Windows & Linux",
@@ -89,8 +89,8 @@
       "foot.copy": "© 2026 NX8V",
     },
     en: {
-      "meta.title": "NX8V — A JavaScript runtime powered by V8",
-      "meta.desc": "NX8V is an open source JavaScript runtime embedding the V8 engine and libuv in a single C++ binary. Script execution, REPL, HTTP server, and project scaffolding with zero dependencies.",
+      "meta.title": "NX8V — A self-contained JavaScript application runtime",
+      "meta.desc": "NX8V is a self-contained JavaScript application runtime — server and desktop — in a single C++ binary. The V8 engine, a libuv event loop, HTTP/HTTPS, WebSockets, a router, even a desktop window. No dependencies.",
       "skip": "Skip to main content",
       "ui.menu.open": "Open menu",
       "ui.menu.close": "Close menu",
@@ -105,7 +105,7 @@
       "nav.panduan": "Guide",
       "hero.title": "Run JavaScript.",
       "hero.claim": "Just HTML, CSS, JavaScript — NX8V does the rest.",
-      "hero.desc": "NX8V is an open source JavaScript runtime in a single C++ binary — the V8 engine, a libuv event loop, HTTP/HTTPS, WebSockets, a router, even a desktop window. One command, zero dependencies, zero setup.",
+      "hero.desc": "A self-contained JavaScript application runtime — server and desktop — in one C++ binary: the V8 engine, a libuv event loop, HTTP/HTTPS, WebSockets, a router, even a desktop window. One command, zero dependencies, zero setup.",
       "hero.cta1": "Download NX8V",
       "hero.cta2": "See examples",
       "hero.meta": "C++17 · V8 engine · libuv · Windows & Linux",
