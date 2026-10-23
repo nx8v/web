@@ -1,0 +1,610 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Panduan NX8V — Server &amp; Desktop</title>
+  <meta name="description" content="Panduan lengkap NX8V: server/web dan desktop (WebView2), modul, CLI, test, dan packaging." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" type="image/png" href="icon.png" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="doc-page">
+  <header class="doc-nav">
+    <a class="brand" href="index.html"><span class="mono">&larr;</span> NX8V</a>
+    <span class="doc-crumb mono">Panduan</span>
+  </header>
+  <div class="doc-layout">
+    <aside class="toc" aria-label="Daftar isi">
+<div class="toc-group"><a class="toc-top" href="#s-judul">Panduan Server &amp; Web</a><ul><li><a href="#s-1-alur-kerja">1. Alur kerja</a></li><li><a href="#s-2-membuat-proyek">2. Membuat proyek</a></li><li><a href="#s-3-struktur-proyek">3. Struktur proyek</a></li><li><a href="#s-4-http-server">4. HTTP server</a></li><li><a href="#s-5-router-ala-express">5. Router ala Express</a></li><li><a href="#s-6-static-file-server">6. Static file server</a></li><li><a href="#s-7-websocket-server">7. WebSocket server</a></li><li><a href="#s-8-httphttps-client-fetch">8. HTTP/HTTPS client + fetch</a></li><li><a href="#s-9-modul-pendukung">9. Modul pendukung</a></li><li><a href="#s-10-cli-server">10. CLI server</a></li><li><a href="#s-11-deployment">11. Deployment</a></li><li><a href="#s-12-contoh-di-repo">12. Contoh di repo</a></li><li><a href="#s-troubleshooting">Troubleshooting</a></li></ul></div>
+<div class="toc-group"><a class="toc-top" href="#d-judul">Panduan Desktop</a><ul><li><a href="#d-1-cara-kerja">1. Cara kerja</a></li><li><a href="#d-2-menjalankan">2. Menjalankan</a></li><li><a href="#d-3-bridge-windownx8v">3. Bridge window.nx8v</a></li><li><a href="#d-4-dialog-native">4. Dialog native</a></li><li><a href="#d-5-tray-menu">5. Tray & menu</a></li><li><a href="#d-6-notifikasi">6. Notifikasi</a></li><li><a href="#d-7-multi-window">7. Multi-window</a></li><li><a href="#d-8-packaging">8. Packaging</a></li><li><a href="#d-9-detail-teknis">9. Detail teknis</a></li><li><a href="#d-10-prasyarat-troubleshooting">10. Prasyarat & troubleshooting</a></li><li><a href="#d-contoh-di-repo">Contoh di repo</a></li><li><a href="#d-pembungkusan">Pembungkusan</a></li></ul></div>
+    </aside>
+    <main class="doc-main article">
+<section class="doc-part" id="s" data-part><div class="doc-ribbon mono">Server &amp; Web</div><h1 id="s-judul">NX8V — Server &amp; Web</h1>
+<p>Panduan lengkap membangun aplikasi <strong>web/server</strong> dengan NX8V.</p>
+<blockquote>Untuk aplikasi <strong>desktop</strong> (jendela WebView2, tray, dialog), lihat <strong><a href="https://github.com/nx8v/web/blob/main/desktop.md">desktop.md</a></strong>. Untuk gambaran umum runtime, lihat <strong><a href="https://github.com/nx8v/web/blob/main/README.md">README.md</a></strong>.</blockquote>
+<p>Daftar isi:</p>
+<ul>
+</ul>
+<ol>
+<li><a href="#1-alur-kerja">Alur kerja</a></li>
+<li><a href="#2-membuat-proyek">Membuat proyek</a></li>
+<li><a href="#3-struktur-proyek">Struktur proyek</a></li>
+<li><a href="#4-http-server">HTTP server</a></li>
+<li><a href="#5-router-ala-express">Router ala Express</a></li>
+<li><a href="#6-static-file-server">Static file server</a></li>
+<li><a href="#7-websocket-server">WebSocket server</a></li>
+<li><a href="#8-httphttps-client--fetch">HTTP/HTTPS client + fetch</a></li>
+<li><a href="#9-modul-pendukung">Modul pendukung</a></li>
+<li><a href="#10-cli-server">CLI server</a></li>
+<li><a href="#11-deployment">Deployment</a></li>
+<li><a href="#12-contoh-di-repo">Contoh di repo</a></li>
+</ol>
+<hr />
+<h2 id="s-1-alur-kerja">1. Alur kerja</h2>
+<pre class="doc-code mono"><code>nx8v init            # buat proyek (project.json + server.js + public/)
+nx8v dev             # development: simpan HTML memuat ulang browser
+nx8v start           # production: jalankan dari project.json
+nx8v logs            # lihat nx8v.log
+nx8v stop            # hentikan server
+nx8v package         # folder distribusi siap kirim</code></pre>
+<hr />
+<h2 id="s-2-membuat-proyek">2. Membuat proyek</h2>
+<pre class="doc-code mono"><code>cd D:\proyek-saya
+nx8v init</code></pre>
+<pre class="doc-code mono"><code>  name        [proyek-saya]: aplikasi-toko
+  description [An NX8V application]: Aplikasi toko sederhana
+  port        [3000]: 4000</code></pre>
+<p>Hasil:</p>
+<pre class="doc-code mono"><code>D:\proyek-saya\
+├── project.json          # "dependencies": {}
+├── server.js
+├── modules\              # folder modul, masih kosong
+└── public\
+    ├── index.html
+    ├── about.html
+    └── assets\
+        ├── css\style.css
+        ├── js\app.js
+        ├── fonts\
+        └── images\32x32.png    # ikon merek NX8V</code></pre>
+<p>Folder <code>assets</code> tetap ada. CSS, JS, font, dan gambar tinggal di dalamnya. Di HTML pathnya ditulis pendek: <code>/css/style.css</code>, <code>/js/app.js</code>, dan <code>/images/32x32.png</code>. NX8V mencari berkas itu di <code>public/</code> dulu, lalu di <code>public/assets/</code>, sebelum <code>server.js</code> dijalankan.</p>
+<p>Halaman juga memasang <code>&lt;link rel="icon" href="/images/32x32.png"&gt;</code>. Permintaan otomatis <code>/favicon.ico</code> memakai ikon yang sama bila proyek belum punya <code>favicon.ico</code> sendiri.</p>
+<p><code>project.json</code>:</p>
+<pre class="doc-code mono"><code>{
+  "name": "aplikasi-toko",
+  "version": "1.0.0",
+  "description": "Aplikasi toko sederhana",
+  "main": "server.js",
+  "nx8v": {
+    "port": 4000,
+    "desktop": {
+      "icon": "./images/32x32.png",
+      "state": "normal",
+      "width": 800,
+      "height": 560,
+      "minWidth": 640,
+      "minHeight": 400,
+      "center": true,
+      "maximizable": true,
+      "resizable": true,
+      "titlebar": true,
+      "singleInstance": true,
+      "productName": "aplikasi-toko",
+      "shortcutName": "aplikasi-toko",
+      "artifactName": "aplikasi-toko-Setup-${version}.exe"
+    }
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nx8v/dependencies.git"
+  },
+  "scripts": {
+    "start": "nx8v start",
+    "dev": "nx8v dev",
+    "stop": "nx8v stop"
+  }
+}</code></pre>
+<p><code>"icon": "./images/32x32.png"</code> menunjuk berkas <code>public/assets/images/32x32.png</code>. Path panjang seperti <code>./public/assets/images/32x32.png</code> tetap berlaku bila berkasnya ada di situ.</p>
+<p>Port bisa dioverride tanpa mengubah file: <code>nx8v start --port=5000</code>, atau lewat environment <code>NX8V_PORT</code> / <code>PORT</code> (dibaca <code>server.js</code>).</p>
+<hr />
+<h2 id="s-3-struktur-proyek">3. Struktur proyek</h2>
+<pre class="doc-code mono"><code>proyek/
+├── project.json      # metadata, port, desktop, dependencies
+├── server.js         # entry point (main)
+├── modules/          # modul proyek; nama dan index.js wajib
+│   └── cotoh/
+│       └── index.js
+├── public/
+│   ├── index.html
+│   ├── about.html
+│   └── assets/
+│       ├── css/
+│       ├── js/
+│       ├── fonts/
+│       └── images/
+└── nx8v.log          # dibuat otomatis saat `nx8v start`</code></pre>
+<p>NX8V melayani berkas di <code>public/</code> sebelum <code>server.js</code>. Menambah halaman cukup dengan menaruh file di folder itu:</p>
+<div class="tbl-wrap"><table><thead><tr><th scope="col">URL</th><th scope="col">File yang dicari</th></tr></thead><tbody><tr><td><code>/</code></td><td><code>public/index.html</code></td></tr><tr><td><code>/about</code></td><td><code>public/about.html</code> lalu <code>public/about/index.html</code></td></tr><tr><td><code>/about/data/u</code></td><td><code>public/about/data/u.html</code>, <code>about/data.html</code>, <strong><code>about.html</code></strong></td></tr><tr><td><code>/js/dll.js</code></td><td><code>public/assets/js/dll.js</code>. Path halaman diawali <code>/js</code></td></tr><tr><td><code>/css/style.css</code></td><td><code>public/assets/css/style.css</code></td></tr><tr><td><code>/images/32x32.png</code></td><td><code>public/assets/images/32x32.png</code></td></tr><tr><td><code>/favicon.ico</code></td><td><code>public/favicon.ico</code>, lalu ikon <code>public/assets/images/32x32.png</code></td></tr><tr><td><code>/cotoh</code></td><td><code>modules/cotoh/index.js</code></td></tr></tbody></table></div>
+<p>Bila tidak ada berkas yang cocok, permintaan masuk ke <code>server.js</code>. Di situ cukup rute milik proyek, misalnya <code>GET /api/hello</code>. <code>server.js</code> hasil <code>init</code> tidak lagi memuat pemetaan folder.</p>
+<h3 id="s-modul">Modul</h3>
+<p>Modul proyek ditaruh di <code>modules/</code>. Dua hal wajib:</p>
+<ul>
+</ul>
+<ol>
+<li>Nama di <code>dependencies</code> pada <code>project.json</code>.</li>
+<li>Berkas masuk <code>index.js</code> di folder yang ditunjuk nama itu.</li>
+</ol>
+<pre class="doc-code mono"><code>"dependencies": {
+  "cotoh": "1.0.0",
+  "photos": "1.0.0"
+}</code></pre>
+<p>Kuncinya nama modul. Nilainya versi. Folder selalu <code>modules/</code> ditambah nama itu, jadi <code>"cotoh": "1.0.0"</code> berarti <code>modules/cotoh/index.js</code>.</p>
+<div class="tbl-wrap"><table><thead><tr><th scope="col">Yang dibuat</th><th scope="col">Bentuk</th></tr></thead><tbody><tr><td>Nama</td><td>kunci <code>cotoh</code></td></tr><tr><td>Versi</td><td><code>1.0.0</code></td></tr><tr><td>Folder</td><td><code>modules/cotoh</code></td></tr><tr><td>Berkas masuk</td><td><code>modules/cotoh/index.js</code></td></tr></tbody></table></div>
+<p>Di HTML cukup nama itu:</p>
+<pre class="doc-code mono"><code>&lt;script type="module" src="cotoh"&gt;&lt;/script&gt;</code></pre>
+<p>Browser meminta <code>/cotoh</code>. NX8V mengembalikan <code>modules/cotoh/index.js</code>. <code>/cotoh/index.js</code> adalah berkas yang sama. Nama yang tidak tertulis di <code>dependencies</code> tidak dilayani.</p>
+<p><code>require('./modules/photos')</code> di <code>server.js</code> juga membuka <code>index.js</code> folder itu. <code>photos</code> untuk server. <code>cotoh</code> untuk halaman. <code>nx8v init</code> membuat folder <code>modules/</code>, <code>"dependencies": {}</code>, dan <code>repository</code> yang menunjuk ke mega-repo internal NX8V.</p>
+<h3 id="s-dependensi">Dependensi</h3>
+<p><code>repository</code> di <code>project.json</code> adalah tempat modul diambil dan diterbitkan. Bawaannya repo internal NX8V. Saat materi dependensi dipublikasikan dari repo milik user, <code>url</code> diganti.</p>
+<pre class="doc-code mono"><code>"repository": {
+  "type": "git",
+  "url": "https://github.com/nx8v/dependencies.git"
+}</code></pre>
+<p>Satu versi sama dengan satu GitHub Release. Nama dan versi pada perintah menjadi tag <code>&lt;nama&gt;-&lt;versi&gt;</code>. Aset rilis disalin ke <code>modules/&lt;nama&gt;/</code>. Berkas masuknya <code>index.js</code>. Berkas lain di folder yang sama, misalnya <code>app.js</code>, ikut diunduh dan ikut diterbitkan.</p>
+<p>Perintah dijalankan di folder proyek:</p>
+<div class="tbl-wrap"><table><thead><tr><th scope="col">Perintah</th><th scope="col">Fungsi</th></tr></thead><tbody><tr><td><code>nx8v i contoh@1.0.2</code></td><td>pasang. Tag yang dicari: <code>contoh-1.0.2</code></td></tr><tr><td><code>nx8v u contoh@1.0.2</code></td><td>ganti versi modul yang sudah ada di <code>dependencies</code>. Angka versinya yang diganti</td></tr><tr><td><code>nx8v p contohnamalain@1.0.0</code></td><td>terbitkan isi <code>modules/contohnamalain/</code> ke repository</td></tr><tr><td><code>nx8v d contoh</code></td><td>hapus <code>contoh</code> dari <code>dependencies</code>, <code>nx8v.lock</code>, dan <code>modules/contoh</code></td></tr></tbody></table></div>
+<p><strong>Pasang</strong> menulis tiga tempat:</p>
+<pre class="doc-code mono"><code>"dependencies": {
+  "contoh": "1.0.2"
+}</code></pre>
+<pre class="doc-code mono"><code>modules/contoh/index.js</code></pre>
+<pre class="doc-code mono"><code>{
+  "dependencies": {
+    "contoh": {
+      "version": "1.0.2",
+      "resolved": "https://github.com/nx8v/dependencies/releases/tag/contoh-1.0.2"
+    }
+  }
+}</code></pre>
+<p><code>resolved</code> di <code>nx8v.lock</code> adalah halaman rilis yang dipakai saat pemasangan. Nama yang tidak ada tag-nya tidak ditulis ke <code>dependencies</code> maupun <code>modules</code>. Bila tag tidak ketemu, perintah menampilkan daftar rilis yang ada.</p>
+<p><strong>Perbarui</strong> hanya untuk nama yang sudah terpasang. <code>nx8v u contoh@1.0.2</code> mengganti berkas di <code>modules/contoh/</code>, versi di <code>dependencies</code>, dan catatan di <code>nx8v.lock</code>. Nama yang belum ada ditolak; pasang lebih dulu dengan <code>nx8v i</code>.</p>
+<p><strong>Terbitkan</strong> membaca <code>modules/contohnamalain/</code>. Folder itu wajib berisi <code>index.js</code>. Setiap berkas di folder itu dilampirkan sebagai aset rilis <code>contohnamalain-1.0.0</code>. Perintah ini memakai GitHub CLI dan akun yang sudah masuk:</p>
+<pre class="doc-code mono"><code>gh auth login
+nx8v p contohnamalain@1.0.0</code></pre>
+<p>Setelah terbit, <code>dependencies</code> dan <code>nx8v.lock</code> di proyek itu ikut mencatat versi tersebut. Rilis yang tag-nya sudah ada tidak ditimpa.</p>
+<p><strong>Hapus</strong> mengeluarkan nama dari daftar. <code>nx8v d contoh</code> menghapus kunci <code>contoh</code> di <code>project.json</code> dan <code>nx8v.lock</code>, lalu menghapus folder <code>modules/contoh</code>. Rilis di GitHub tidak dihapus.</p>
+<hr />
+<h2 id="s-4-http-server">4. HTTP server</h2>
+<pre class="doc-code mono"><code>const http = require('http');
+
+const server = http.createServer((req, res) =&gt; {
+  console.log(req.method, req.url);
+
+  res.writeHead(200, { 'Content-Type': 'application/json' });
+  res.end(JSON.stringify({ ok: true }));
+});
+
+server.listen(3000, () =&gt; console.log('http://localhost:3000'));</code></pre>
+<p><strong>Request (<code>req</code>):</strong></p>
+<div class="tbl-wrap"><table><thead><tr><th scope="col">Properti/Method</th><th scope="col">Keterangan</th></tr></thead><tbody><tr><td><code>req.method</code></td><td><code>GET</code>, <code>POST</code>, …</td></tr><tr><td><code>req.url</code></td><td>path + query, apa adanya</td></tr><tr><td><code>req.httpVersion</code></td><td><code>"1.1"</code></td></tr><tr><td><code>req.headers</code></td><td>objek header (nama asli dari klien)</td></tr><tr><td><code>req.on('data', fn)</code></td><td>body (bila ada)</td></tr><tr><td><code>req.on('end', fn)</code></td><td>body selesai</td></tr></tbody></table></div>
+<p><strong>Response (<code>res</code>):</strong></p>
+<div class="tbl-wrap"><table><thead><tr><th scope="col">Method</th><th scope="col">Keterangan</th></tr></thead><tbody><tr><td><code>res.writeHead(status[, message][, headers])</code></td><td>kirim status + header. Tanpa <code>message</code>, kalimat status mengikuti kode: <code>404</code> menjadi <code>Not Found</code></td></tr><tr><td><code>res.setHeader(name, value)</code></td><td>set satu header</td></tr><tr><td><code>res.getHeader(name)</code></td><td>baca header</td></tr><tr><td><code>res.write(chunk)</code></td><td>tulis body (di-buffer). <code>chunk</code> boleh string atau <code>Buffer</code></td></tr><tr><td><code>res.end([chunk][, cb])</code></td><td>kirim respons, tutup koneksi. Byte <code>0x00</code> di dalam PNG ikut terkirim</td></tr><tr><td><code>res.statusCode</code></td><td>status default 200. Mengubah angka ini juga mengganti kalimat status</td></tr></tbody></table></div>
+<p><code>fs.readFile</code> dan <code>fs.readFileSync</code> tanpa encoding mengembalikan <code>Buffer</code>, jadi gambar tidak rusak saat dikirim lewat <code>res.end</code>. Encoding <code>'utf8'</code> tetap mengembalikan string. <code>data.toString()</code> memakai teks UTF-8.</p>
+<p><strong>Event server:</strong> <code>listening</code>, <code>request</code>, <code>connection</code>, <code>close</code>, <code>error</code>, <code>websocket</code>.</p>
+<p>Catatan: server selalu membalas <code>Connection: close</code> (satu request per koneksi). Ini disengaja — pipelining belum didukung, dan lebih aman untuk browser.</p>
+<hr />
+<h2 id="s-5-router-ala-express">5. Router ala Express</h2>
+<pre class="doc-code mono"><code>const app = require('router')();
+
+app.use((req, res) =&gt; {
+  console.log(req.method, req.url);       // middleware global
+});
+
+app.get('/user/:id', (req, res) =&gt; {
+  res.json({ id: req.params.id });        // param dinamis
+});
+
+app.post('/api/login', (req, res) =&gt; {
+  res.status(201).json({ ok: true, token: 'abc123' });
+});
+
+app.get('/lama', (req, res) =&gt; res.redirect('/baru'));
+
+app.notFound((req, res) =&gt; {
+  res.status(404).json({ error: 'tidak ada rute', path: req.url });
+});
+
+app.listen(5400, () =&gt; console.log('http://localhost:5400'));</code></pre>
+<div class="tbl-wrap"><table><thead><tr><th scope="col">API</th><th scope="col">Keterangan</th></tr></thead><tbody><tr><td><code>app.get/post/put/delete/patch/all(path, handler)</code></td><td>daftar rute</td></tr><tr><td><code>app.use([path,] fn)</code></td><td>middleware (global atau ber-scope)</td></tr><tr><td><code>app.notFound(fn)</code></td><td>handler 404 kustom</td></tr><tr><td><code>app.listen(port[, cb])</code></td><td>jalankan server, mengembalikan <code>http.Server</code></td></tr><tr><td><code>req.params</code></td><td>hasil parse param rute</td></tr><tr><td><code>res.status(code)</code></td><td>set status (chainable)</td></tr><tr><td><code>res.json(obj)</code></td><td>kirim JSON + header otomatis</td></tr><tr><td>`res.send(str\</td><td>Buffer)`</td><td>kirim teks/biner</td></tr><tr><td><code>res.redirect(url[, code])</code></td><td>redirect (default 302)</td></tr></tbody></table></div>
+<p>Pola path yang didukung:</p>
+<pre class="doc-code mono"><code>/user/:id          → req.params.id
+/file/:name?       → opsional
+/static/*          → req.params[0] berisi sisa path</code></pre>
+<p>Middleware bisa menghentikan rantai dengan <code>return false</code>.</p>
+<hr />
+<h2 id="s-6-static-file-server">6. Static file server</h2>
+<p>Versi produksi dari static handler (ETag, Range, HEAD, cache):</p>
+<pre class="doc-code mono"><code>const http  = require('http');
+const serve = require('static');
+
+const handler = serve('public', { maxAge: 3600, index: 'index.html' });
+
+http.createServer((req, res) =&gt; handler(req, res)).listen(3000);
+// atau: app.use(handler)  (di router)</code></pre>
+<div class="tbl-wrap"><table><thead><tr><th scope="col">Opsi</th><th scope="col">Default</th><th scope="col">Keterangan</th></tr></thead><tbody><tr><td><code>maxAge</code></td><td><code>0</code></td><td>detik untuk <code>Cache-Control: public, max-age=N</code></td></tr><tr><td><code>index</code></td><td><code>index.html</code></td><td>file untuk direktori</td></tr><tr><td><code>etag</code></td><td><code>true</code></td><td>kirim <code>ETag</code> + dukung <code>If-None-Match</code> (304)</td></tr><tr><td><code>ranges</code></td><td><code>true</code></td><td>dukung <code>Range</code> (206 Partial Content)</td></tr></tbody></table></div>
+<p>Perilaku:</p>
+<ul>
+<li><code>GET</code>/<code>HEAD</code> saja; method lain → <strong>405</strong> + header <code>Allow</code></li>
+<li><code>If-None-Match</code> / <code>If-Modified-Since</code> cocok → <strong>304</strong> (tanpa body)</li>
+<li><code>Range: bytes=0-99</code> → <strong>206</strong> + <code>Content-Range</code></li>
+<li>Range tidak valid → <strong>416</strong></li>
+<li><code>..</code> pada path (termasuk <code>%2e%2e</code>) → <strong>403</strong></li>
+<li>File tidak ada → <strong>404</strong></li>
+</ul>
+<hr />
+<h2 id="s-7-websocket-server">7. WebSocket server</h2>
+<pre class="doc-code mono"><code>const http = require('http');
+const server = http.createServer((req, res) =&gt; res.end('ws server'));
+
+server.on('websocket', (ws) =&gt; {
+  console.log('client tersambung');
+
+  ws.send('selamat datang');
+
+  ws.on('message', (msg) =&gt; {
+    console.log('terima:', msg);
+    ws.send('echo: ' + msg);
+  });
+
+  ws.on('close', () =&gt; console.log('client putus'));
+});
+
+server.listen(5300);</code></pre>
+<p>Upgrade ditangani otomatis: klien yang mengirim header <code>Upgrade: websocket</code> ke port yang sama akan diubah menjadi koneksi WebSocket (RFC 6455).</p>
+<div class="tbl-wrap"><table><thead><tr><th scope="col">API</th><th scope="col">Keterangan</th></tr></thead><tbody><tr><td><code>server.on('websocket', fn)</code></td><td>koneksi WebSocket baru</td></tr><tr><td>`ws.send(text \</td><td>Buffer)`</td><td>kirim frame</td></tr><tr><td><code>ws.on('message', fn)</code></td><td>pesan masuk (string)</td></tr><tr><td><code>ws.on('close', fn)</code></td><td>koneksi ditutup</td></tr><tr><td><code>ws.close()</code></td><td>tutup dari server</td></tr></tbody></table></div>
+<p>Ping/pong dijawab otomatis. Klien (browser) bisa memakai API WebSocket biasa:</p>
+<pre class="doc-code mono"><code>const ws = new WebSocket('ws://localhost:5300/');
+ws.onmessage = (e) =&gt; console.log(e.data);</code></pre>
+<hr />
+<h2 id="s-8-httphttps-client-fetch">8. HTTP/HTTPS client + fetch</h2>
+<h3 id="s-httpget-httprequest"><code>http.get</code> / <code>http.request</code></h3>
+<pre class="doc-code mono"><code>const http = require('http');
+
+http.get('http://127.0.0.1:3000/api/hello', (res) =&gt; {
+  console.log('status:', res.statusCode, res.statusMessage);
+  let body = '';
+  res.on('data', (c) =&gt; { body += c; });
+  res.on('end', () =&gt; console.log(body));
+});</code></pre>
+<pre class="doc-code mono"><code>const https = require('https');           // sama, untuk https://
+
+const req = https.request({
+  hostname: 'jsonplaceholder.typicode.com',
+  path: '/photos?_limit=5',
+  method: 'GET',
+  headers: { 'Accept': 'application/json' },
+}, (res) =&gt; {
+  let body = '';
+  res.on('data', (c) =&gt; { body += c; });
+  res.on('end', () =&gt; console.log(JSON.parse(body).length, 'item'));
+});</code></pre>
+<h3 id="s-fetch-global"><code>fetch</code> (global)</h3>
+<pre class="doc-code mono"><code>fetch('https://jsonplaceholder.typicode.com/photos?_limit=5')
+  .then((r) =&gt; {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  })
+  .then((photos) =&gt; console.log(photos.length, 'foto'))
+  .catch((e) =&gt; console.error(e.message));</code></pre>
+<div class="tbl-wrap"><table><thead><tr><th scope="col">Objek respons</th><th scope="col">Keterangan</th></tr></thead><tbody><tr><td><code>res.ok</code></td><td><code>true</code> bila status 200–299</td></tr><tr><td><code>res.status</code></td><td>kode status</td></tr><tr><td><code>res.statusText</code></td><td>teks status</td></tr><tr><td><code>res.headers</code></td><td>objek header (lowercase)</td></tr><tr><td><code>res.text()</code></td><td>Promise&lt;string&gt;</td></tr><tr><td><code>res.json()</code></td><td>Promise&lt;object&gt;</td></tr></tbody></table></div>
+<p><strong>Catatan HTTPS:</strong> di Windows memakai WinHTTP (TLS 1.2/1.3, sertifikat dari cert store Windows, redirect dan de-chunk otomatis). Di Linux aktif bila dikompilasi dengan <code>-DNX8V_USE_OPENSSL</code>.</p>
+<p>Chunked transfer (<code>Transfer-Encoding: chunked</code>) ditangani otomatis pada respons HTTP biasa.</p>
+<hr />
+<h2 id="s-9-modul-pendukung">9. Modul pendukung</h2>
+<p>Modul yang paling sering dipakai server:</p>
+<div class="tbl-wrap"><table><thead><tr><th scope="col">Modul</th><th scope="col">Kegunaan</th></tr></thead><tbody><tr><td><code>fs</code></td><td>baca/tulis file. <code>readFile</code> tanpa encoding mengembalikan <code>Buffer</code></td></tr><tr><td><code>path</code></td><td><code>join</code>, <code>resolve</code>, <code>dirname</code>, <code>basename</code>, <code>extname</code>, <code>parse</code>, <code>format</code></td></tr><tr><td><code>querystring</code></td><td><code>parse</code>, <code>stringify</code>, <code>escape</code>, <code>unescape</code>, <code>URLSearchParams</code></td></tr><tr><td><code>url</code></td><td>parse URL (<code>href</code>, <code>pathname</code>, <code>search</code>, <code>host</code>, …)</td></tr><tr><td><code>zlib</code></td><td><code>gzipSync</code> / <code>gunzipSync</code> / <code>deflateSync</code> / <code>inflateSync</code></td></tr><tr><td><code>crypto</code></td><td><code>createHash</code> (md5/sha1/sha256), <code>randomBytes</code>, <code>randomUUID</code></td></tr><tr><td><code>Buffer</code></td><td>data biner (index access, <code>toString('hex'/'base64')</code>, <code>slice</code>, <code>concat</code>)</td></tr><tr><td><code>stream</code></td><td><code>Readable</code>/<code>Writable</code>/<code>PassThrough</code> + <code>pipe</code></td></tr><tr><td><code>events</code></td><td><code>EventEmitter</code></td></tr><tr><td><code>net</code></td><td>TCP mentah (<code>createServer</code>, <code>connect</code>)</td></tr><tr><td><code>dns</code></td><td><code>lookup</code>, <code>resolve</code>, <code>resolve4</code></td></tr><tr><td><code>child_process</code></td><td><code>exec</code>, <code>spawn</code></td></tr><tr><td><code>os</code></td><td><code>platform</code>, <code>cpus</code>, <code>networkInterfaces</code>, <code>homedir</code>, …</td></tr></tbody></table></div>
+<p>Contoh <code>querystring</code>:</p>
+<pre class="doc-code mono"><code>const qs = require('querystring');
+qs.parse('a=1&amp;b=dua&amp;c=x%20y');       // { a: '1', b: 'dua', c: 'x y' }
+qs.stringify({ x: 1, y: 'a b' });    // 'x=1&amp;y=a+b'</code></pre>
+<hr />
+<h2 id="s-10-cli-server">10. CLI server</h2>
+<div class="tbl-wrap"><table><thead><tr><th scope="col">Perintah</th><th scope="col">Fungsi</th></tr></thead><tbody><tr><td><code>nx8v init</code></td><td>wizard pembuatan proyek</td></tr><tr><td><code>nx8v i &lt;nama&gt;@&lt;versi&gt;</code></td><td>pasang modul dari <code>repository</code> di <code>project.json</code></td></tr><tr><td><code>nx8v u &lt;nama&gt;@&lt;versi&gt;</code></td><td>ganti versi modul yang sudah terpasang</td></tr><tr><td><code>nx8v p &lt;nama&gt;@&lt;versi&gt;</code></td><td>terbitkan <code>modules/&lt;nama&gt;</code> ke repository</td></tr><tr><td><code>nx8v d &lt;nama&gt;</code></td><td>hapus modul dari <code>dependencies</code></td></tr><tr><td><code>nx8v dev [--port=N]</code></td><td>development: simpan HTML memuat ulang browser; simpan JS me-restart server</td></tr><tr><td><code>nx8v start [--port=N]</code></td><td>jalankan dari <code>project.json</code></td></tr><tr><td><code>nx8v stop [--port=N]</code></td><td>hentikan server proyek</td></tr><tr><td><code>nx8v list</code></td><td>daftar server berjalan (PID, port, proyek, direktori)</td></tr><tr><td><code>nx8v logs [--lines=N]</code></td><td>ekor <code>nx8v.log</code> proyek ini</td></tr><tr><td><code>nx8v test [path]</code></td><td>jalankan <code>*.test.js</code></td></tr><tr><td><code>nx8v package</code></td><td>folder distribusi (<code>dist/&lt;nama&gt;/</code>)</td></tr></tbody></table></div>
+<h3 id="s-nx8v-dev"><code>nx8v dev</code></h3>
+<p>Memantau folder proyek, termasuk file di root seperti <code>server.js</code>. Dilewati: <code>node_modules</code>, <code>.git</code>, <code>build</code>, <code>dist</code>, <code>.nx8v</code>.</p>
+<p>Simpan <code>.html</code>, <code>.css</code>, atau <code>.svg</code> memuat ulang halaman yang sedang terbuka. Server tetap jalan:</p>
+<pre class="doc-code mono"><code>[watch] change detected: D:\proyek\public\index.html
+[dev] browser reload</code></pre>
+<p>Simpan <code>.js</code>, <code>.mjs</code>, atau <code>.json</code> me-restart server, lalu halaman yang sama ikut memuat ulang setelah server hidup lagi:</p>
+<pre class="doc-code mono"><code>[watch] change detected: D:\proyek\server.js
+[dev] stopping server for restart...
+[dev] restarting D:\proyek\server.js
+[dev] server started (pid 1250)</code></pre>
+<p>Setelah <code>nx8v</code> diperbarui, refresh halaman sekali supaya skrip pemantau masuk. Simpan berikutnya memuat ulang sendiri. Bila server crash karena error sintaks, supervisor tetap hidup — perbaiki file dan server otomatis menyala lagi.</p>
+<h3 id="s-komponen-html-partial">Komponen HTML (<code>partial</code>)</h3>
+<p>Tag apa pun bisa memuat file HTML lain. nx8v menggabungkannya saat halaman dikirim, tanpa JavaScript di browser:</p>
+<pre class="doc-code mono"><code>&lt;header partial="./header.html"&gt;&lt;/header&gt;</code></pre>
+<p><code>./header.html</code> dibaca dari folder yang sama dengan halaman (<code>public/</code>). Isi file masuk ke dalam tag, dan atribut <code>partial</code> dihapus. Simpan file komponen saat <code>nx8v dev</code> berjalan: halaman yang terbuka memuat ulang sendiri.</p>
+<p>Path di luar folder <code>public</code> ditolak.</p>
+<h3 id="s-nx8v-list"><code>nx8v list</code></h3>
+<pre class="doc-code mono"><code>PID      PORT    PROJECT          DIR
+1360     4000    Aplikasi demo    D:\NX8V\example
+13204    5202    toko-demo        D:\NX8V\build\demotest</code></pre>
+<h3 id="s-nx8v-test"><code>nx8v test</code></h3>
+<pre class="doc-code mono"><code>test('penjumlahan', () =&gt; {
+  assert.equal(1 + 1, 2);
+  assert.deepEqual([1, 2], [1, 2]);
+  assert.throws(() =&gt; { throw new Error('x'); });
+});</code></pre>
+<p>Output <code>✓</code>/<code>✗</code> per test + ringkasan; exit code 1 bila ada kegagalan. Assertion: <code>equal</code>, <code>strictEqual</code>, <code>notEqual</code>, <code>deepEqual</code>, <code>deepStrictEqual</code>, <code>ok</code>, <code>truthy</code>, <code>notOk</code>, <code>throws</code>, <code>doesNotThrow</code>.</p>
+<hr />
+<h2 id="s-11-deployment">11. Deployment</h2>
+<h3 id="s-windows">Windows</h3>
+<pre class="doc-code mono"><code># jalankan di background lalu cek
+nx8v start
+nx8v list
+curl http://127.0.0.1:4000/
+
+# hentikan
+nx8v stop</code></pre>
+<h3 id="s-linux-systemd">Linux (systemd)</h3>
+<pre class="doc-code mono"><code>sudo ./install.sh --service /path/to/project</code></pre>
+<p>Menghasilkan unit dari <code>packaging/nx8v.service</code>:</p>
+<pre class="doc-code mono"><code>[Unit]
+Description=NX8V application
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=@PROJECT@
+ExecStart=/usr/bin/env nx8v start
+Restart=on-failure
+RestartSec=2</code></pre>
+<h3 id="s-distribusi">Distribusi</h3>
+<pre class="doc-code mono"><code>nx8v package                # dist/&lt;nama&gt;/ berisi exe + proyek + start.cmd
+nx8v package --name=toko --out=release</code></pre>
+<p>Folder hasil bisa di-zip dan dikirim; penerima cukup menjalankan <code>start.cmd</code>.</p>
+<hr />
+<h2 id="s-12-contoh-di-repo">12. Contoh di repo</h2>
+<div class="tbl-wrap"><table><thead><tr><th scope="col">File</th><th scope="col">Isi</th></tr></thead><tbody><tr><td><code>samples/httpserver.js</code></td><td>HTTP server + JSON endpoint</td></tr><tr><td><code>samples/router.js</code></td><td>router: param, middleware, redirect, notFound</td></tr><tr><td><code>samples/static_server.js</code></td><td>static handler (ETag/Range)</td></tr><tr><td><code>samples/websocket.js</code></td><td>WebSocket server (echo)</td></tr><tr><td><code>samples/wsclient.js</code></td><td>WebSocket client</td></tr><tr><td><code>samples/fs.js</code></td><td>operasi file</td></tr><tr><td><code>samples/timers.js</code></td><td>setTimeout/setInterval</td></tr><tr><td><code>samples/basic.test.js</code></td><td>contoh test</td></tr><tr><td><code>example/</code></td><td>proyek lengkap: galeri foto dari API (fetch HTTPS)</td></tr></tbody></table></div>
+<hr />
+<h2 id="s-troubleshooting">Troubleshooting</h2>
+<div class="tbl-wrap"><table><thead><tr><th scope="col">Gejala</th><th scope="col">Penyebab &amp; solusi</th></tr></thead><tbody><tr><td><code>ERR_UNSAFE_PORT</code> di browser</td><td>Port diblokir Chrome (mis. 6000). Pakai 3000/4000/8080.</td></tr><tr><td>Browser reload terus</td><td>Sudah diperbaiki; pastikan exe terbaru.</td></tr><tr><td><code>Cannot find module 'X'</code></td><td>Modul bukan built-in → cek path relatif, atau daftar modul di §9.</td></tr><tr><td><code>EADDRINUSE</code> / <code>address already in use</code></td><td>Port dipakai proses lain → <code>nx8v list</code>, lalu <code>nx8v stop --port=N</code>.</td></tr><tr><td>Gambar rusak atau hanya beberapa byte</td><td><code>res.end</code> harus menerima <code>Buffer</code> dari <code>readFile</code>. Pakai exe terbaru.</td></tr><tr><td><code>404</code> pada <code>/favicon.ico</code></td><td>Letakkan <code>public/favicon.ico</code>, atau biarkan server memakai <code>public/assets/images/32x32.png</code>.</td></tr><tr><td><code>invalid URL</code> pada fetch</td><td>Skema harus <code>http://</code> atau <code>https://</code>.</td></tr><tr><td>Halaman tidak berubah</td><td><code>Cache-Control: no-store</code> + hard refresh (Ctrl+Shift+R).</td></tr></tbody></table></div></section>
+<section class="doc-part" id="d" data-part><div class="doc-ribbon mono">Desktop</div><h1 id="d-judul">NX8V — Desktop (WebView2)</h1>
+<p>Panduan lengkap membangun <strong>aplikasi desktop</strong> dengan NX8V: jendela native, bridge JS ↔ native, dialog, tray, notifikasi, dan packaging.</p>
+<blockquote>Untuk aplikasi <strong>web/server</strong>, lihat <strong><a href="https://github.com/nx8v/web/blob/main/server.md">server.md</a></strong>. Untuk gambaran umum runtime, lihat <strong><a href="https://github.com/nx8v/web/blob/main/README.md">README.md</a></strong>.</blockquote>
+<p>Daftar isi:</p>
+<ul>
+</ul>
+<ol>
+<li><a href="#1-cara-kerja">Cara kerja</a></li>
+<li><a href="#2-menjalankan">Menjalankan</a></li>
+<li><a href="#3-bridge-windownx8v">Bridge <code>window.nx8v</code></a></li>
+<li><a href="#4-dialog-native">Dialog native</a></li>
+<li><a href="#5-tray--menu">Tray &amp; menu</a></li>
+<li><a href="#6-notifikasi">Notifikasi</a></li>
+<li><a href="#7-multi-window">Multi-window</a></li>
+<li><a href="#8-packaging">Packaging</a></li>
+<li><a href="#9-detail-teknis">Detail teknis</a></li>
+<li><a href="#10-prasyarat--troubleshooting">Prasyarat &amp; troubleshooting</a></li>
+</ol>
+<hr />
+<h2 id="d-1-cara-kerja">1. Cara kerja</h2>
+<pre class="doc-code mono"><code>nx8v window
+   │
+   ├─▶ jalankan script (biasanya HTTP server) di event loop libuv
+   │
+   └─▶ buka jendela Win32 + WebView2
+          └─▶ navigate ke http://127.0.0.1:&lt;port&gt;/
+                 └─▶ halaman HTML/CSS/JS biasa
+                        └─▶ window.nx8v  (bridge ke native)</code></pre>
+<p>Frontend tetap HTML/CSS/JS normal yang dilayani server lokal; backend adalah runtime NX8V sendiri. Tidak ada Electron, tidak ada Node, satu exe ~34 MB.</p>
+<hr />
+<h2 id="d-2-menjalankan">2. Menjalankan</h2>
+<pre class="doc-code mono"><code>nx8v window                                   # pakai project.json (main + port)
+nx8v window server.js                         # script tertentu
+nx8v window --url=http://localhost:3000       # URL eksplisit
+nx8v window --title="Toko" --width=1200 --height=800</code></pre>
+<div class="tbl-wrap"><table><thead><tr><th scope="col">Opsi</th><th scope="col">Default</th><th scope="col">Keterangan</th></tr></thead><tbody><tr><td><code>--url=</code></td><td><code>http://127.0.0.1:&lt;port&gt;/</code></td><td>URL yang dibuka</td></tr><tr><td><code>--title=</code></td><td><code>nx8v</code></td><td>judul jendela</td></tr><tr><td><code>--width=</code></td><td><code>desktop.width</code>, atau <code>1100</code></td><td>lebar jendela</td></tr><tr><td><code>--height=</code></td><td><code>desktop.height</code>, atau <code>760</code></td><td>tinggi jendela</td></tr><tr><td><code>--state=</code></td><td><code>desktop.state</code>, atau <code>normal</code></td><td><code>normal</code>, <code>maximized</code>, atau <code>minimized</code></td></tr><tr><td><code>--maximized</code></td><td></td><td>sama dengan <code>--state=maximized</code></td></tr><tr><td><code>--minimized</code></td><td></td><td>sama dengan <code>--state=minimized</code></td></tr><tr><td><code>--no-maximize</code></td><td><code>desktop.maximizable</code></td><td>sembunyikan tombol maximize</td></tr><tr><td><code>--min-width=</code></td><td><code>desktop.minWidth</code></td><td>lebar terkecil saat tepi ditarik</td></tr><tr><td><code>--min-height=</code></td><td><code>desktop.minHeight</code></td><td>tinggi terkecil saat tepi ditarik</td></tr><tr><td><code>--x=</code> <code>--y=</code></td><td><code>desktop.x</code>, <code>desktop.y</code></td><td>pojok kiri atas jendela</td></tr><tr><td><code>--center</code></td><td><code>desktop.center</code></td><td>letakkan di tengah area kerja</td></tr><tr><td><code>--frameless</code></td><td><code>desktop.titlebar</code></td><td>sama dengan <code>"titlebar": false</code></td></tr><tr><td><code>--no-resize</code></td><td><code>desktop.resizable</code></td><td>kunci ukuran; tepi jendela tidak bisa ditarik</td></tr><tr><td><code>--multi-instance</code></td><td><code>desktop.singleInstance</code></td><td>izinkan lebih dari satu jendela untuk proyek yang sama</td></tr><tr><td><code>--icon=</code></td><td><code>nx8v.desktop.icon</code>, atau <code>icon.ico</code></td><td>ikon jendela (png, jpg, webp, bmp, ico)</td></tr></tbody></table></div>
+<p>Tanpa argumen, NX8V membaca <code>project.json</code> (<code>main</code> dan <code>nx8v.port</code>).</p>
+<p><code>server.listen</code> selesai sebelum jendela membuka URL, jadi halaman index tampil saat unduhan data pertama masih berjalan.</p>
+<p>Menyimpan <code>.html</code>, <code>.css</code>, atau <code>.svg</code> memuat ulang halaman di jendela. Menyimpan <code>.js</code>, <code>.mjs</code>, atau <code>.json</code> menutup jendela lalu membukanya lagi supaya kode server yang baru ikut jalan.</p>
+<p>Menutup jendela lewat tombol X menghentikan proses dan mengembalikan prompt terminal (kecuali tray aktif — lihat §5). Ctrl+C di terminal menutup jendela yang sama.</p>
+<p>Komponen HTML berlaku di dalam jendela, karena halamannya tetap dari server:</p>
+<pre class="doc-code mono"><code>&lt;header partial="./header.html"&gt;&lt;/header&gt;</code></pre>
+<hr />
+<h2 id="d-3-bridge-windownx8v">3. Bridge <code>window.nx8v</code></h2>
+<p>Tersedia otomatis di semua halaman (di-inject sebelum skrip halaman berjalan).</p>
+<pre class="doc-code mono"><code>// Jendela
+nx8v.setTitle('Judul Baru');
+nx8v.setSize(1200, 800);
+nx8v.minimize();
+nx8v.maximize();          // toggle maximize/restore
+nx8v.openDevTools();
+nx8v.close();</code></pre>
+<div class="tbl-wrap"><table><thead><tr><th scope="col">Method</th><th scope="col">Keterangan</th></tr></thead><tbody><tr><td><code>setTitle(text)</code></td><td>ubah judul jendela</td></tr><tr><td><code>setSize(w, h)</code></td><td>ubah ukuran jendela</td></tr><tr><td><code>minimize()</code></td><td>minimize</td></tr><tr><td><code>maximize()</code></td><td>maximize / restore</td></tr><tr><td><code>openDevTools()</code></td><td>buka DevTools WebView2</td></tr><tr><td><code>close()</code></td><td>tutup aplikasi</td></tr></tbody></table></div>
+<h3 id="d-title-bar-sendiri">Title bar sendiri</h3>
+<p><code>"titlebar": false</code> menyembunyikan title bar Windows. Halaman menggambar bilahnya sendiri. Elemen <code>data-nx8v-drag</code> bisa diseret untuk memindahkan jendela. Tombol di dalamnya memakai <code>data-nx8v-nodrag</code> supaya tetap bisa diklik. <code>"titlebar": true</code> menampilkan title bar Windows.</p>
+<pre class="doc-code mono"><code>&lt;header data-nx8v-drag&gt;
+  &lt;span&gt;Aplikasi demo&lt;/span&gt;
+  &lt;button data-nx8v-nodrag onclick="nx8v.minimize()"&gt;—&lt;/button&gt;
+  &lt;button data-nx8v-nodrag onclick="nx8v.maximize()"&gt;□&lt;/button&gt;
+  &lt;button data-nx8v-nodrag onclick="nx8v.close()"&gt;×&lt;/button&gt;
+&lt;/header&gt;</code></pre>
+<p><code>nx8v.setTitle(...)</code> tetap mengubah nama di taskbar. Tulisan di bilah halaman diatur oleh HTML. Contohnya ada di <code>example/public/titlebar.html</code>.</p>
+<p>Pemantau ukuran halaman (<code>ResizeObserver</code>) menunggu elemen <code>&lt;html&gt;</code> ada. Skrip jembatan jendela berjalan sebelum tag itu terbentuk, jadi pemantauan tidak dipasang pada nilai kosong.</p>
+<p>Semua method jendela bersifat fire-and-forget (tidak mengembalikan Promise). Dialog dan tray mengembalikan Promise.</p>
+<hr />
+<h2 id="d-4-dialog-native">4. Dialog native</h2>
+<pre class="doc-code mono"><code>// Buka file -&gt; Promise&lt;string|null&gt;
+const file = await nx8v.dialog.openFile({
+  title: 'Pilih file',
+  filters: [
+    { name: 'JavaScript', extensions: ['js', 'mjs'] },
+    { name: 'Semua file', extensions: ['*'] },
+  ],
+});
+
+// Simpan file -&gt; Promise&lt;string|null&gt;
+const target = await nx8v.dialog.saveFile({
+  title: 'Simpan sebagai',
+  defaultName: 'hasil.txt',
+  filters: [{ name: 'Teks', extensions: ['txt'] }],
+});
+
+// Pilih folder -&gt; Promise&lt;string|null&gt;
+const folder = await nx8v.dialog.openFolder();
+
+// Pesan modal. confirm mengembalikan true bila pengguna memilih Ya.
+await nx8v.dialog.alert('Data tersimpan', 'nx8v');
+const ya = await nx8v.dialog.confirm('Hapus data ini?', 'nx8v');</code></pre>
+<div class="tbl-wrap"><table><thead><tr><th scope="col">Opsi</th><th scope="col">Keterangan</th></tr></thead><tbody><tr><td><code>title</code></td><td>judul dialog</td></tr><tr><td><code>filters</code></td><td>array <code>{ name, extensions: ['js', 'txt', '*'] }</code></td></tr><tr><td><code>defaultName</code></td><td>nama file awal (khusus <code>saveFile</code>)</td></tr></tbody></table></div>
+<p><code>alert(pesan, judul)</code> menampilkan kotak OK. <code>confirm(pesan, judul)</code> menampilkan Ya/Tidak dan mengembalikan <code>true</code> bila Ya dipilih.</p>
+<p>Nilai <code>null</code> berarti pengguna membatalkan.</p>
+<p>Contoh memakai hasilnya:</p>
+<pre class="doc-code mono"><code>const path = await nx8v.dialog.openFile({ filters: [{ name: 'Teks', extensions: ['txt'] }] });
+if (path) {
+  const res = await fetch('/api/read?path=' + encodeURIComponent(path));
+  console.log(await res.text());
+}</code></pre>
+<blockquote>Catatan: dialog berjalan modal di atas jendela; Promise resolve setelah pengguna memilih atau membatalkan.</blockquote>
+<hr />
+<h2 id="d-5-tray-menu">5. Tray &amp; menu</h2>
+<pre class="doc-code mono"><code>const ok = await nx8v.tray.show({
+  tooltip: 'Aplikasi saya',
+  menu: [
+    { label: 'Buka jendela', id: 101 },
+    { label: 'Tentang', id: 102 },
+    '-',                        // separator
+    { label: 'Keluar', id: 103 },
+  ],
+});
+
+nx8v.onMenu(101, () =&gt; console.log('buka jendela'));
+nx8v.onMenu(102, () =&gt; nx8v.notify('nx8v', 'Desktop + WebView2'));
+nx8v.onMenu(103, () =&gt; nx8v.close());
+
+nx8v.tray.setTooltip('tooltip baru');
+nx8v.tray.hide();</code></pre>
+<div class="tbl-wrap"><table><thead><tr><th scope="col">API</th><th scope="col">Keterangan</th></tr></thead><tbody><tr><td><code>tray.show({ tooltip, menu })</code></td><td>pasang ikon tray, Promise&lt;boolean&gt;</td></tr><tr><td><code>tray.setTooltip(text)</code></td><td>ubah tooltip</td></tr><tr><td><code>tray.hide()</code></td><td>hapus ikon tray</td></tr><tr><td><code>onMenu(id, fn)</code></td><td>callback saat item menu diklik</td></tr></tbody></table></div>
+<p>Perilaku penting:</p>
+<ul>
+<li><strong>Klik kiri</strong> ikon tray → jendela dimunculkan kembali</li>
+<li><strong>Klik kanan</strong> → menu konteks</li>
+<li>Saat tray aktif, tombol close jendela <strong>menyembunyikan ke tray</strong> (bukan keluar)</li>
+<li><code>exit: false</code> meniadakan entri <strong>Keluar</strong>. <code>exitLabel</code> mengganti tulisannya. Tanpa itu, <strong>Keluar</strong> tetap ditambahkan.</li>
+<li>Item menu: <code>{ label, id, enabled, checked, children }</code> atau <code>'-'</code></li>
+<li>Klik kanan di halaman diganti dengan <code>nx8v.contextMenu.set([...])</code>. <code>clear()</code> mengembalikan menu browser.</li>
+</ul>
+<hr />
+<h2 id="d-6-notifikasi">6. Notifikasi</h2>
+<pre class="doc-code mono"><code>nx8v.notify('Judul', 'Isi pesan');</code></pre>
+<p>Balloon notification lewat ikon tray (tray dipasang otomatis bila belum ada). Muncul di pojok kanan bawah Windows.</p>
+<hr />
+<h2 id="d-7-multi-window">7. Multi-window</h2>
+<pre class="doc-code mono"><code>const satu = await nx8v.window.create({
+  id: 'satu',
+  url: '/detail',
+  title: 'Detail',
+  width: 800,
+  height: 600,
+  center: true,
+});
+const dua = await nx8v.window.create({ id: 'dua', url: '/lain' });
+
+// Tutup satu jendela. Jendela "dua" dan jendela utama tetap terbuka.
+nx8v.window.close('satu');
+nx8v.window.close(dua);</code></pre>
+<p><code>create</code> mengembalikan id jendela. Tiap jendela butuh id sendiri. Bila <code>id</code> tidak diisi, nx8v mengisi <code>1</code>, <code>2</code>, <code>3</code>, dan seterusnya.</p>
+<div class="tbl-wrap"><table><thead><tr><th scope="col">Opsi</th><th scope="col">Default</th></tr></thead><tbody><tr><td><code>url</code></td><td><code>location.href</code> (halaman saat ini)</td></tr><tr><td><code>id</code></td><td>id untuk <code>window.close</code>. Otomatis <code>1</code>, <code>2</code>, … bila kosong</td></tr><tr><td><code>title</code></td><td><code>nx8v</code></td></tr><tr><td><code>width</code></td><td><code>900</code></td></tr><tr><td><code>height</code></td><td><code>640</code></td></tr><tr><td><code>center</code></td><td><code>true</code>, jendela di tengah area kerja. <code>false</code> menyerahkan posisi ke Windows</td></tr><tr><td><code>x</code>, <code>y</code></td><td>pojok kiri atas. Bila keduanya diisi, <code>center</code> diabaikan</td></tr><tr><td><code>maximizable</code></td><td><code>true</code>. <code>false</code> menghilangkan tombol maximize. Bila tidak diisi, mengikuti <code>project.json</code></td></tr></tbody></table></div>
+<hr />
+<h2 id="d-8-packaging">8. Packaging</h2>
+<pre class="doc-code mono"><code>nx8v package                       # dist/&lt;nama&gt;/
+nx8v package --name=toko --out=release</code></pre>
+<p>Isi folder hasil:</p>
+<pre class="doc-code mono"><code>dist/&lt;nama&gt;/
+├── &lt;nama&gt;.exe          # aplikasi ada di dalam exe
+├── WebView2Loader.dll  # otomatis bila proyek memakai bridge
+├── start.cmd
+└── README.txt
+dist/&lt;artifactName&gt;     # pemasang Windows, misalnya Aplikasi-demo-Setup-1.0.0.exe
+dist/&lt;nama&gt;-&lt;versi&gt;-linux-x64.tar.gz</code></pre>
+<p>Satu perintah <code>nx8v package</code> menulis dua berkas unduhan, seperti folder rilis: pemasang Windows <code>Nama-Setup-versi.exe</code> dan arsip Linux <code>Nama-versi-linux-x64.tar.gz</code>. Di Linux: <code>tar -xzf</code> arsip itu, masuk ke foldernya, lalu <code>./start.sh</code>. Runtime Linux yang dibungkus adalah berkas <code>nx8v-linux</code> di folder yang sama dengan <code>nx8v.exe</code>. Jendela desktop Linux belum ada, jadi paket Linux menjalankan server.</p>
+<p><code>server.js</code>, <code>project.json</code>, dan <code>public/</code> tidak ikut sebagai berkas terpisah. Saat exe dijalankan, nx8v membuka isi itu dari dalam exe ke cache pribadi. Pemasang dibuat oleh nx8v sendiri. Klik dua kali berkas setup: aplikasi dipasang di <code>%LOCALAPPDATA%\&lt;nama&gt;</code>, dengan pintasan desktop, Start Menu, dan entri hapus pemasangan. Skrip <code>.nsi</code> tetap ditulis. <code>makensis</code> hanya dipakai bila sudah terpasang.</p>
+<p>Deteksi otomatis: bila ada file <code>.js</code>/<code>.html</code> yang memuat <code>window.nx8v</code>, <code>nx8v.dialog</code>, atau <code>nx8v.setTitle</code>, paket dianggap aplikasi desktop — <code>WebView2Loader.dll</code> disalin dan <code>start.cmd</code> menjalankan mode <code>window</code>.</p>
+<p>Dilewati saat menyalin: <code>node_modules</code>, <code>.git</code>, <code>build</code>, <code>dist</code>, <code>deps</code>, <code>out</code>, <code>.nx8v</code>.</p>
+<hr />
+<h2 id="d-9-detail-teknis">9. Detail teknis</h2>
+<div class="tbl-wrap"><table><thead><tr><th scope="col">Bagian</th><th scope="col">Implementasi</th></tr></thead><tbody><tr><td>Jendela</td><td><code>CreateWindowExW</code> + <code>WNDPROC</code> (<code>src/bindings/window.h</code>)</td></tr><tr><td>Browser</td><td>WebView2 <code>ICoreWebView2Controller</code> (<code>deps/webview2/</code>)</td></tr><tr><td>Message loop</td><td>dua jalur pump: <code>uv_prepare</code> + <code>uv_timer</code> 4 ms</td></tr><tr><td>Bridge masuk</td><td><code>AddScriptToExecuteOnDocumentCreated</code> + <code>postMessage</code> → <code>WebMessageReceived</code></td></tr><tr><td>Bridge keluar</td><td><code>PostWebMessageAsJson</code> (host → halaman)</td></tr><tr><td>Dialog</td><td><code>IFileOpenDialog</code> / <code>IFileSaveDialog</code> (<code>shobjidl.h</code>)</td></tr><tr><td>Tray</td><td><code>Shell_NotifyIconW</code> (<code>NOTIFYICONDATAW</code>)</td></tr><tr><td>Menu</td><td><code>CreatePopupMenu</code> + <code>TrackPopupMenu</code></td></tr><tr><td>Resize</td><td><code>WM_SIZE</code> → <code>put_Bounds</code></td></tr></tbody></table></div>
+<p><strong>Kenapa dua jalur pump?</strong> <code>uv_prepare</code> hanya jalan saat loop berputar; libuv bisa memblokir lama menunggu I/O (IOCP). Timer 4 ms memastikan pesan Win32 tetap diproses → jendela tidak freeze.</p>
+<p><strong>Arah pesan:</strong> <code>window.chrome.webview.postMessage()</code> adalah halaman → host. Untuk host → halaman wajib <code>PostWebMessageAsJson</code> (memakai <code>ExecuteScript</code> + <code>postMessage</code> akan mengirim ke arah yang salah).</p>
+<hr />
+<h2 id="d-10-prasyarat-troubleshooting">10. Prasyarat &amp; troubleshooting</h2>
+<p><strong>Prasyarat:</strong></p>
+<ul>
+<li>Windows 10/11</li>
+<li><strong>WebView2 Runtime</strong> — sudah terpasang di Windows 11; Windows 10 bisa unduh</li>
+</ul>
+<p>  dari situs Microsoft (Evergreen Runtime)</p>
+<ul>
+<li>SDK saat build: NuGet <code>Microsoft.Web.WebView2</code> → <code>deps/webview2/</code></li>
+</ul>
+<p>  (<code>include/</code>, <code>lib/WebView2LoaderStatic.lib</code>, <code>bin/WebView2Loader.dll</code>)</p>
+<div class="tbl-wrap"><table><thead><tr><th scope="col">Gejala</th><th scope="col">Penyebab &amp; solusi</th></tr></thead><tbody><tr><td>Jendela tidak muncul</td><td>WebView2 Runtime tidak ada → cek log error <code>gagal membuat WebView2 environment</code></td></tr><tr><td>Jendela freeze / "not responding"</td><td>message loop tidak dipompa → pastikan build terbaru (timer pump)</td></tr><tr><td><code>window.nx8v</code> undefined</td><td>halaman dibuka di browser biasa, bukan <code>nx8v window</code></td></tr><tr><td>Dialog tidak muncul</td><td><code>nx8v window</code> harus mode desktop; cek bridge ada</td></tr><tr><td><code>tray.show()</code> mengembalikan <code>false</code></td><td>ikon gagal dipasang (Explorer belum siap) — panggil ulang</td></tr><tr><td><code>WebView2Loader.dll</code> hilang di paket</td><td>jalankan <code>nx8v package</code> dari exe yang punya DLL di sebelahnya</td></tr><tr><td>Tray tidak terlihat</td><td>Windows 11 menyembunyikan ikon baru di overflow (panah <code>^</code>)</td></tr></tbody></table></div>
+<hr />
+<h2 id="d-contoh-di-repo">Contoh di repo</h2>
+<div class="tbl-wrap"><table><thead><tr><th scope="col">File</th><th scope="col">Isi</th></tr></thead><tbody><tr><td><code>example/public/bridge.html</code></td><td>uji <code>setTitle</code>, dialog open/save/folder</td></tr><tr><td><code>example/public/tray.html</code></td><td>uji tray, menu, notifikasi</td></tr><tr><td><code>example/public/dialogtest.html</code></td><td>dialog otomatis (untuk uji cepat)</td></tr><tr><td><code>example/project.json</code></td><td><code>dependencies</code>: <code>photos</code> dan <code>cotoh</code></td></tr><tr><td><code>example/server.js</code></td><td>memanggil modul <code>photos</code>. Halaman dilayani NX8V</td></tr><tr><td><code>example/modules/photos/</code></td><td>API foto: <code>/api/photos</code>, <code>/api/status</code>, <code>/api/refresh</code>. Masuknya <code>index.js</code></td></tr><tr><td><code>example/modules/cotoh/</code></td><td>modul halaman. Masuknya <code>index.js</code>, dipanggil <code>&lt;script type="module" src="cotoh"&gt;&lt;/script&gt;</code></td></tr><tr><td><code>example/public/index.html</code></td><td>halaman utama galeri, memuat modul <code>cotoh</code></td></tr><tr><td><code>example/public/about.html</code></td><td>halaman About, memakai partial yang sama</td></tr><tr><td><code>example/public/header.html</code></td><td>komponen header yang dipakai berulang</td></tr></tbody></table></div>
+<hr />
+<h2 id="d-pembungkusan">Pembungkusan</h2>
+<p><code>nx8v package</code> membuat folder <code>dist/&lt;nama&gt;/</code> dan berkas pemasang <code>dist/&lt;artifactName&gt;</code>.</p>
+<h3 id="d-projectjson"><code>project.json</code></h3>
+<pre class="doc-code mono"><code>"nx8v": {
+  "port": 4000,
+  "desktop": {
+    "icon": "./public/assets/images/32x32.png",
+    "state": "normal",
+    "width": 1100,
+    "height": 560,
+    "minWidth": 640,
+    "minHeight": 400,
+    "center": true,
+    "maximizable": true,
+    "resizable": true,
+    "titlebar": true,
+    "singleInstance": true,
+    "productName": "Aplikasi demo",
+    "shortcutName": "Aplikasi demo",
+    "artifactName": "Aplikasi-demo-Setup-${version}.exe"
+  }
+}</code></pre>
+<div class="tbl-wrap"><table><thead><tr><th scope="col">Kunci</th><th scope="col">Pakai</th></tr></thead><tbody><tr><td><code>icon</code></td><td>png, jpg, webp, bmp, atau ico untuk jendela, exe, dan pintasan. <code>nx8v init</code> menulis <code>./images/32x32.png</code>; berkasnya ada di <code>public/assets/images/32x32.png</code>. Path penuh dari folder proyek, misalnya <code>./public/assets/images/32x32.png</code>, tetap dibaca bila berkasnya ada</td></tr><tr><td><code>state</code></td><td>tampilan saat aplikasi diklik: <code>normal</code>, <code>maximized</code>, atau <code>minimized</code></td></tr><tr><td><code>width</code>, <code>height</code></td><td>ukuran jendela. Pada <code>normal</code> ini ukuran yang tampil. Pada <code>maximized</code> atau <code>minimized</code> ini ukuran setelah jendela dikembalikan</td></tr><tr><td><code>minWidth</code>, <code>minHeight</code></td><td>batas terkecil saat pengguna menarik tepi jendela</td></tr><tr><td><code>x</code>, <code>y</code></td><td>posisi pojok kiri atas. Bila ada, <code>center</code> diabaikan</td></tr><tr><td><code>center</code></td><td><code>true</code> menaruh jendela di tengah layar</td></tr><tr><td><code>maximizable</code></td><td><code>false</code> meniadakan tombol maximize. <code>state</code> yang <code>maximized</code> ikut dibuka sebagai <code>normal</code></td></tr><tr><td><code>resizable</code></td><td><code>false</code> mengunci ukuran. Tombol maximize ikut hilang</td></tr><tr><td><code>titlebar</code></td><td><code>true</code> menampilkan title bar Windows. <code>false</code> menyembunyikannya; halaman memasang title bar sendiri</td></tr><tr><td><code>singleInstance</code></td><td><code>true</code> membuat klik kedua memunculkan jendela yang sudah ada</td></tr><tr><td><code>productName</code></td><td>nama yang terlihat pengguna</td></tr><tr><td><code>shortcutName</code></td><td>nama pintasan Start Menu dan desktop</td></tr><tr><td><code>artifactName</code></td><td>nama berkas pemasang; <code>${version}</code> dan <code>${name}</code> diganti dari <code>project.json</code></td></tr></tbody></table></div>
+<h3 id="d-tahap-1-folder-yang-bisa-diklik-dua-kali">Tahap 1 — folder yang bisa diklik dua kali</h3>
+<ul>
+<li>Baca <code>desktop.icon</code>. Tanam ikon itu ke dalam exe hasil salinan, supaya Explorer menampilkannya.</li>
+<li>Exe di samping <code>project.json</code>, bila dijalankan tanpa argumen, membuka <code>nx8v window</code>. <code>start.cmd</code> tidak wajib.</li>
+<li>Gambar ikon di <code>desktop.icon</code> ikut disalin. PNG tidak perlu diubah menjadi ico oleh pengguna.</li>
+</ul>
+<h3 id="d-tahap-2-pemasang">Tahap 2 — pemasang</h3>
+<ul>
+<li><code>nx8v package</code> selalu menulis berkas sesuai <code>artifactName</code>, misalnya <code>dist/Aplikasi-demo-Setup-1.0.0.exe</code>.</li>
+<li>Klik dua kali berkas itu. Jendela pemasangan terbuka dalam bahasa Inggris: folder, pintasan, dan tombol Install. Tidak ada jendela terminal.</li>
+<li>Aplikasi dipasang di folder yang dipilih. Bawaan <code>%LOCALAPPDATA%\&lt;nama&gt;</code>.</li>
+<li>Pemasang membuat pintasan Start Menu dan desktop dengan <code>shortcutName</code> bila kotak pintasan dicentang. Start Menu tidak berisi pintasan hapus.</li>
+<li>Di folder pemasangan ada <code>Uninstall.exe</code>. Klik dua kali berkas itu untuk membuka jendela hapus. Pengaturan Windows &gt; Aplikasi memakai berkas yang sama.</li>
+<li>Folder tahap 1 tetap ada untuk dicoba tanpa memasang.</li>
+<li>Skrip NSIS ikut ditulis. <code>makensis</code> hanya dijalankan bila ada di komputer.</li>
+</ul>
+<h3 id="d-tahap-3-menu-yang-mengikuti-aplikasi">Tahap 3 — menu yang mengikuti aplikasi</h3>
+<ul>
+<li>Item menu: <code>label</code>, <code>id</code>, <code>enabled</code>, <code>checked</code>, pemisah, dan submenu.</li>
+<li><code>exit: false</code> meniadakan <strong>Keluar</strong> bawaan. <code>exitLabel</code> mengganti tulisannya.</li>
+<li>Klik kanan di halaman bisa diganti lewat <code>nx8v.contextMenu.set([...])</code>, bukan menu browser yang tetap.</li>
+</ul></section>
+    </main>
+  </div>
+  <footer class="doc-footer mono">Dokumentasi NX8V &middot; sumber: D:\NX8V (server.md &amp; desktop.md)</footer>
+  <script src="panduan.js" defer></script>
+</body>
+</html>
