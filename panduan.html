@@ -413,7 +413,7 @@ nx8v window --title="Toko" --width=1200 --height=800</code></pre>
 <p>Tanpa argumen, NX8V membaca <code>project.json</code> (<code>main</code> dan <code>nx8v.port</code>).</p>
 <p><code>server.listen</code> selesai sebelum jendela membuka URL, jadi halaman index tampil saat unduhan data pertama masih berjalan.</p>
 <p>Menyimpan <code>.html</code>, <code>.css</code>, atau <code>.svg</code> memuat ulang halaman di jendela. Menyimpan <code>.js</code>, <code>.mjs</code>, atau <code>.json</code> menutup jendela lalu membukanya lagi supaya kode server yang baru ikut jalan.</p>
-<p>Menutup jendela lewat tombol X menghentikan proses dan mengembalikan prompt terminal (kecuali tray aktif — lihat §5). Ctrl+C di terminal menutup jendela yang sama.</p>
+<p>Menutup jendela lewat tombol X menghentikan proses dan mengembalikan prompt terminal (kecuali tray aktif — lihat §5). Ctrl+C di terminal tempat <code>nx8v window</code> dijalankan menutup jendela yang sama. Ctrl+C di dalam <code>&lt;nx8v-terminal&gt;</code> tidak menutup jendela; tombol itu milik program di halaman.</p>
 <p>Komponen HTML berlaku di dalam jendela, karena halamannya tetap dari server:</p>
 <pre class="doc-code mono"><code>&lt;header partial="./header.html"&gt;&lt;/header&gt;</code></pre>
 <hr />
@@ -437,9 +437,16 @@ nx8v.close();</code></pre>
 &lt;/header&gt;</code></pre>
 <p><code>nx8v.setTitle(...)</code> tetap mengubah nama di taskbar. Tulisan di bilah halaman diatur oleh HTML. Contohnya ada di <code>example/public/titlebar.html</code>.</p>
 <h3 id="d-terminal-di-halaman">Terminal di halaman</h3>
-<p>Shell interaktif ditempel di HTML. Di Windows sesinya ConPTY, jadi prompt, warna, dan Ctrl+C sampai ke program, termasuk agent yang dijalankan di shell itu.</p>
-<pre class="doc-code mono"><code>&lt;nx8v-terminal&gt;&lt;/nx8v-terminal&gt;</code></pre>
-<p>Cukup tag itu. Runtime menempelkan skrip elemennya saat halaman dikirim. Terminal bukan entri di <code>dependencies</code>. Folder kerja shell adalah folder proyek. Warna 16, 256, dan truecolor yang dikirim program digambar apa adanya. Layar alternatif milik program (OpenCode, nxc, dan TUI lain) mengisi terminal sendiri; riwayat shell tidak digabung ke gambar itu.</p>
+<p>Satu tag menempelkan shell interaktif di halaman. Di Windows sesinya ConPTY, jadi prompt, warna, dan tombol sampai ke program yang dijalankan di shell itu, termasuk agent CLI. Terminal ini hanya ada di Windows.</p>
+<pre class="doc-code mono"><code>&lt;nx8v-terminal&gt;&lt;/nx8v-terminal&gt;
+&lt;nx8v-terminal height="30%"&gt;&lt;/nx8v-terminal&gt;</code></pre>
+<p>Cukup tag itu. Jangan menambah <code>&lt;script src="terminal"&gt;</code>. Runtime menyisipkan skrip elemen saat halaman HTML dikirim. Terminal bukan entri <code>dependencies</code> dan bukan modul.</p>
+<p>Satu elemen memakai satu shell. Shell yang dicari, berurutan: <code>pwsh.exe</code>, PowerShell 7, Windows PowerShell, lalu <code>cmd</code>. Folder awalnya folder pengguna, sama seperti jendela PowerShell baru, bukan folder proyek.</p>
+<div class="tbl-wrap"><table><thead><tr><th scope="col"></th><th scope="col"></th></tr></thead><tbody><tr><td>Lebar</td><td>selalu 100% dari induknya</td></tr><tr><td>Tinggi bawaan</td><td>360px</td></tr><tr><td>Tinggi minimum</td><td>144px, supaya prompt tetap kelihatan</td></tr><tr><td>Atribut <code>height</code></td><td>nilai CSS: <code>30%</code>, <code>30vh</code>, <code>240px</code></td></tr></tbody></table></div>
+<p><code>30%</code> dihitung dari tinggi induk. Kalau induk tidak punya tinggi, kotak tetap tampil setinggi minimum. <code>30vh</code> dihitung dari tinggi jendela.</p>
+<p>Warna 16, 256, dan truecolor digambar seperti yang dikirim program. NX8V tidak mengganti palet agent. Layar alternatif (OpenCode, nxc, dan TUI lain) mengisi terminal sendiri; riwayat shell tidak digabung ke gambar itu.</p>
+<div class="tbl-wrap"><table><thead><tr><th scope="col">Tombol</th><th scope="col">Perilaku</th></tr></thead><tbody><tr><td>Ctrl+C, ada teks terpilih</td><td>salin teks. Sinyal berhenti tidak dikirim</td></tr><tr><td>Ctrl+C, tidak ada pilihan</td><td>satu tombol berhenti ke program yang sedang berjalan</td></tr><tr><td>Ctrl+Shift+C</td><td>salin</td></tr><tr><td>Ctrl+V, Ctrl+Shift+V, Shift+Insert</td><td>tempel isi papan klip</td></tr><tr><td>Shift+PageUp, Shift+PageDown</td><td>gulir riwayat shell, selama program tidak memakai layar alternatif</td></tr><tr><td>Ctrl+panah, Alt+Enter, F1–F12</td><td>diteruskan ke program</td></tr></tbody></table></div>
+<p>Kalau program meminta tempelan berkurung, Ctrl+V dibungkus sehingga agent menerimanya sebagai satu tempelan, bukan sebagai deretan perintah. <code>TERM</code> adalah <code>xterm-256color</code> dan <code>COLORTERM</code> adalah <code>truecolor</code> bila lingkungan belum mengisinya.</p>
 <p>Pemantau ukuran halaman (<code>ResizeObserver</code>) menunggu elemen <code>&lt;html&gt;</code> ada. Skrip jembatan jendela berjalan sebelum tag itu terbentuk, jadi pemantauan tidak dipasang pada nilai kosong.</p>
 <p>Semua method jendela bersifat fire-and-forget (tidak mengembalikan Promise). Dialog dan tray mengembalikan Promise.</p>
 <hr />

@@ -77,8 +77,9 @@ Menyimpan `.js`, `.mjs`, atau `.json` menutup jendela lalu membukanya lagi
 supaya kode server yang baru ikut jalan.
 
 Menutup jendela lewat tombol X menghentikan proses dan mengembalikan prompt
-terminal (kecuali tray aktif — lihat §5). Ctrl+C di terminal menutup jendela
-yang sama.
+terminal (kecuali tray aktif — lihat §5). Ctrl+C di terminal tempat
+`nx8v window` dijalankan menutup jendela yang sama. Ctrl+C di dalam
+`<nx8v-terminal>` tidak menutup jendela; tombol itu milik program di halaman.
 
 Komponen HTML berlaku di dalam jendela, karena halamannya tetap dari server:
 
@@ -128,13 +129,38 @@ nx8v.close();
 
 ### Terminal di halaman
 
-Shell interaktif ditempel di HTML. Di Windows sesinya ConPTY, jadi prompt, warna, dan Ctrl+C sampai ke program, termasuk agent yang dijalankan di shell itu.
+Satu tag menempelkan shell interaktif di halaman. Di Windows sesinya ConPTY, jadi prompt, warna, dan tombol sampai ke program yang dijalankan di shell itu, termasuk agent CLI. Terminal ini hanya ada di Windows.
 
 ```html
 <nx8v-terminal></nx8v-terminal>
+<nx8v-terminal height="30%"></nx8v-terminal>
 ```
 
-Cukup tag itu. Runtime menempelkan skrip elemennya saat halaman dikirim. Terminal bukan entri di `dependencies`. Folder kerja shell adalah folder proyek. Warna 16, 256, dan truecolor yang dikirim program digambar apa adanya. Layar alternatif milik program (OpenCode, nxc, dan TUI lain) mengisi terminal sendiri; riwayat shell tidak digabung ke gambar itu.
+Cukup tag itu. Jangan menambah `<script src="terminal">`. Runtime menyisipkan skrip elemen saat halaman HTML dikirim. Terminal bukan entri `dependencies` dan bukan modul.
+
+Satu elemen memakai satu shell. Shell yang dicari, berurutan: `pwsh.exe`, PowerShell 7, Windows PowerShell, lalu `cmd`. Folder awalnya folder pengguna, sama seperti jendela PowerShell baru, bukan folder proyek.
+
+| | |
+|---|---|
+| Lebar | selalu 100% dari induknya |
+| Tinggi bawaan | 360px |
+| Tinggi minimum | 144px, supaya prompt tetap kelihatan |
+| Atribut `height` | nilai CSS: `30%`, `30vh`, `240px` |
+
+`30%` dihitung dari tinggi induk. Kalau induk tidak punya tinggi, kotak tetap tampil setinggi minimum. `30vh` dihitung dari tinggi jendela.
+
+Warna 16, 256, dan truecolor digambar seperti yang dikirim program. NX8V tidak mengganti palet agent. Layar alternatif (OpenCode, nxc, dan TUI lain) mengisi terminal sendiri; riwayat shell tidak digabung ke gambar itu.
+
+| Tombol | Perilaku |
+|---|---|
+| Ctrl+C, ada teks terpilih | salin teks. Sinyal berhenti tidak dikirim |
+| Ctrl+C, tidak ada pilihan | satu tombol berhenti ke program yang sedang berjalan |
+| Ctrl+Shift+C | salin |
+| Ctrl+V, Ctrl+Shift+V, Shift+Insert | tempel isi papan klip |
+| Shift+PageUp, Shift+PageDown | gulir riwayat shell, selama program tidak memakai layar alternatif |
+| Ctrl+panah, Alt+Enter, F1–F12 | diteruskan ke program |
+
+Kalau program meminta tempelan berkurung, Ctrl+V dibungkus sehingga agent menerimanya sebagai satu tempelan, bukan sebagai deretan perintah. `TERM` adalah `xterm-256color` dan `COLORTERM` adalah `truecolor` bila lingkungan belum mengisinya.
 
 Pemantau ukuran halaman (`ResizeObserver`) menunggu elemen `<html>` ada. Skrip jembatan jendela berjalan sebelum tag itu terbentuk, jadi pemantauan tidak dipasang pada nilai kosong.
 

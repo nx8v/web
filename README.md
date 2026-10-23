@@ -245,6 +245,7 @@ D:\NX8V\
 - `nx8v window` membuka halaman setelah server `listen`, jadi jendela langsung menampilkan aplikasi.
 - Tombol X pada jendela mengembalikan prompt terminal.
 - Ctrl+C menutup jendela tanpa pesan ERROR dari WebView.
+- `<nx8v-terminal>` menempelkan shell ConPTY di halaman. Lebar 100%, tinggi lewat atribut `height`. Ctrl+C menyalin bila ada pilihan, selain itu tombol itu milik program. Ctrl+V menempelkan papan klip.
 - Binary Linux sudah dibangun dan diuji di WSL.
 
 ## Roadmap
@@ -290,6 +291,7 @@ D:\NX8V\
 - [x] Tutup jendela lewat X mengembalikan prompt terminal
 - [x] Halaman terbuka setelah `listen`, tanpa `ERR_CONNECTION_REFUSED` di awal
 - [x] Ctrl+C di terminal menutup jendela tanpa pesan ERROR WebView
+- [x] `<nx8v-terminal>` — shell ConPTY di halaman HTML (Windows). Lihat [desktop.md](desktop.md)
 - [x] `nx8v window` memuat ulang halaman saat HTML/CSS/SVG disimpan; JS membuka ulang jendela
 - [x] Opsi jendela: posisi, ukuran, `center`, `frameless`, `resizable`, satu jendela per proyek
 - [x] Dialog pesan `nx8v.dialog.alert` dan `nx8v.dialog.confirm`
