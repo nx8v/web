@@ -100,38 +100,20 @@ Detail pemakaian tiap modul server-side ada di **[server.md](server.md)**.
 
 ## Instalasi global
 
-Runtime dipasang dari rilis GitHub [iyanrsaleh/nx8v](https://github.com/iyanrsaleh/nx8v/releases).
-Satu tag, misalnya `v0.1.0`, memuat dua berkas:
-
-| Berkas | Isi |
-|---|---|
-| `nx8v-win-x64.zip` | `nx8v.exe` untuk Windows |
-| `nx8v-linux-x64.tar.gz` | binary `nx8v` untuk Linux x64 |
-
 ```powershell
-# Windows — mengunduh nx8v-win-x64.zip ke %LOCALAPPDATA%\nx8v\bin
-powershell -ExecutionPolicy Bypass -Command "irm https://github.com/iyanrsaleh/nx8v/releases/latest/download/install.ps1 | iex"
+# Windows
+powershell -ExecutionPolicy Bypass -File D:\NX8V\install.ps1
 ```
 
-```sh
-# Linux — mengunduh nx8v-linux-x64.tar.gz ke ~/.local/bin
-curl -fsSL https://github.com/iyanrsaleh/nx8v/releases/latest/download/install.sh | sh
-```
-
+Menyalin `nx8v.exe` ke `%LOCALAPPDATA%\nx8v\bin` + menambah ke PATH user.
 **Buka terminal baru**, lalu `nx8v --version`, `nx8v init`, `nx8v dev`, dst.
 
-Mencabut di Windows:
-
-```powershell
-Invoke-WebRequest https://github.com/iyanrsaleh/nx8v/releases/latest/download/install.ps1 -OutFile $env:TEMP\install-nx8v.ps1
-powershell -ExecutionPolicy Bypass -File $env:TEMP\install-nx8v.ps1 -Remove
-```
-
-Mencabut di Linux:
+Mencabut: `powershell -ExecutionPolicy Bypass -File D:\NX8V\install.ps1 -Remove`
 
 ```sh
-curl -fsSL https://github.com/iyanrsaleh/nx8v/releases/latest/download/install.sh -o /tmp/install-nx8v.sh
-sh /tmp/install-nx8v.sh --remove
+# Linux/macOS
+./install.sh                    # ~/.local/bin
+sudo ./install.sh --service DIR # + unit systemd
 ```
 
 ---
@@ -295,6 +277,8 @@ D:\NX8V\
 - [x] Smart file routing (`/about/data/u` → `about.html`)
 - [x] Peringatan port unsafe Chromium (mis. 6000 → ERR_UNSAFE_PORT)
 - [x] Perbaikan: duplikat request, RST saat close, keep-alive setengah jadi
+- [x] Static server mengirim `Content-Encoding: gzip` bila klien meminta `Accept-Encoding: gzip`
+- [x] Binary Linux diuji di WSL; rilis `v0.1.0` memuat `nx8v-linux-x64.tar.gz`
 
 ### Selesai — desktop ([desktop.md](desktop.md))
 
@@ -316,9 +300,6 @@ D:\NX8V\
 
 ### Belum
 
-- [x] Build Linux (binary diuji di WSL)
 - [ ] Build macOS
 - [ ] Jendela Linux via GTK/WebKitGTK (WebView2 hanya Windows)
-- [ ] `zlib` terintegrasi otomatis di static server (gzip response)
-- [ ] HTTP/2, TLS server (saat ini TLS hanya sisi client)
-- [ ] `nx8v publish` - terbitkan modul ke registry dari CLI
+- [ ] HTTP/2 dan TLS pada server. Yang ada sekarang HTTP biasa, dan TLS hanya pada klien HTTPS.
