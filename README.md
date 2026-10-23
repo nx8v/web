@@ -112,7 +112,7 @@ Menyalin `nx8v.exe` ke `%LOCALAPPDATA%\nx8v\bin` + menambah ke PATH user.
 Mencabut: `powershell -ExecutionPolicy Bypass -File D:\NX8V\install.ps1 -Remove`
 
 ```sh
-# Linux/macOS
+# Linux
 ./install.sh                    # ~/.local/bin
 sudo ./install.sh --service DIR # + unit systemd
 ```
@@ -232,7 +232,7 @@ D:\NX8V\
 ├── build\Release\nx8v.exe  # hasil build (~34 MB)
 ├── CMakeLists.txt          # build CMake (libuv via FetchContent)
 ├── install.ps1             # instalasi global (Windows)
-└── install.sh              # instalasi global (Linux/macOS) + --service
+└── install.sh              # instalasi global (Linux) + --service
 ```
 
 ---
@@ -280,7 +280,7 @@ D:\NX8V\
 - [x] Peringatan port unsafe Chromium (mis. 6000 → ERR_UNSAFE_PORT)
 - [x] Perbaikan: duplikat request, RST saat close, keep-alive setengah jadi
 - [x] Static server mengirim `Content-Encoding: gzip` bila klien meminta `Accept-Encoding: gzip`
-- [x] Binary Linux diuji di WSL; rilis `v0.2.1` memuat `nx8v-linux-x64.tar.gz` beserta server HTTP/2 dan TLS
+- [x] Binary Linux diuji di WSL; rilis `v0.2.2` memuat `nx8v-linux-x64.tar.gz` beserta server HTTP/2 dan TLS
 
 ### Selesai — desktop ([desktop.md](desktop.md))
 
@@ -302,5 +302,4 @@ D:\NX8V\
 
 ### Belum
 
-- [ ] Build macOS
-- [ ] Jendela Linux via GTK/WebKitGTK (WebView2 hanya Windows)
+- [x] Jendela Linux via GTK/WebKitGTK. WebView2 tetap hanya Windows. Tray tetap di Windows

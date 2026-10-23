@@ -35,7 +35,11 @@ nx8v window
 ```
 
 Frontend tetap HTML/CSS/JS normal yang dilayani server lokal; backend adalah
-runtime NX8V sendiri. Tidak ada Electron, tidak ada Node, satu exe ~34 MB.
+runtime NX8V sendiri. Tidak ada Electron, satu exe Windows sekitar 34 MB.
+
+Di Linux, `nx8v window` membuka jendela GTK dengan WebKitGTK dan menuju alamat
+yang sama. `window.nx8v` untuk judul, ukuran, dialog, dan jendela tambahan
+berlaku di keduanya. Tray tetap di Windows.
 
 ---
 
