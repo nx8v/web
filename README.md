@@ -45,7 +45,7 @@ build, struktur kode, dan roadmap.
 | `querystring` | `parse`, `stringify`, `escape`, `unescape`, `URLSearchParams` |
 | `events` | `EventEmitter` — `on`, `once`, `off`/`removeListener`, `emit`, `removeAllListeners`, `listenerCount`, `listeners`, `eventNames` |
 | `http` | server (`createServer`, `listen`) + client (`get`, `request`) + WebSocket server |
-| `https` | sama dengan `http`, untuk URL `https://` (WinHTTP di Windows) |
+| `https` | klien `https://` (WinHTTP di Windows) dan server `createServer({ pfx, passphrase })` atau `{ cert, key }` |
 | `router` | `app.get/post/put/delete/patch/all`, `app.use`, `app.notFound`, `app.listen`, `res.status/json/send/redirect` |
 | `static` | `serve(root[, opts])` — ETag/304, Range/206, HEAD, Cache-Control, anti path traversal |
 | `stream` | `Readable`/`Writable`/`Duplex`/`PassThrough`: `push`, `write`, `end`, `pipe` |
@@ -270,6 +270,7 @@ D:\NX8V\
 - [x] WebSocket server + client (RFC 6455)
 - [x] HTTP client (`http.get`, `http.request`) + decoder chunked
 - [x] HTTPS client (WinHTTP: TLS 1.2/1.3 + cert store Windows)
+- [x] HTTPS server `https.createServer`. PFX memakai TLS 1.2 dan 1.3. PEM di Windows memakai TLS 1.2; PEM di Linux memakai TLS 1.2 dan 1.3. ALPN `h2` mengisi `req.httpVersion` dengan `"2.0"`. Klien yang tidak meminta HTTP/2 menerima HTTP/1.1
 - [x] `nx8v init`, `nx8v start`, `nx8v dev`, `nx8v stop`, `nx8v list`, `nx8v logs`
 - [x] `nx8v i` / `u` / `p` / `d` / `r` — pasang, ganti versi, terbitkan, hapus dari proyek, dan hapus dari repository
 - [x] `nx8v dev`: simpan `.html`/`.css`/`.svg` memuat ulang browser; simpan `.js`/`.json` me-restart server lalu halaman ikut memuat ulang
@@ -278,7 +279,7 @@ D:\NX8V\
 - [x] Peringatan port unsafe Chromium (mis. 6000 → ERR_UNSAFE_PORT)
 - [x] Perbaikan: duplikat request, RST saat close, keep-alive setengah jadi
 - [x] Static server mengirim `Content-Encoding: gzip` bila klien meminta `Accept-Encoding: gzip`
-- [x] Binary Linux diuji di WSL; rilis `v0.1.0` memuat `nx8v-linux-x64.tar.gz`
+- [x] Binary Linux diuji di WSL; rilis `v0.2.0` memuat `nx8v-linux-x64.tar.gz` beserta server HTTP/2 dan TLS
 
 ### Selesai — desktop ([desktop.md](desktop.md))
 
@@ -302,4 +303,3 @@ D:\NX8V\
 
 - [ ] Build macOS
 - [ ] Jendela Linux via GTK/WebKitGTK (WebView2 hanya Windows)
-- [ ] HTTP/2 dan TLS pada server. Yang ada sekarang HTTP biasa, dan TLS hanya pada klien HTTPS.

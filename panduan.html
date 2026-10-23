@@ -190,8 +190,26 @@ const server = http.createServer((req, res) =&gt; {
 });
 
 server.listen(3000, () =&gt; console.log('http://localhost:3000'));</code></pre>
+<p>HTTPS memakai modul <code>https</code>. Berkas PFX dibaca sebagai <code>Buffer</code> (tanpa encoding). Kunci PEM dibaca sebagai teks.</p>
+<pre class="doc-code mono"><code>const https = require('https');
+const fs = require('fs');
+
+https.createServer({
+  pfx: fs.readFileSync('server.pfx'),
+  passphrase: 'rahasia'
+}, (req, res) =&gt; {
+  res.end(req.httpVersion);
+}).listen(8443);
+
+https.createServer({
+  cert: fs.readFileSync('server.crt', 'utf8'),
+  key: fs.readFileSync('server.key', 'utf8')
+}, (req, res) =&gt; {
+  res.end(req.httpVersion);
+}).listen(8444);</code></pre>
+<p>Sertifikat PFX berunding TLS 1.2 dan 1.3. Pasangan <code>cert</code> dan <code>key</code> menerima <code>BEGIN CERTIFICATE</code> bersama <code>BEGIN PRIVATE KEY</code> (PKCS#8) atau <code>BEGIN RSA PRIVATE KEY</code>. Di Windows, PEM berunding TLS 1.2. Di Linux, PEM berunding TLS 1.2 dan 1.3. Kunci bertipe <code>BEGIN ENCRYPTED PRIVATE KEY</code> belum didukung; bungkus kunci itu ke dalam PFX. ALPN menawarkan <code>h2</code> lalu <code>http/1.1</code>. <code>req.httpVersion</code> berisi <code>"2.0"</code> saat klien memakai HTTP/2, dan <code>"HTTP/1.1"</code> saat klien memakai HTTP/1.1. HTTP/2 tanpa TLS (preface <code>PRI * HTTP/2.0</code>) juga diterima oleh <code>http.createServer</code>. Build Linux menautkan OpenSSL lewat <code>NX8V_USE_OPENSSL</code>, untuk klien <code>https://</code> dan <code>https.createServer</code>. Rilis v0.2.0 memuat server TLS ini. Biner yang sedang dipakai panel belum memuatnya.</p>
 <p><strong>Request (<code>req</code>):</strong></p>
-<div class="tbl-wrap"><table><thead><tr><th scope="col">Properti/Method</th><th scope="col">Keterangan</th></tr></thead><tbody><tr><td><code>req.method</code></td><td><code>GET</code>, <code>POST</code>, …</td></tr><tr><td><code>req.url</code></td><td>path + query, apa adanya</td></tr><tr><td><code>req.httpVersion</code></td><td><code>"1.1"</code></td></tr><tr><td><code>req.headers</code></td><td>objek header (nama asli dari klien)</td></tr><tr><td><code>req.on('data', fn)</code></td><td>body (bila ada)</td></tr><tr><td><code>req.on('end', fn)</code></td><td>body selesai</td></tr></tbody></table></div>
+<div class="tbl-wrap"><table><thead><tr><th scope="col">Properti/Method</th><th scope="col">Keterangan</th></tr></thead><tbody><tr><td><code>req.method</code></td><td><code>GET</code>, <code>POST</code>, …</td></tr><tr><td><code>req.url</code></td><td>path + query, apa adanya</td></tr><tr><td><code>req.httpVersion</code></td><td><code>"HTTP/1.1"</code> pada HTTP/1.1, <code>"2.0"</code> pada HTTP/2</td></tr><tr><td><code>req.headers</code></td><td>objek header (nama asli dari klien)</td></tr><tr><td><code>req.on('data', fn)</code></td><td>body (bila ada)</td></tr><tr><td><code>req.on('end', fn)</code></td><td>body selesai</td></tr></tbody></table></div>
 <p><strong>Response (<code>res</code>):</strong></p>
 <div class="tbl-wrap"><table><thead><tr><th scope="col">Method</th><th scope="col">Keterangan</th></tr></thead><tbody><tr><td><code>res.writeHead(status[, message][, headers])</code></td><td>kirim status + header. Tanpa <code>message</code>, kalimat status mengikuti kode: <code>404</code> menjadi <code>Not Found</code></td></tr><tr><td><code>res.setHeader(name, value)</code></td><td>set satu header</td></tr><tr><td><code>res.getHeader(name)</code></td><td>baca header</td></tr><tr><td><code>res.write(chunk)</code></td><td>tulis body (di-buffer). <code>chunk</code> boleh string atau <code>Buffer</code></td></tr><tr><td><code>res.end([chunk][, cb])</code></td><td>kirim respons, tutup koneksi. Byte <code>0x00</code> di dalam PNG ikut terkirim</td></tr><tr><td><code>res.statusCode</code></td><td>status default 200. Mengubah angka ini juga mengganti kalimat status</td></tr></tbody></table></div>
 <p><code>fs.readFile</code> dan <code>fs.readFileSync</code> tanpa encoding mengembalikan <code>Buffer</code>, jadi gambar tidak rusak saat dikirim lewat <code>res.end</code>. Encoding <code>'utf8'</code> tetap mengembalikan string. <code>data.toString()</code> memakai teks UTF-8.</p>

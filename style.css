@@ -179,6 +179,7 @@ a:hover { color: var(--accent-strong); text-decoration: underline; }
 .f { color: #1d4ed8; }
 .v { color: #047857; }
 .n { color: #b45309; }
+.c { color: #64748b; font-style: italic; }
 
 /* ================= section umum ================= */
 .section { padding: 80px 0; }

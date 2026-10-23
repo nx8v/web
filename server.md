@@ -270,13 +270,36 @@ const server = http.createServer((req, res) => {
 server.listen(3000, () => console.log('http://localhost:3000'));
 ```
 
+HTTPS memakai modul `https`. Berkas PFX dibaca sebagai `Buffer` (tanpa encoding). Kunci PEM dibaca sebagai teks.
+
+```js
+const https = require('https');
+const fs = require('fs');
+
+https.createServer({
+  pfx: fs.readFileSync('server.pfx'),
+  passphrase: 'rahasia'
+}, (req, res) => {
+  res.end(req.httpVersion);
+}).listen(8443);
+
+https.createServer({
+  cert: fs.readFileSync('server.crt', 'utf8'),
+  key: fs.readFileSync('server.key', 'utf8')
+}, (req, res) => {
+  res.end(req.httpVersion);
+}).listen(8444);
+```
+
+Sertifikat PFX berunding TLS 1.2 dan 1.3. Pasangan `cert` dan `key` menerima `BEGIN CERTIFICATE` bersama `BEGIN PRIVATE KEY` (PKCS#8) atau `BEGIN RSA PRIVATE KEY`. Di Windows, PEM berunding TLS 1.2. Di Linux, PEM berunding TLS 1.2 dan 1.3. Kunci bertipe `BEGIN ENCRYPTED PRIVATE KEY` belum didukung; bungkus kunci itu ke dalam PFX. ALPN menawarkan `h2` lalu `http/1.1`. `req.httpVersion` berisi `"2.0"` saat klien memakai HTTP/2, dan `"HTTP/1.1"` saat klien memakai HTTP/1.1. HTTP/2 tanpa TLS (preface `PRI * HTTP/2.0`) juga diterima oleh `http.createServer`. Build Linux menautkan OpenSSL lewat `NX8V_USE_OPENSSL`, untuk klien `https://` dan `https.createServer`. Rilis v0.2.0 memuat server TLS ini. Biner yang sedang dipakai panel belum memuatnya.
+
 **Request (`req`):**
 
 | Properti/Method | Keterangan |
 |---|---|
 | `req.method` | `GET`, `POST`, … |
 | `req.url` | path + query, apa adanya |
-| `req.httpVersion` | `"1.1"` |
+| `req.httpVersion` | `"HTTP/1.1"` pada HTTP/1.1, `"2.0"` pada HTTP/2 |
 | `req.headers` | objek header (nama asli dari klien) |
 | `req.on('data', fn)` | body (bila ada) |
 | `req.on('end', fn)` | body selesai |
