@@ -120,7 +120,7 @@ a:hover { color: var(--accent-strong); text-decoration: underline; }
 .lang-switch button.active { background: var(--accent); color: #fff; }
 
 /* ================= hero ================= */
-.hero { padding: 84px 0 72px; }
+.hero { padding: 84px 0 26px; }
 
 .hero-claim {
   font-size: 0.78rem;
@@ -399,7 +399,7 @@ tbody tr:hover { background: #fafbfc; }
 }
 
 /* strip statistik */
-.stats { padding: 10px 0 6px; }
+.stats { padding: 6px 0 10px; }
 
 .stats-grid {
   display: grid; grid-template-columns: repeat(4, 1fr);
