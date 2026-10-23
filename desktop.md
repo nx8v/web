@@ -345,6 +345,7 @@ Untuk host → halaman wajib `PostWebMessageAsJson` (memakai
 | Gejala | Penyebab & solusi |
 |---|---|
 | Jendela tidak muncul | WebView2 Runtime tidak ada → cek log error `gagal membuat WebView2 environment` |
+| `ERR_UNSAFE_PORT` di `http://127.0.0.1:6000/` | WebView2 menolak port itu. Jendela memakai port aman berikutnya, misalnya `6001`. Paket lama perlu `nx8v package` ulang |
 | Jendela freeze / "not responding" | message loop tidak dipompa → pastikan build terbaru (timer pump) |
 | `window.nx8v` undefined | halaman dibuka di browser biasa, bukan `nx8v window` |
 | Dialog tidak muncul | `nx8v window` harus mode desktop; cek bridge ada |

@@ -12,7 +12,7 @@ Daftar isi:
 2. [Membuat proyek](#2-membuat-proyek)
 3. [Struktur proyek](#3-struktur-proyek)
 4. [HTTP server](#4-http-server)
-5. [Router ala Express](#5-router-ala-express)
+5. [Router](#5-router)
 6. [Static file server](#6-static-file-server)
 7. [WebSocket server](#7-websocket-server)
 8. [HTTP/HTTPS client + fetch](#8-httphttps-client--fetch)
@@ -296,7 +296,7 @@ Ini disengaja — pipelining belum didukung, dan lebih aman untuk browser.
 
 ---
 
-## 5. Router ala Express
+## 5. Router
 
 ```js
 const app = require('router')();
