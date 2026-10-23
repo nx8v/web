@@ -72,6 +72,7 @@ Detail pemakaian tiap modul server-side ada di **[server.md](server.md)**.
 | `nx8v u <nama>@<versi>` | ganti versi modul yang sudah terpasang |
 | `nx8v p <nama>@<versi>` | terbitkan `modules/<nama>` ke repository |
 | `nx8v d <nama>` | hapus modul dari `dependencies` |
+| `nx8v r <nama>` | hapus rilis, tag, dan folder modul dari repository |
 | `nx8v start [--port=N]` | jalankan proyek dari `project.json` |
 | `nx8v dev [--port=N]` | development: simpan HTML memuat ulang browser; simpan JS me-restart server |
 | `nx8v stop [--port=N]` | hentikan server proyek |
@@ -269,7 +270,7 @@ D:\NX8V\
 - [x] HTTP client (`http.get`, `http.request`) + decoder chunked
 - [x] HTTPS client (WinHTTP: TLS 1.2/1.3 + cert store Windows)
 - [x] `nx8v init`, `nx8v start`, `nx8v dev`, `nx8v stop`, `nx8v list`, `nx8v logs`
-- [x] `nx8v i` / `u` / `p` / `d` — pasang, ganti versi, terbitkan, dan hapus modul
+- [x] `nx8v i` / `u` / `p` / `d` / `r` — pasang, ganti versi, terbitkan, hapus dari proyek, dan hapus dari repository
 - [x] `nx8v dev`: simpan `.html`/`.css`/`.svg` memuat ulang browser; simpan `.js`/`.json` me-restart server lalu halaman ikut memuat ulang
 - [x] `nx8v test` (test runner bawaan)
 - [x] Smart file routing (`/about/data/u` → `about.html`)

@@ -108,7 +108,7 @@ nx8v.close();
 | `setSize(w, h)` | ubah ukuran jendela |
 | `minimize()` | minimize |
 | `maximize()` | maximize / restore |
-| `openDevTools()` | buka DevTools WebView2 |
+| `openDevTools()` | buka DevTools WebView2. Tidak melakukan apa pun bila `desktop.devtools` adalah `false` |
 | `close()` | tutup aplikasi |
 
 ### Title bar sendiri
@@ -125,6 +125,16 @@ nx8v.close();
 ```
 
 `nx8v.setTitle(...)` tetap mengubah nama di taskbar. Tulisan di bilah halaman diatur oleh HTML. Contohnya ada di `example/public/titlebar.html`.
+
+### Terminal di halaman
+
+Shell interaktif ditempel di HTML. Di Windows sesinya ConPTY, jadi prompt, warna, dan Ctrl+C sampai ke program, termasuk agent yang dijalankan di shell itu.
+
+```html
+<nx8v-terminal></nx8v-terminal>
+```
+
+Cukup tag itu. Runtime menempelkan skrip elemennya saat halaman dikirim. Terminal bukan entri di `dependencies`. Folder kerja shell adalah folder proyek. Warna 16, 256, dan truecolor yang dikirim program digambar apa adanya. Layar alternatif milik program (OpenCode, nxc, dan TUI lain) mengisi terminal sendiri; riwayat shell tidak digabung ke gambar itu.
 
 Pemantau ukuran halaman (`ResizeObserver`) menunggu elemen `<html>` ada. Skrip jembatan jendela berjalan sebelum tag itu terbentuk, jadi pemantauan tidak dipasang pada nilai kosong.
 
@@ -393,6 +403,7 @@ Untuk host → halaman wajib `PostWebMessageAsJson` (memakai
     "maximizable": true,
     "resizable": true,
     "titlebar": true,
+    "devtools": false,
     "singleInstance": true,
     "productName": "Aplikasi demo",
     "shortcutName": "Aplikasi demo",
@@ -412,6 +423,7 @@ Untuk host → halaman wajib `PostWebMessageAsJson` (memakai
 | `maximizable` | `false` meniadakan tombol maximize. `state` yang `maximized` ikut dibuka sebagai `normal` |
 | `resizable` | `false` mengunci ukuran. Tombol maximize ikut hilang |
 | `titlebar` | `true` menampilkan title bar Windows. `false` menyembunyikannya; halaman memasang title bar sendiri |
+| `devtools` | `true` menampilkan menu Inspect dan mengizinkan `nx8v.openDevTools()`. `false` menyembunyikan menu itu. Produksi memakai `false` |
 | `singleInstance` | `true` membuat klik kedua memunculkan jendela yang sudah ada |
 | `productName` | nama yang terlihat pengguna |
 | `shortcutName` | nama pintasan Start Menu dan desktop |

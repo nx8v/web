@@ -91,6 +91,7 @@ Halaman juga memasang `<link rel="icon" href="/images/32x32.png">`. Permintaan o
       "maximizable": true,
       "resizable": true,
       "titlebar": true,
+      "devtools": false,
       "singleInstance": true,
       "productName": "aplikasi-toko",
       "shortcutName": "aplikasi-toko",
@@ -209,6 +210,7 @@ Perintah dijalankan di folder proyek:
 | `nx8v u contoh@1.0.2` | ganti versi modul yang sudah ada di `dependencies`. Angka versinya yang diganti |
 | `nx8v p contohnamalain@1.0.0` | terbitkan isi `modules/contohnamalain/` ke repository |
 | `nx8v d contoh` | hapus `contoh` dari `dependencies`, `nx8v.lock`, dan `modules/contoh` |
+| `nx8v r contoh` | hapus rilis, tag, dan folder `contoh` dari repository |
 
 **Pasang** menulis tiga tempat:
 
@@ -246,7 +248,9 @@ nx8v p contohnamalain@1.0.0
 
 Setelah terbit, `dependencies` dan `nx8v.lock` di proyek itu ikut mencatat versi tersebut. Rilis yang tag-nya sudah ada tidak ditimpa.
 
-**Hapus** mengeluarkan nama dari daftar. `nx8v d contoh` menghapus kunci `contoh` di `project.json` dan `nx8v.lock`, lalu menghapus folder `modules/contoh`. Rilis di GitHub tidak dihapus.
+**Hapus** mengeluarkan nama dari daftar proyek. `nx8v d contoh` menghapus kunci `contoh` di `project.json` dan `nx8v.lock`, lalu menghapus folder `modules/contoh`.
+
+**Hapus dari repository** dipakai pemilik repo. `nx8v r contoh` menghapus setiap rilis bertag `contoh-<versi>`, tag itu, dan folder `contoh` di cabang utama. Perintah ini memakai GitHub CLI yang sudah masuk, sama seperti `nx8v p`. Daftar di proyek yang sedang dibuka tidak diubah.
 
 ---
 
@@ -519,6 +523,7 @@ qs.stringify({ x: 1, y: 'a b' });    // 'x=1&y=a+b'
 | `nx8v u <nama>@<versi>` | ganti versi modul yang sudah terpasang |
 | `nx8v p <nama>@<versi>` | terbitkan `modules/<nama>` ke repository |
 | `nx8v d <nama>` | hapus modul dari `dependencies` |
+| `nx8v r <nama>` | hapus rilis, tag, dan folder modul dari repository |
 | `nx8v dev [--port=N]` | development: simpan HTML memuat ulang browser; simpan JS me-restart server |
 | `nx8v start [--port=N]` | jalankan dari `project.json` |
 | `nx8v stop [--port=N]` | hentikan server proyek |
