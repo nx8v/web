@@ -1,8 +1,9 @@
-# NX8V — Runtime JavaScript berbasis V8
+# NX8V — Runtime aplikasi JavaScript yang mandiri
 
-NX8V adalah runtime JavaScript kustom (ala Node.js mini) yang dibangun dengan
-menanamkan **Google V8** sebagai mesin JS dan **libuv** sebagai event loop,
-ditulis dalam **C++17** menggunakan V8 Embedding API.
+NX8V adalah **runtime aplikasi JavaScript yang mandiri — server dan desktop —
+dalam satu binary**. Dibangun dengan menanamkan **Google V8** sebagai mesin JS
+dan **libuv** sebagai event loop, ditulis dalam **C++17** menggunakan V8
+Embedding API.
 
 ```
 script JS Anda ──▶ nx8v.exe ──▶ V8 (eksekusi JS)  +  libuv (event loop / I/O)
@@ -279,7 +280,7 @@ D:\NX8V\
 - [x] Peringatan port unsafe Chromium (mis. 6000 → ERR_UNSAFE_PORT)
 - [x] Perbaikan: duplikat request, RST saat close, keep-alive setengah jadi
 - [x] Static server mengirim `Content-Encoding: gzip` bila klien meminta `Accept-Encoding: gzip`
-- [x] Binary Linux diuji di WSL; rilis `v0.2.0` memuat `nx8v-linux-x64.tar.gz` beserta server HTTP/2 dan TLS
+- [x] Binary Linux diuji di WSL; rilis `v0.2.1` memuat `nx8v-linux-x64.tar.gz` beserta server HTTP/2 dan TLS
 
 ### Selesai — desktop ([desktop.md](desktop.md))
 

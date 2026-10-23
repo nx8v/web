@@ -291,7 +291,7 @@ https.createServer({
 }).listen(8444);
 ```
 
-Sertifikat PFX berunding TLS 1.2 dan 1.3. Pasangan `cert` dan `key` menerima `BEGIN CERTIFICATE` bersama `BEGIN PRIVATE KEY` (PKCS#8) atau `BEGIN RSA PRIVATE KEY`. Di Windows, PEM berunding TLS 1.2. Di Linux, PEM berunding TLS 1.2 dan 1.3. Kunci bertipe `BEGIN ENCRYPTED PRIVATE KEY` belum didukung; bungkus kunci itu ke dalam PFX. ALPN menawarkan `h2` lalu `http/1.1`. `req.httpVersion` berisi `"2.0"` saat klien memakai HTTP/2, dan `"HTTP/1.1"` saat klien memakai HTTP/1.1. HTTP/2 tanpa TLS (preface `PRI * HTTP/2.0`) juga diterima oleh `http.createServer`. Build Linux menautkan OpenSSL lewat `NX8V_USE_OPENSSL`, untuk klien `https://` dan `https.createServer`. Rilis v0.2.0 memuat server TLS ini. Biner yang sedang dipakai panel belum memuatnya.
+Sertifikat PFX berunding TLS 1.2 dan 1.3. Pasangan `cert` dan `key` menerima `BEGIN CERTIFICATE` bersama `BEGIN PRIVATE KEY` (PKCS#8) atau `BEGIN RSA PRIVATE KEY`. Di Windows, PEM berunding TLS 1.2. Di Linux, PEM berunding TLS 1.2 dan 1.3. Kunci bertipe `BEGIN ENCRYPTED PRIVATE KEY` belum didukung; bungkus kunci itu ke dalam PFX. ALPN menawarkan `h2` lalu `http/1.1`. `req.httpVersion` berisi `"2.0"` saat klien memakai HTTP/2, dan `"HTTP/1.1"` saat klien memakai HTTP/1.1. HTTP/2 tanpa TLS (preface `PRI * HTTP/2.0`) juga diterima oleh `http.createServer`. Build Linux menautkan OpenSSL lewat `NX8V_USE_OPENSSL`, untuk klien `https://` dan `https.createServer`. Rilis v0.2.1 memuat server TLS ini. Biner yang sedang dipakai panel belum memuatnya.
 
 **Request (`req`):**
 
