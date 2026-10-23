@@ -398,6 +398,48 @@ tbody tr:hover { background: #fafbfc; }
   .toc { display: none; }
 }
 
+/* strip statistik */
+.stats { padding: 10px 0 6px; }
+
+.stats-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 16px; text-align: left;
+}
+
+.stat {
+  border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--bg); padding: 16px 20px;
+}
+
+.stat .num {
+  display: block; font-size: 1.5rem; font-weight: 700;
+  color: var(--accent); line-height: 1.2;
+}
+
+.stat .lbl { color: var(--ink-soft); font-size: 0.82rem; line-height: 1.45; }
+
+/* chip modul */
+.mod-chips { display: flex; flex-wrap: wrap; gap: 9px; }
+
+.mod-chips span {
+  font-size: 0.8rem; color: var(--accent-strong);
+  background: var(--accent-soft);
+  border: 1px solid #d3e3f5;
+  border-radius: 8px; padding: 6px 13px;
+}
+
+.mod-note { margin: 20px 0 0; font-size: 0.92rem; }
+.mod-note a { font-weight: 600; }
+
+/* ikon kartu fitur */
+.c-ico {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; border-radius: 9px;
+  background: var(--accent-soft); color: var(--accent);
+  margin-bottom: 10px;
+}
+.c-ico svg { width: 18px; height: 18px; }
+
 /* ================= footer ================= */
 .footer { border-top: 1px solid var(--line); background: var(--bg-alt); padding: 40px 0 26px; }
 
@@ -439,6 +481,7 @@ tbody tr:hover { background: #fafbfc; }
 
 @media (max-width: 560px) {
   .cards { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
   .section { padding: 60px 0; }
   .hero { padding: 56px 0 48px; }
   .footer .inner { flex-direction: column; align-items: flex-start; }
