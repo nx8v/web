@@ -126,6 +126,8 @@ nx8v.close();
 
 `nx8v.setTitle(...)` tetap mengubah nama di taskbar. Tulisan di bilah halaman diatur oleh HTML. Contohnya ada di `example/public/titlebar.html`.
 
+Pemantau ukuran halaman (`ResizeObserver`) menunggu elemen `<html>` ada. Skrip jembatan jendela berjalan sebelum tag itu terbentuk, jadi pemantauan tidak dipasang pada nilai kosong.
+
 Semua method jendela bersifat fire-and-forget (tidak mengembalikan Promise).
 Dialog dan tray mengembalikan Promise.
 
@@ -288,6 +290,7 @@ dist/<nama>-<versi>-linux-x64.tar.gz
 Satu perintah `nx8v package` menulis dua berkas unduhan, seperti folder rilis:
 pemasang Windows `Nama-Setup-versi.exe` dan arsip Linux `Nama-versi-linux-x64.tar.gz`.
 Di Linux: `tar -xzf` arsip itu, masuk ke foldernya, lalu `./start.sh`.
+Runtime Linux yang dibungkus adalah berkas `nx8v-linux` di folder yang sama dengan `nx8v.exe`.
 Jendela desktop Linux belum ada, jadi paket Linux menjalankan server.
 
 `server.js`, `project.json`, dan `public/` tidak ikut sebagai berkas terpisah.
@@ -358,8 +361,11 @@ Untuk host → halaman wajib `PostWebMessageAsJson` (memakai
 | `example/public/bridge.html` | uji `setTitle`, dialog open/save/folder |
 | `example/public/tray.html` | uji tray, menu, notifikasi |
 | `example/public/dialogtest.html` | dialog otomatis (untuk uji cepat) |
-| `example/server.js` | backend: fetch HTTPS + serve halaman |
-| `example/public/index.html` | halaman utama galeri |
+| `example/project.json` | `dependencies`: `photos` dan `cotoh` |
+| `example/server.js` | memanggil modul `photos`. Halaman dilayani NX8V |
+| `example/modules/photos/` | API foto: `/api/photos`, `/api/status`, `/api/refresh`. Masuknya `index.js` |
+| `example/modules/cotoh/` | modul halaman. Masuknya `index.js`, dipanggil `<script type="module" src="cotoh"></script>` |
+| `example/public/index.html` | halaman utama galeri, memuat modul `cotoh` |
 | `example/public/about.html` | halaman About, memakai partial yang sama |
 | `example/public/header.html` | komponen header yang dipakai berulang |
 
@@ -396,7 +402,7 @@ Untuk host → halaman wajib `PostWebMessageAsJson` (memakai
 
 | Kunci | Pakai |
 |---|---|
-| `icon` | png, jpg, webp, bmp, atau ico untuk jendela, exe, dan pintasan |
+| `icon` | png, jpg, webp, bmp, atau ico untuk jendela, exe, dan pintasan. `nx8v init` menulis `./images/32x32.png`; berkasnya ada di `public/assets/images/32x32.png`. Path penuh dari folder proyek, misalnya `./public/assets/images/32x32.png`, tetap dibaca bila berkasnya ada |
 | `state` | tampilan saat aplikasi diklik: `normal`, `maximized`, atau `minimized` |
 | `width`, `height` | ukuran jendela. Pada `normal` ini ukuran yang tampil. Pada `maximized` atau `minimized` ini ukuran setelah jendela dikembalikan |
 | `minWidth`, `minHeight` | batas terkecil saat pengguna menarik tepi jendela |

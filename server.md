@@ -53,12 +53,22 @@ Hasil:
 
 ```
 D:\proyek-saya\
-├── project.json        # name, description, port, scripts
-├── server.js           # HTTP server siap pakai
+├── project.json          # "dependencies": {}
+├── server.js
+├── modules\              # folder modul, masih kosong
 └── public\
     ├── index.html
-    └── about.html
+    ├── about.html
+    └── assets\
+        ├── css\style.css
+        ├── js\app.js
+        ├── fonts\
+        └── images\32x32.png    # ikon merek NX8V
 ```
+
+Folder `assets` tetap ada. CSS, JS, font, dan gambar tinggal di dalamnya. Di HTML pathnya ditulis pendek: `/css/style.css`, `/js/app.js`, dan `/images/32x32.png`. NX8V mencari berkas itu di `public/` dulu, lalu di `public/assets/`, sebelum `server.js` dijalankan.
+
+Halaman juga memasang `<link rel="icon" href="/images/32x32.png">`. Permintaan otomatis `/favicon.ico` memakai ikon yang sama bila proyek belum punya `favicon.ico` sendiri.
 
 `project.json`:
 
@@ -68,7 +78,26 @@ D:\proyek-saya\
   "version": "1.0.0",
   "description": "Aplikasi toko sederhana",
   "main": "server.js",
-  "nx8v": { "port": 4000 },
+  "nx8v": {
+    "port": 4000,
+    "desktop": {
+      "icon": "./images/32x32.png",
+      "state": "normal",
+      "width": 800,
+      "height": 560,
+      "minWidth": 640,
+      "minHeight": 400,
+      "center": true,
+      "maximizable": true,
+      "resizable": true,
+      "titlebar": true,
+      "singleInstance": true,
+      "productName": "aplikasi-toko",
+      "shortcutName": "aplikasi-toko",
+      "artifactName": "aplikasi-toko-Setup-${version}.exe"
+    }
+  },
+  "dependencies": {},
   "scripts": {
     "start": "nx8v start",
     "dev": "nx8v dev",
@@ -76,6 +105,8 @@ D:\proyek-saya\
   }
 }
 ```
+
+`"icon": "./images/32x32.png"` menunjuk berkas `public/assets/images/32x32.png`. Path panjang seperti `./public/assets/images/32x32.png` tetap berlaku bila berkasnya ada di situ.
 
 Port bisa dioverride tanpa mengubah file: `nx8v start --port=5000`, atau lewat
 environment `NX8V_PORT` / `PORT` (dibaca `server.js`).
@@ -86,32 +117,71 @@ environment `NX8V_PORT` / `PORT` (dibaca `server.js`).
 
 ```
 proyek/
-├── project.json      # metadata + port
+├── project.json      # metadata, port, desktop, dependencies
 ├── server.js         # entry point (main)
-├── public/           # file statis (HTML/CSS/JS/gambar)
+├── modules/          # modul proyek; nama dan index.js wajib
+│   └── cotoh/
+│       └── index.js
+├── public/
 │   ├── index.html
-│   └── about.html
+│   ├── about.html
+│   └── assets/
+│       ├── css/
+│       ├── js/
+│       ├── fonts/
+│       └── images/
 └── nx8v.log          # dibuat otomatis saat `nx8v start`
 ```
 
-`server.js` hasil `init` sudah menyediakan:
-
-- Static file server dari `public/` dengan MIME type
-- Smart routing: `/about` → `about.html`, `/about/data/u` → `about.html`
-- `Cache-Control: no-store` (aman untuk development)
-- Contoh endpoint API: `GET /api/hello`
-
-Smart routing bekerja otomatis dari struktur folder — menambah halaman cukup
-dengan menaruh file di `public/`:
+NX8V melayani berkas di `public/` sebelum `server.js`. Menambah halaman cukup
+dengan menaruh file di folder itu:
 
 | URL | File yang dicari |
 |-----|------------------|
 | `/` | `public/index.html` |
 | `/about` | `public/about.html` lalu `public/about/index.html` |
 | `/about/data/u` | `public/about/data/u.html`, `about/data.html`, **`about.html`** |
-| `/style.css` | `public/style.css` (punya ekstensi = apa adanya) |
+| `/js/dll.js` | `public/assets/js/dll.js`. Path halaman diawali `/js` |
+| `/css/style.css` | `public/assets/css/style.css` |
+| `/images/32x32.png` | `public/assets/images/32x32.png` |
+| `/favicon.ico` | `public/favicon.ico`, lalu ikon `public/assets/images/32x32.png` |
+| `/cotoh` | `modules/cotoh/index.js` |
 
-Segmen ekstra (`data/u`) tetap utuh di `req.url`, jadi bisa dibaca sebagai data.
+Bila tidak ada berkas yang cocok, permintaan masuk ke `server.js`. Di situ cukup
+rute milik proyek, misalnya `GET /api/hello`. `server.js` hasil `init` tidak
+lagi memuat pemetaan folder.
+
+### Modul
+
+Modul proyek ditaruh di `modules/`. Dua hal wajib:
+
+1. Nama di `dependencies` pada `project.json`.
+2. Berkas masuk `index.js` di folder yang ditunjuk nama itu.
+
+```json
+"dependencies": {
+  "cotoh": "cotoh",
+  "photos": "photos"
+}
+```
+
+Nilainya nama modul saja. NX8V membaca folder `modules/` di sebelah `project.json`.
+
+| Yang dibuat | Bentuk |
+|---|---|
+| Nama | `"cotoh": "cotoh"` |
+| Folder | `modules/cotoh` |
+| Berkas masuk | `modules/cotoh/index.js` |
+
+Di HTML cukup nama itu:
+
+```html
+<script type="module" src="cotoh"></script>
+```
+
+Browser meminta `/cotoh`. NX8V mengembalikan `modules/cotoh/index.js`. `/cotoh/index.js` adalah berkas yang sama. Nama yang tidak tertulis di `dependencies` tidak dilayani.
+
+`require('./modules/photos')` di `server.js` juga membuka `index.js` folder itu. `photos` untuk server. `cotoh` untuk halaman. `nx8v init` membuat folder `modules/` dan menulis `"dependencies": {}`.
 
 ---
 
@@ -145,12 +215,14 @@ server.listen(3000, () => console.log('http://localhost:3000'));
 
 | Method | Keterangan |
 |---|---|
-| `res.writeHead(status[, message][, headers])` | kirim status + header |
+| `res.writeHead(status[, message][, headers])` | kirim status + header. Tanpa `message`, kalimat status mengikuti kode: `404` menjadi `Not Found` |
 | `res.setHeader(name, value)` | set satu header |
 | `res.getHeader(name)` | baca header |
-| `res.write(chunk)` | tulis body (di-buffer) |
-| `res.end([chunk][, cb])` | kirim respons, tutup koneksi |
-| `res.statusCode` | status default 200 |
+| `res.write(chunk)` | tulis body (di-buffer). `chunk` boleh string atau `Buffer` |
+| `res.end([chunk][, cb])` | kirim respons, tutup koneksi. Byte `0x00` di dalam PNG ikut terkirim |
+| `res.statusCode` | status default 200. Mengubah angka ini juga mengganti kalimat status |
+
+`fs.readFile` dan `fs.readFileSync` tanpa encoding mengembalikan `Buffer`, jadi gambar tidak rusak saat dikirim lewat `res.end`. Encoding `'utf8'` tetap mengembalikan string. `data.toString()` memakai teks UTF-8.
 
 **Event server:** `listening`, `request`, `connection`, `close`, `error`, `websocket`.
 
@@ -349,7 +421,7 @@ Modul yang paling sering dipakai server:
 
 | Modul | Kegunaan |
 |---|---|
-| `fs` | baca/tulis file, `createReadStream`, `createWriteStream`, `watch` |
+| `fs` | baca/tulis file. `readFile` tanpa encoding mengembalikan `Buffer` |
 | `path` | `join`, `resolve`, `dirname`, `basename`, `extname`, `parse`, `format` |
 | `querystring` | `parse`, `stringify`, `escape`, `unescape`, `URLSearchParams` |
 | `url` | parse URL (`href`, `pathname`, `search`, `host`, …) |
@@ -521,6 +593,8 @@ Folder hasil bisa di-zip dan dikirim; penerima cukup menjalankan `start.cmd`.
 | `ERR_UNSAFE_PORT` di browser | Port diblokir Chrome (mis. 6000). Pakai 3000/4000/8080. |
 | Browser reload terus | Sudah diperbaiki; pastikan exe terbaru. |
 | `Cannot find module 'X'` | Modul bukan built-in → cek path relatif, atau daftar modul di §9. |
-| `EADDRINUSE` | Port dipakai proses lain → `nx8v list`, lalu `nx8v stop --port=N`. |
+| `EADDRINUSE` / `address already in use` | Port dipakai proses lain → `nx8v list`, lalu `nx8v stop --port=N`. |
+| Gambar rusak atau hanya beberapa byte | `res.end` harus menerima `Buffer` dari `readFile`. Pakai exe terbaru. |
+| `404` pada `/favicon.ico` | Letakkan `public/favicon.ico`, atau biarkan server memakai `public/assets/images/32x32.png`. |
 | `invalid URL` pada fetch | Skema harus `http://` atau `https://`. |
 | Halaman tidak berubah | `Cache-Control: no-store` + hard refresh (Ctrl+Shift+R). |
