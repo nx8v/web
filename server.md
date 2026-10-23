@@ -20,6 +20,7 @@ Daftar isi:
 10. [CLI server](#10-cli-server)
 11. [Deployment](#11-deployment)
 12. [Contoh di repo](#12-contoh-di-repo)
+13. [Uji tiga server](#13-uji-tiga-server)
 
 ---
 
@@ -657,6 +658,50 @@ Folder hasil bisa di-zip dan dikirim; penerima cukup menjalankan `start.cmd`.
 | `samples/timers.js` | setTimeout/setInterval |
 | `samples/basic.test.js` | contoh test |
 | `example/` | proyek lengkap: galeri foto dari API (fetch HTTPS) |
+
+---
+
+## 13. Uji tiga server
+
+Uji 23 Oktober 2026 di tiga server Docker pada WSL Ubuntu-22.04.
+Susunan server ada di `D:\server\README.md`. NX8V berjalan sebagai proses
+sendiri. aaPanel, OpenLiteSpeed, dan Apache hanya meneruskan jalur `/nx8v/`.
+Situs yang sudah ada tetap di akarnya.
+
+Akses dari Windows memakai IP WSL. Di mesin uji, `localhost` tidak meneruskan
+port container. IP saat uji: `192.168.144.198`. Cek ulang dengan
+`wsl -d Ubuntu-22.04 -u root hostname -I`.
+
+| Server | URL | Halaman | `/nx8v/api/where` |
+|---|---|---|---|
+| aaPanel | `http://192.168.144.198:8080/nx8v/` | HTTP 200 | `{"runtime":"nx8v","host":"437e50fe88dd"}` |
+| OpenLiteSpeed | `http://192.168.144.198:8082/nx8v/` | HTTP 200 | `{"runtime":"nx8v","host":"DANTRIK"}` |
+| Apache | `http://192.168.144.198:8083/nx8v/` | HTTP 200 | `{"runtime":"nx8v","host":"acaf18fee8e1"}` |
+
+Halaman menampilkan judul **NX8V Server & web**, lalu mengisi nama host dari
+`fetch('api/where')`. Situs NxPHP di OpenLiteSpeed (`Host: nxd-cyber.local`
+pada port 8082) tetap HTTP 200 setelah jalur `/nx8v/` dipasang.
+
+Proyek uji: `D:\server\nx8v-app` (`project.json`, `server.js`,
+`public/index.html`). Port dengar `6002`. Binary Linux yang dipakai
+`build/linux/nx8v` (glibc 2.34).
+
+| Server | Tempat proses | Proxy |
+|---|---|---|
+| aaPanel, container `aapanel` (glibc 2.35) | `/opt/nx8v`, `127.0.0.1:6002` | `D:\server\docker\aapanel\nx8v-proxy.conf` |
+| Apache, container `apache` (glibc 2.41) | `/opt/nx8v`, `127.0.0.1:6002` | `D:\server\docker\apache\nx8v-proxy.conf` |
+| OpenLiteSpeed, container CyberPanel (glibc 2.17) | proses di WSL, gateway `172.18.0.1:6002` | `D:\server\nx8v-app\ols-nx8v.snippet` |
+
+Container CyberPanel memakai glibc 2.17, jadi binary ini dijalankan di WSL
+dan OpenLiteSpeed meneruskan ke gateway Docker. aaPanel dan Apache
+menjalankan binary yang sama di dalam masing-masing container.
+
+Menyalakan ulang setelah WSL atau container hidup kembali:
+
+```bash
+wsl -d Ubuntu-22.04 -u root bash /mnt/d/server/nx8v-app/install-servers.sh
+wsl -d Ubuntu-22.04 -u root bash /mnt/d/server/nx8v-app/enable-proxy.sh
+```
 
 ---
 
