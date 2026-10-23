@@ -126,7 +126,7 @@ proyek/
 ├── project.json      # metadata, port, desktop, dependencies
 ├── server.js         # entry point (main)
 ├── modules/          # modul proyek; nama dan index.js wajib
-│   └── cotoh/
+│   └── contoh/
 │       └── index.js
 ├── public/
 │   ├── index.html
@@ -151,7 +151,7 @@ dengan menaruh file di folder itu:
 | `/css/style.css` | `public/assets/css/style.css` |
 | `/images/32x32.png` | `public/assets/images/32x32.png` |
 | `/favicon.ico` | `public/favicon.ico`, lalu ikon `public/assets/images/32x32.png` |
-| `/cotoh` | `modules/cotoh/index.js` |
+| `/contoh` | `modules/contoh/index.js` |
 
 Bila tidak ada berkas yang cocok, permintaan masuk ke `server.js`. Di situ cukup
 rute milik proyek, misalnya `GET /api/hello`. `server.js` hasil `init` tidak
@@ -166,29 +166,29 @@ Modul proyek ditaruh di `modules/`. Dua hal wajib:
 
 ```json
 "dependencies": {
-  "cotoh": "1.0.0",
+  "contoh": "1.0.0",
   "photos": "1.0.0"
 }
 ```
 
-Kuncinya nama modul. Nilainya versi. Folder selalu `modules/` ditambah nama itu, jadi `"cotoh": "1.0.0"` berarti `modules/cotoh/index.js`.
+Kuncinya nama modul. Nilainya versi. Folder selalu `modules/` ditambah nama itu, jadi `"contoh": "1.0.0"` berarti `modules/contoh/index.js`.
 
 | Yang dibuat | Bentuk |
 |---|---|
-| Nama | kunci `cotoh` |
+| Nama | kunci `contoh` |
 | Versi | `1.0.0` |
-| Folder | `modules/cotoh` |
-| Berkas masuk | `modules/cotoh/index.js` |
+| Folder | `modules/contoh` |
+| Berkas masuk | `modules/contoh/index.js` |
 
 Di HTML cukup nama itu:
 
 ```html
-<script type="module" src="cotoh"></script>
+<script type="module" src="contoh"></script>
 ```
 
-Browser meminta `/cotoh`. NX8V mengembalikan `modules/cotoh/index.js`. `/cotoh/index.js` adalah berkas yang sama. Nama yang tidak tertulis di `dependencies` tidak dilayani.
+Browser meminta `/contoh`. NX8V mengembalikan `modules/contoh/index.js`. `/contoh/index.js` adalah berkas yang sama. Nama yang tidak tertulis di `dependencies` tidak dilayani.
 
-`require('./modules/photos')` di `server.js` juga membuka `index.js` folder itu. `photos` untuk server. `cotoh` untuk halaman. `nx8v init` membuat folder `modules/`, `"dependencies": {}`, dan `repository` yang menunjuk ke mega-repo internal NX8V.
+`require('./modules/photos')` di `server.js` juga membuka `index.js` folder itu. `photos` untuk server. `contoh` untuk halaman. `nx8v init` membuat folder `modules/`, `"dependencies": {}`, dan `repository` yang menunjuk ke mega-repo internal NX8V.
 
 ### Dependensi
 

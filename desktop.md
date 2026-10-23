@@ -398,11 +398,11 @@ Untuk host → halaman wajib `PostWebMessageAsJson` (memakai
 | `example/public/bridge.html` | uji `setTitle`, dialog open/save/folder |
 | `example/public/tray.html` | uji tray, menu, notifikasi |
 | `example/public/dialogtest.html` | dialog otomatis (untuk uji cepat) |
-| `example/project.json` | `dependencies`: `photos` dan `cotoh` |
+| `example/project.json` | `dependencies`: `photos` dan `contoh` |
 | `example/server.js` | memanggil modul `photos`. Halaman dilayani NX8V |
 | `example/modules/photos/` | API foto: `/api/photos`, `/api/status`, `/api/refresh`. Masuknya `index.js` |
-| `example/modules/cotoh/` | modul halaman. Masuknya `index.js`, dipanggil `<script type="module" src="cotoh"></script>` |
-| `example/public/index.html` | halaman utama galeri, memuat modul `cotoh` |
+| `example/modules/contoh/` | modul halaman. Masuknya `index.js`, dipanggil `<script type="module" src="contoh"></script>` |
+| `example/public/index.html` | halaman utama galeri, memuat modul `contoh` |
 | `example/public/about.html` | halaman About, memakai partial yang sama |
 | `example/public/header.html` | komponen header yang dipakai berulang |
 
