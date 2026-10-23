@@ -98,6 +98,10 @@ Halaman juga memasang `<link rel="icon" href="/images/32x32.png">`. Permintaan o
     }
   },
   "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nx8v/dependencies.git"
+  },
   "scripts": {
     "start": "nx8v start",
     "dev": "nx8v dev",
@@ -182,7 +186,64 @@ Di HTML cukup nama itu:
 
 Browser meminta `/cotoh`. NX8V mengembalikan `modules/cotoh/index.js`. `/cotoh/index.js` adalah berkas yang sama. Nama yang tidak tertulis di `dependencies` tidak dilayani.
 
-`require('./modules/photos')` di `server.js` juga membuka `index.js` folder itu. `photos` untuk server. `cotoh` untuk halaman. `nx8v init` membuat folder `modules/` dan menulis `"dependencies": {}`.
+`require('./modules/photos')` di `server.js` juga membuka `index.js` folder itu. `photos` untuk server. `cotoh` untuk halaman. `nx8v init` membuat folder `modules/`, `"dependencies": {}`, dan `repository` yang menunjuk ke mega-repo internal NX8V.
+
+### Memasang modul
+
+`repository` di `project.json` menentukan dari mana modul diambil. Bawaannya adalah repo internal NX8V, `https://github.com/nx8v/dependencies.git`. Saat materi dependensi dipublikasikan, `url` diganti ke repositori milik user.
+
+```json
+"repository": {
+  "type": "git",
+  "url": "https://github.com/nx8v/dependencies.git"
+}
+```
+
+Perintahnya:
+
+```text
+nx8v i contoh@1.0.0
+```
+
+NX8V membaca `repository.type` dan `repository.url`, lalu mengambil folder `contoh/1.0.0/index.js` dari repo git itu. Hasilnya `modules/contoh/index.js`, entri `"contoh": "1.0.0"` di `dependencies`, dan catatan di `nx8v.lock`:
+
+```json
+{
+  "dependencies": {
+    "contoh": {
+      "version": "1.0.0",
+      "resolved": "https://github.com/nx8v/dependencies.git"
+    }
+  }
+}
+```
+
+### Menerbitkan modul
+
+Registry bawaan adalah repo git **`nx8v/dependencies`**. Satu versi modul
+sama dengan satu folder: `<modul>/<versi>/index.js`.
+
+Langkah menerbitkan (contoh `cotoh` 1.0.0):
+
+1. Siapkan modul secara lokal di `modules/cotoh/index.js` dan uji dengan
+   `dependencies` pada `project.json` sendiri.
+2. Di repo registry, tambahkan foldernya:
+
+```text
+cotoh/1.0.0/index.js
+```
+
+3. Commit, lalu buat tag anotasi `cotoh-1.0.0`.
+4. Buat GitHub Release dengan judul sama, lampirkan `index.js` sebagai
+   aset — dari situlah orang mengunduh berkas modulnya.
+5. Versi berikutnya cukup folder baru (`cotoh/1.0.1/`), tag `cotoh-1.0.1`,
+   dan Release-nya; folder versi lama tetap utuh.
+
+Setelah terbit, aplikasi pemasangnya dengan `nx8v i cotoh@1.0.0`.
+
+> **Rencana:** perintah `nx8v publish` untuk mendorong folder `modules/`
+> langsung ke registry (commit + tag + Release otomatis) belum ada —
+> langkah di atas masih manual.
 
 ---
 
@@ -451,6 +512,7 @@ qs.stringify({ x: 1, y: 'a b' });    // 'x=1&y=a+b'
 | Perintah | Fungsi |
 |---|---|
 | `nx8v init` | wizard pembuatan proyek |
+| `nx8v i <nama>@<versi>` | pasang modul dari `repository` di `project.json` |
 | `nx8v dev [--port=N]` | development: simpan HTML memuat ulang browser; simpan JS me-restart server |
 | `nx8v start [--port=N]` | jalankan dari `project.json` |
 | `nx8v stop [--port=N]` | hentikan server proyek |
