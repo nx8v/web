@@ -11,6 +11,7 @@
   <meta property="og:description" content="Runtime JavaScript open source dalam satu binary: V8 + libuv, REPL, HTTP server, dan tooling proyek." />
   <link rel="icon" type="image/png" href="icon.png" />
   <link rel="stylesheet" href="style.css" />
+  <script src="https://unpkg.com/lucide@latest" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main" data-i18n="skip">Langsung ke konten</a>
@@ -44,7 +45,6 @@
     <section class="hero">
       <div class="container grid">
         <div>
-          <p class="hero-claim mono" data-i18n="hero.claim">Cukup HTML, CSS, JavaScript — sisanya NX8V.</p>
           <h1 data-i18n="hero.title">Jalankan JavaScript.</h1>
           <p data-i18n="hero.desc">
             NX8V adalah runtime JavaScript open source dalam satu binary C++ — mesin V8,
@@ -69,15 +69,6 @@ http.<span class="f">createServer</span>((req, res) =&gt; {
       </div>
     </section>
 
-    <!-- Statistik -->
-    <section class="stats" aria-label="Ringkasan singkat">
-      <div class="container stats-grid">
-        <div class="stat"><span class="num mono">1</span><span class="lbl" data-i18n="st.1">binary ~34 MB — tanpa dependensi</span></div>
-        <div class="stat"><span class="num mono">17</span><span class="lbl" data-i18n="st.2">modul built-in</span></div>
-        <div class="stat"><span class="num mono">2</span><span class="lbl" data-i18n="st.3">jalur: server &amp; desktop</span></div>
-        <div class="stat"><span class="num mono">60</span><span class="lbl" data-i18n="st.4">detik sampai server jalan</span></div>
-      </div>
-    </section>
 
     <!-- Dua jalur penggunaan -->
     <section id="jalur" class="section alt">
@@ -86,7 +77,7 @@ http.<span class="f">createServer</span>((req, res) =&gt; {
         <p class="sec-sub" data-i18n="pj.sub">Pilih jalur: server web atau aplikasi desktop — runtime yang sama.</p>
         <div class="cards two">
           <article class="card path">
-            <h3 data-i18n="pj.1.t">Server &amp; web</h3>
+            <span class="p-ico"><i data-lucide="server"></i></span><h3 data-i18n="pj.1.t">Server &amp; web</h3>
             <p data-i18n="pj.1.d">Jalankan aplikasi web penuh: HTTP/HTTPS, router, static file dengan ETag &amp; Range, WebSocket, dan komponen HTML partial.</p>
             <ul class="path-list mono">
               <li>http / https</li>
@@ -100,7 +91,7 @@ http.<span class="f">createServer</span>((req, res) =&gt; {
             <a class="path-link mono" href="panduan.html#s-judul" data-i18n="pj.1.link">Buka panduan server &#8594;</a>
           </article>
           <article class="card path">
-            <h3 data-i18n="pj.2.t">Desktop</h3>
+            <span class="p-ico"><i data-lucide="app-window"></i></span><h3 data-i18n="pj.2.t">Desktop</h3>
             <p data-i18n="pj.2.d"><code class="mono">nx8v window</code> membuka jendela WebView2 dengan bridge <code class="mono">window.nx8v</code> — jendela desktop native yang ringan.</p>
             <ul class="path-list mono">
               <li>webview2 window</li>
@@ -124,27 +115,27 @@ http.<span class="f">createServer</span>((req, res) =&gt; {
         <p class="sec-sub" data-i18n="fit.sub">API inti yang tersedia langsung di dalam runtime.</p>
         <div class="cards">
           <article class="card">
-            <span class="c-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17l6-5-6-5"/><path d="M12 19h8"/></svg></span><h3 data-i18n="fit.1.t">Eksekusi script &amp; REPL</h3>
+            <span class="c-ico"><i data-lucide="terminal"></i></span><h3 data-i18n="fit.1.t">Eksekusi script &amp; REPL</h3>
             <p data-i18n="fit.1.d">Jalankan <code class="mono">nx8v script.js</code> atau masuk REPL interaktif dengan <code class="mono">nx8v</code> tanpa argumen.</p>
           </article>
           <article class="card">
-            <span class="c-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><polyline points="21 4 21 10 15 10"/></svg></span><h3 data-i18n="fit.2.t">Event loop libuv</h3>
+            <span class="c-ico"><i data-lucide="refresh-cw"></i></span><h3 data-i18n="fit.2.t">Event loop libuv</h3>
             <p data-i18n="fit.2.d"><code class="mono">Promise</code> dan <code class="mono">async/await</code> bekerja secara native lewat microtask pump.</p>
           </article>
           <article class="card">
-            <span class="c-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4.5v9L12 20l-8-4.5v-9L12 2z"/><path d="M12 11l8-4.5M12 11v9M12 11L4 6.5"/></svg></span><h3 data-i18n="fit.3.t">require() &amp; ES Modules</h3>
+            <span class="c-ico"><i data-lucide="package"></i></span><h3 data-i18n="fit.3.t">require() &amp; ES Modules</h3>
             <p data-i18n="fit.3.d">CommonJS dengan cache (<code class="mono">__filename</code>, <code class="mono">__dirname</code>) plus <code class="mono">import</code>/<code class="mono">export</code> untuk file <code class="mono">.mjs</code>.</p>
           </article>
           <article class="card">
-            <span class="c-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg></span><h3 data-i18n="fit.4.t">fetch HTTPS &amp; router</h3>
+            <span class="c-ico"><i data-lucide="globe"></i></span><h3 data-i18n="fit.4.t">fetch HTTPS &amp; router</h3>
             <p data-i18n="fit.4.d">Fetch Promise-based HTTP/HTTPS, router (params &amp; middleware), plus komponen HTML <code class="mono">partial</code> yang digabung server.</p>
           </article>
           <article class="card">
-            <span class="c-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg></span><h3 data-i18n="fit.5.t">WebSocket &amp; stream</h3>
+            <span class="c-ico"><i data-lucide="zap"></i></span><h3 data-i18n="fit.5.t">WebSocket &amp; stream</h3>
             <p data-i18n="fit.5.d">Server + client WebSocket (RFC 6455), dan stream <code class="mono">Readable</code>/<code class="mono">Writable</code>/<code class="mono">Duplex</code> dengan <code class="mono">pipe</code>.</p>
           </article>
           <article class="card">
-            <span class="c-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3"/><path d="M1 14h6M9 8h6M17 16h6"/></svg></span><h3 data-i18n="fit.6.t">Tooling, test &amp; desktop</h3>
+            <span class="c-ico"><i data-lucide="sliders-horizontal"></i></span><h3 data-i18n="fit.6.t">Tooling, test &amp; desktop</h3>
             <p data-i18n="fit.6.d"><code class="mono">nx8v init/dev/start/stop/list/logs</code> + <code class="mono">package</code> — dev menyegarkan browser saat HTML/CSS berubah; <code class="mono">nx8v window</code>: dialog, tray, notifikasi, multi-window.</p>
           </article>
         </div>
@@ -213,18 +204,18 @@ console.<span class="f">log</span>(crypto.<span class="f">randomUUID</span>());<
         <p class="sec-sub" data-i18n="qs.sub">Tiga langkah dari nol sampai HTTP server berjalan.</p>
         <ol class="steps">
           <li>
-            <h3 data-i18n="qs.1.t">1. Pasang sekali</h3>
+            <span class="s-ico"><i data-lucide="download"></i></span><h3 data-i18n="qs.1.t">1. Pasang sekali</h3>
             <p data-i18n="qs.1.d">Binary masuk ke PATH user dan dapat dipanggil dari direktori mana pun.</p>
             <pre class="snip mono"><code>powershell -ExecutionPolicy Bypass -File D:\NX8V\install.ps1</code></pre>
           </li>
           <li>
-            <h3 data-i18n="qs.2.t">2. Buat proyek</h3>
+            <span class="s-ico"><i data-lucide="file-plus-2"></i></span><h3 data-i18n="qs.2.t">2. Buat proyek</h3>
             <p data-i18n="qs.2.d">Wizard menghasilkan <code class="mono">project.json</code>, <code class="mono">server.js</code>, dan folder <code class="mono">public/</code>.</p>
             <pre class="snip mono"><code>cd D:\proyek-saya
 nx8v init</code></pre>
           </li>
           <li>
-            <h3 data-i18n="qs.3.t">3. Jalankan</h3>
+            <span class="s-ico"><i data-lucide="play"></i></span><h3 data-i18n="qs.3.t">3. Jalankan</h3>
             <p data-i18n="qs.3.d">Server statik aktif beserta contoh endpoint <code class="mono">GET /api/hello</code>.</p>
             <pre class="snip mono"><code>nx8v server.js</code></pre>
           </li>
@@ -254,6 +245,6 @@ nx8v init</code></pre>
     </div>
   </footer>
 
-  <script src="index.js"></script>
+  <script src="index.js" defer></script>
 </body>
 </html>

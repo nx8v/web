@@ -397,27 +397,7 @@ tbody tr:hover { background: #fafbfc; }
   .doc-layout { grid-template-columns: 1fr; }
   .toc { display: none; }
 }
-
-/* strip statistik */
-.stats { padding: 6px 0 10px; }
-
-.stats-grid {
-  display: grid; grid-template-columns: repeat(4, 1fr);
-  gap: 16px; text-align: left;
-}
-
-.stat {
-  border: 1px solid var(--line); border-radius: var(--radius);
-  background: var(--bg); padding: 16px 20px;
-}
-
-.stat .num {
-  display: block; font-size: 1.5rem; font-weight: 700;
-  color: var(--accent); line-height: 1.2;
-}
-
-.stat .lbl { color: var(--ink-soft); font-size: 0.82rem; line-height: 1.45; }
-
+`r`n
 /* chip modul */
 .mod-chips { display: flex; flex-wrap: wrap; gap: 9px; }
 
@@ -481,7 +461,6 @@ tbody tr:hover { background: #fafbfc; }
 
 @media (max-width: 560px) {
   .cards { grid-template-columns: 1fr; }
-  .stats-grid { grid-template-columns: repeat(2, 1fr); }
   .section { padding: 60px 0; }
   .hero { padding: 56px 0 48px; }
   .footer .inner { flex-direction: column; align-items: flex-start; }

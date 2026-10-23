@@ -2,6 +2,10 @@
 (function () {
   "use strict";
 
+  if (window.lucide && typeof window.lucide.createIcons === "function") {
+    window.lucide.createIcons();
+  }
+
   var I18N = {
     id: {
       "meta.title": "NX8V — Runtime JavaScript berbasis V8",
@@ -24,10 +28,6 @@
       "hero.cta1": "Mulai Sekarang",
       "hero.cta2": "Lihat Contoh",
       "hero.meta": "C++17 · mesin V8 · libuv · Windows & Linux",
-      "st.1": "binary ~34 MB — tanpa dependensi",
-      "st.2": "modul built-in",
-      "st.3": "jalur: server & desktop",
-      "st.4": "detik sampai server jalan",
       "pj.title": "Dua jalur penggunaan",
       "pj.sub": "Pilih jalur: server web atau aplikasi desktop — runtime yang sama.",
       "pj.1.t": "Server & web",
@@ -109,10 +109,6 @@
       "hero.cta1": "Get started",
       "hero.cta2": "See examples",
       "hero.meta": "C++17 · V8 engine · libuv · Windows & Linux",
-      "st.1": "single binary ~34 MB — no dependencies",
-      "st.2": "built-in modules",
-      "st.3": "paths: server & desktop",
-      "st.4": "seconds to a running server",
       "pj.title": "Two ways to use it",
       "pj.sub": "Pick a path: web server or desktop app — the same runtime.",
       "pj.1.t": "Server & web",
