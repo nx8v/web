@@ -188,9 +188,9 @@ Browser meminta `/cotoh`. NX8V mengembalikan `modules/cotoh/index.js`. `/cotoh/i
 
 `require('./modules/photos')` di `server.js` juga membuka `index.js` folder itu. `photos` untuk server. `cotoh` untuk halaman. `nx8v init` membuat folder `modules/`, `"dependencies": {}`, dan `repository` yang menunjuk ke mega-repo internal NX8V.
 
-### Memasang modul
+### Dependensi
 
-`repository` di `project.json` menentukan dari mana modul diambil. Bawaannya adalah repo internal NX8V, `https://github.com/nx8v/dependencies.git`. Saat materi dependensi dipublikasikan, `url` diganti ke repositori milik user.
+`repository` di `project.json` adalah tempat modul diambil dan diterbitkan. Bawaannya repo internal NX8V. Saat materi dependensi dipublikasikan dari repo milik user, `url` diganti.
 
 ```json
 "repository": {
@@ -199,51 +199,54 @@ Browser meminta `/cotoh`. NX8V mengembalikan `modules/cotoh/index.js`. `/cotoh/i
 }
 ```
 
-Perintahnya:
+Satu versi sama dengan satu GitHub Release. Nama dan versi pada perintah menjadi tag `<nama>-<versi>`. Aset rilis disalin ke `modules/<nama>/`. Berkas masuknya `index.js`. Berkas lain di folder yang sama, misalnya `app.js`, ikut diunduh dan ikut diterbitkan.
 
-```text
-nx8v i contoh@1.0.0
+Perintah dijalankan di folder proyek:
+
+| Perintah | Fungsi |
+|---|---|
+| `nx8v i contoh@1.0.2` | pasang. Tag yang dicari: `contoh-1.0.2` |
+| `nx8v u contoh@1.0.2` | ganti versi modul yang sudah ada di `dependencies`. Angka versinya yang diganti |
+| `nx8v p contohnamalain@1.0.0` | terbitkan isi `modules/contohnamalain/` ke repository |
+| `nx8v d contoh` | hapus `contoh` dari `dependencies`, `nx8v.lock`, dan `modules/contoh` |
+
+**Pasang** menulis tiga tempat:
+
+```json
+"dependencies": {
+  "contoh": "1.0.2"
+}
 ```
 
-NX8V membaca `repository.type` dan `repository.url`, lalu mengambil folder `contoh/1.0.0/index.js` dari repo git itu. Hasilnya `modules/contoh/index.js`, entri `"contoh": "1.0.0"` di `dependencies`, dan catatan di `nx8v.lock`:
+```text
+modules/contoh/index.js
+```
 
 ```json
 {
   "dependencies": {
     "contoh": {
-      "version": "1.0.0",
-      "resolved": "https://github.com/nx8v/dependencies.git"
+      "version": "1.0.2",
+      "resolved": "https://github.com/nx8v/dependencies/releases/tag/contoh-1.0.2"
     }
   }
 }
 ```
 
-### Menerbitkan modul
+`resolved` di `nx8v.lock` adalah halaman rilis yang dipakai saat pemasangan. Nama yang tidak ada tag-nya tidak ditulis ke `dependencies` maupun `modules`. Bila tag tidak ketemu, perintah menampilkan daftar rilis yang ada.
 
-Registry bawaan adalah repo git **`nx8v/dependencies`**. Satu versi modul
-sama dengan satu folder: `<modul>/<versi>/index.js`.
+**Perbarui** hanya untuk nama yang sudah terpasang. `nx8v u contoh@1.0.2` mengganti berkas di `modules/contoh/`, versi di `dependencies`, dan catatan di `nx8v.lock`. Nama yang belum ada ditolak; pasang lebih dulu dengan `nx8v i`.
 
-Langkah menerbitkan (contoh `cotoh` 1.0.0):
-
-1. Siapkan modul secara lokal di `modules/cotoh/index.js` dan uji dengan
-   `dependencies` pada `project.json` sendiri.
-2. Di repo registry, tambahkan foldernya:
+**Terbitkan** membaca `modules/contohnamalain/`. Folder itu wajib berisi `index.js`. Setiap berkas di folder itu dilampirkan sebagai aset rilis `contohnamalain-1.0.0`. Perintah ini memakai GitHub CLI dan akun yang sudah masuk:
 
 ```text
-cotoh/1.0.0/index.js
+gh auth login
+nx8v p contohnamalain@1.0.0
 ```
 
-3. Commit, lalu buat tag anotasi `cotoh-1.0.0`.
-4. Buat GitHub Release dengan judul sama, lampirkan `index.js` sebagai
-   aset — dari situlah orang mengunduh berkas modulnya.
-5. Versi berikutnya cukup folder baru (`cotoh/1.0.1/`), tag `cotoh-1.0.1`,
-   dan Release-nya; folder versi lama tetap utuh.
+Setelah terbit, `dependencies` dan `nx8v.lock` di proyek itu ikut mencatat versi tersebut. Rilis yang tag-nya sudah ada tidak ditimpa.
 
-Setelah terbit, aplikasi pemasangnya dengan `nx8v i cotoh@1.0.0`.
-
-> **Rencana:** perintah `nx8v publish` untuk mendorong folder `modules/`
-> langsung ke registry (commit + tag + Release otomatis) belum ada —
-> langkah di atas masih manual.
+**Hapus** mengeluarkan nama dari daftar. `nx8v d contoh` menghapus kunci `contoh` di `project.json` dan `nx8v.lock`, lalu menghapus folder `modules/contoh`. Rilis di GitHub tidak dihapus.
 
 ---
 
@@ -513,6 +516,9 @@ qs.stringify({ x: 1, y: 'a b' });    // 'x=1&y=a+b'
 |---|---|
 | `nx8v init` | wizard pembuatan proyek |
 | `nx8v i <nama>@<versi>` | pasang modul dari `repository` di `project.json` |
+| `nx8v u <nama>@<versi>` | ganti versi modul yang sudah terpasang |
+| `nx8v p <nama>@<versi>` | terbitkan `modules/<nama>` ke repository |
+| `nx8v d <nama>` | hapus modul dari `dependencies` |
 | `nx8v dev [--port=N]` | development: simpan HTML memuat ulang browser; simpan JS me-restart server |
 | `nx8v start [--port=N]` | jalankan dari `project.json` |
 | `nx8v stop [--port=N]` | hentikan server proyek |
