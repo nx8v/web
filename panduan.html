@@ -131,7 +131,7 @@ nx8v init</code></pre>
 <div class="tbl-wrap"><table><thead><tr><th scope="col">URL</th><th scope="col">File yang dicari</th></tr></thead><tbody><tr><td><code>/</code></td><td><code>public/index.html</code></td></tr><tr><td><code>/about</code></td><td><code>public/about.html</code> lalu <code>public/about/index.html</code></td></tr><tr><td><code>/about/data/u</code></td><td><code>public/about/data/u.html</code>, <code>about/data.html</code>, <strong><code>about.html</code></strong></td></tr><tr><td><code>/js/dll.js</code></td><td><code>public/assets/js/dll.js</code>. Path halaman diawali <code>/js</code></td></tr><tr><td><code>/css/style.css</code></td><td><code>public/assets/css/style.css</code></td></tr><tr><td><code>/images/32x32.png</code></td><td><code>public/assets/images/32x32.png</code></td></tr><tr><td><code>/favicon.ico</code></td><td><code>public/favicon.ico</code>, lalu ikon <code>public/assets/images/32x32.png</code></td></tr><tr><td><code>/contoh</code></td><td><code>modules/contoh/index.js</code></td></tr></tbody></table></div>
 <p>Bila tidak ada berkas yang cocok, permintaan masuk ke <code>server.js</code>. Di situ cukup rute milik proyek, misalnya <code>GET /api/hello</code>. <code>server.js</code> hasil <code>init</code> tidak lagi memuat pemetaan folder.</p>
 <h3 id="s-spa">SPA</h3>
-<p>Dua syarat sekaligus. <code>project.json</code> memuat objek <code>website</code> dengan <code>"SPA": true</code>, dan <code>public/index.html</code> memuat tag <code>&lt;nx8v-spa&gt;</code>. Tag itu boleh diletakkan di mana saja di halaman index. Bila keduanya ada, klik tautan tetap di dokumen index dan isi tautan masuk ke dalam tag. Bila salah satu tidak ada, URL kembali ke berkas HTML-nya sendiri. <code>PWA</code> ada di objek yang sama dan belum mengubah perilaku.</p>
+<p>Dua syarat sekaligus. <code>project.json</code> memuat objek <code>website</code> dengan <code>"SPA": true</code>, dan <code>public/index.html</code> memuat tag <code>&lt;nx8v-spa&gt;</code>. Tag itu boleh diletakkan di mana saja di halaman index. Bila keduanya ada, klik tautan tetap di dokumen index dan isi tautan masuk ke dalam tag. Bila salah satu tidak ada, URL kembali ke berkas HTML-nya sendiri. Objek <code>website</code> yang dipakai adalah yang sejajar dengan <code>name</code> di <code>project.json</code>.</p>
 <pre class="doc-code mono"><code>"website": {
   "SPA": true,
   "PWA": false
@@ -152,6 +152,15 @@ nx8v init</code></pre>
 <p>Log untuk <code>/about/asasas</code>:</p>
 <pre class="doc-code mono"><code>route: /about/asasas -&gt; index.html | spa | about.html | data: asasas</code></pre>
 <p>Ekor URL tercatat sebagai data. Berkas yang dilayani tetap <code>about.html</code>.</p>
+<h3 id="s-pwa">PWA</h3>
+<p><code>"PWA": true</code> di objek <code>website</code> yang sama membuat aplikasi bisa dipasang dari browser. Halaman HTML mendapat manifes, warna tema, dan pendaftaran service worker.</p>
+<pre class="doc-code mono"><code>"website": {
+  "SPA": true,
+  "PWA": true
+}</code></pre>
+<div class="tbl-wrap"><table><thead><tr><th scope="col">URL</th><th scope="col">Isi</th></tr></thead><tbody><tr><td><code>/manifest.webmanifest</code></td><td>nama dan deskripsi dari <code>project.json</code>, <code>start_url</code> <code>/</code>, <code>display</code> <code>standalone</code></td></tr><tr><td><code>/nx8v-sw.js</code></td><td>service worker</td></tr><tr><td><code>/nx8v-icon-192.png</code></td><td>ikon 192, diperbesar dari <code>public/assets/images/32x32.png</code></td></tr><tr><td><code>/nx8v-icon-512.png</code></td><td>ikon 512 dari berkas yang sama</td></tr></tbody></table></div>
+<p><code>"PWA": true</code> memasang manifes dan service worker pada <code>nx8v dev</code> maupun <code>nx8v start</code>. Service worker mengambil jaringan lebih dulu, lalu menyimpan salinan. Saat jaringan putus, halaman dan berkas yang pernah dibuka dilayani dari simpanan itu. Permintaan <code>/api</code>, pemeriksa <code>nx8v dev</code>, dan isi slot SPA tidak melewati service worker, jadi klik antar menu tetap bisa dibatalkan.</p>
+<p>Bila <code>PWA</code> mati, keempat URL itu tidak dibuat. Halaman melepas service worker yang sudah terpasang.</p>
 <h3 id="s-modul">Modul</h3>
 <p>Modul proyek ditaruh di <code>modules/</code>. Dua hal wajib:</p>
 <ul>

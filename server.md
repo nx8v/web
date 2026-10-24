@@ -159,7 +159,7 @@ lagi memuat pemetaan folder.
 
 ### SPA
 
-Dua syarat sekaligus. `project.json` memuat objek `website` dengan `"SPA": true`, dan `public/index.html` memuat tag `<nx8v-spa>`. Tag itu boleh diletakkan di mana saja di halaman index. Bila keduanya ada, klik tautan tetap di dokumen index dan isi tautan masuk ke dalam tag. Bila salah satu tidak ada, URL kembali ke berkas HTML-nya sendiri. `PWA` ada di objek yang sama dan belum mengubah perilaku.
+Dua syarat sekaligus. `project.json` memuat objek `website` dengan `"SPA": true`, dan `public/index.html` memuat tag `<nx8v-spa>`. Tag itu boleh diletakkan di mana saja di halaman index. Bila keduanya ada, klik tautan tetap di dokumen index dan isi tautan masuk ke dalam tag. Bila salah satu tidak ada, URL kembali ke berkas HTML-nya sendiri. Objek `website` yang dipakai adalah yang sejajar dengan `name` di `project.json`.
 
 ```json
 "website": {
@@ -208,6 +208,28 @@ route: /about/asasas -> index.html | spa | about.html | data: asasas
 ```
 
 Ekor URL tercatat sebagai data. Berkas yang dilayani tetap `about.html`.
+
+### PWA
+
+`"PWA": true` di objek `website` yang sama membuat aplikasi bisa dipasang dari browser. Halaman HTML mendapat manifes, warna tema, dan pendaftaran service worker.
+
+```json
+"website": {
+  "SPA": true,
+  "PWA": true
+}
+```
+
+| URL | Isi |
+|---|---|
+| `/manifest.webmanifest` | nama dan deskripsi dari `project.json`, `start_url` `/`, `display` `standalone` |
+| `/nx8v-sw.js` | service worker |
+| `/nx8v-icon-192.png` | ikon 192, diperbesar dari `public/assets/images/32x32.png` |
+| `/nx8v-icon-512.png` | ikon 512 dari berkas yang sama |
+
+`"PWA": true` memasang manifes dan service worker pada `nx8v dev` maupun `nx8v start`. Service worker mengambil jaringan lebih dulu, lalu menyimpan salinan. Saat jaringan putus, halaman dan berkas yang pernah dibuka dilayani dari simpanan itu. Permintaan `/api`, pemeriksa `nx8v dev`, dan isi slot SPA tidak melewati service worker, jadi klik antar menu tetap bisa dibatalkan.
+
+Bila `PWA` mati, keempat URL itu tidak dibuat. Halaman melepas service worker yang sudah terpasang.
 
 ### Modul
 
