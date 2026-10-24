@@ -16,8 +16,10 @@
   </header>
   <div class="doc-layout">
     <aside class="toc" aria-label="Daftar isi">
-<div class="toc-group"><a class="toc-top" href="#s-judul">Panduan Server &amp; Web</a><ul><li><a href="#s-1-alur-kerja">1. Alur kerja</a></li><li><a href="#s-2-membuat-proyek">2. Membuat proyek</a></li><li><a href="#s-3-struktur-proyek">3. Struktur proyek</a></li><li><a href="#s-4-http-server">4. HTTP server</a></li><li><a href="#s-5-router">5. Router</a></li><li><a href="#s-6-static-file-server">6. Static file server</a></li><li><a href="#s-7-websocket-server">7. WebSocket server</a></li><li><a href="#s-8-httphttps-client-fetch">8. HTTP/HTTPS client + fetch</a></li><li><a href="#s-9-modul-pendukung">9. Modul pendukung</a></li><li><a href="#s-10-cli-server">10. CLI server</a></li><li><a href="#s-11-deployment">11. Deployment</a></li><li><a href="#s-12-contoh-di-repo">12. Contoh di repo</a></li><li><a href="#s-13-uji-tiga-server">13. Uji tiga server</a></li><li><a href="#s-troubleshooting">Troubleshooting</a></li></ul></div>
+<div class="toc-group"><a class="toc-top" href="#s-judul">Panduan Server &amp; Web</a><ul><li><a href="#s-1-alur-kerja">1. Alur kerja</a></li><li><a href="#s-2-membuat-proyek">2. Membuat proyek</a></li><li><a href="#s-3-struktur-proyek">3. Struktur proyek</a></li><li><a href="#s-4-http-server">4. HTTP server</a></li><li><a href="#s-5-router">5. Router</a></li><li><a href="#s-6-static-file-server">6. Static file server</a></li><li><a href="#s-7-websocket-server">7. WebSocket server</a></li><li><a href="#s-8-httphttps-client-fetch">8. HTTP/HTTPS client + fetch</a></li><li><a href="#s-9-modul-pendukung">9. Modul pendukung</a></li><li><a href="#s-10-cli-server">10. CLI server</a></li><li><a href="#s-11-deployment">11. Deployment</a></li><li><a href="#s-12-contoh-di-repo">12. Contoh di repo</a></li><li><a href="#s-13-uji-tiga-server">13. Uji tiga server</a></li><li><a href="#s-14-catatan-24-oktober-2026">14. Catatan 24 Oktober 2026</a></li><li><a href="#s-troubleshooting">Troubleshooting</a></li></ul></div>
+<div class="toc-group"><a class="toc-top" href="#h-judul">Panduan Hosting</a><ul><li><a href="#h-1-aplikasi">1. Aplikasi</a></li><li><a href="#h-2-dari-mana-nx8v-dipasang">2. Dari mana NX8V dipasang</a></li><li><a href="#h-3-aapanel">3. aaPanel</a></li><li><a href="#h-4-cyberpanel">4. CyberPanel</a></li><li><a href="#h-5-apache">5. Apache</a></li><li><a href="#h-6-cek">6. Cek</a></li><li><a href="#h-7-bila-gagal">7. Bila gagal</a></li></ul></div>
 <div class="toc-group"><a class="toc-top" href="#d-judul">Panduan Desktop</a><ul><li><a href="#d-1-cara-kerja">1. Cara kerja</a></li><li><a href="#d-2-menjalankan">2. Menjalankan</a></li><li><a href="#d-3-bridge-windownx8v">3. Bridge window.nx8v</a></li><li><a href="#d-4-dialog-native">4. Dialog native</a></li><li><a href="#d-5-tray-menu">5. Tray & menu</a></li><li><a href="#d-6-notifikasi">6. Notifikasi</a></li><li><a href="#d-7-multi-window">7. Multi-window</a></li><li><a href="#d-8-packaging">8. Packaging</a></li><li><a href="#d-9-detail-teknis">9. Detail teknis</a></li><li><a href="#d-10-prasyarat-troubleshooting">10. Prasyarat & troubleshooting</a></li><li><a href="#d-contoh-di-repo">Contoh di repo</a></li><li><a href="#d-pembungkusan">Pembungkusan</a></li></ul></div>
+<div class="toc-group"><a class="toc-top" href="#k-judul">Keamanan</a><ul><li><a href="#k-1-permukaan-serang-apa-yang-terbuka-ke-luar">1. Permukaan serang (apa yang terbuka ke luar)</a></li><li><a href="#k-2-lapisan-bersama-yang-wajib-dantau">2. Lapisan bersama yang wajib dantau</a></li><li><a href="#k-3-pemetaan-batch-cve-nodejs-21-okt-2026-10-cve">3. Pemetaan batch CVE Node.js 21 Okt 2026 (10 CVE)</a></li><li><a href="#k-4-pengerasan-terencana-urut-prioritas">4. Pengerasan terencana (urut prioritas)</a></li><li><a href="#k-5-disklaimer">5. Disklaimer</a></li></ul></div>
     </aside>
     <main class="doc-main article">
 <section class="doc-part" id="s" data-part><div class="doc-ribbon mono">Server &amp; Web</div><h1 id="s-judul">NX8V — Server &amp; Web</h1>
@@ -40,6 +42,7 @@
 <li><a href="#11-deployment">Deployment</a></li>
 <li><a href="#12-contoh-di-repo">Contoh di repo</a></li>
 <li><a href="#13-uji-tiga-server">Uji tiga server</a></li>
+<li><a href="#14-catatan-24-oktober-2026">Catatan 24 Oktober 2026</a></li>
 </ol>
 <hr />
 <h2 id="s-1-alur-kerja">1. Alur kerja</h2>
@@ -110,6 +113,7 @@ nx8v init</code></pre>
 }</code></pre>
 <p><code>"icon": "./images/32x32.png"</code> menunjuk berkas <code>public/assets/images/32x32.png</code>. Path panjang seperti <code>./public/assets/images/32x32.png</code> tetap berlaku bila berkasnya ada di situ.</p>
 <p>Port bisa dioverride tanpa mengubah file: <code>nx8v start --port=5000</code>, atau lewat environment <code>NX8V_PORT</code> / <code>PORT</code> (dibaca <code>server.js</code>).</p>
+<p><code>nx8v init</code> tidak menulis objek <code>website</code> dan tidak menaruh <code>&lt;nx8v-spa&gt;</code> di <code>index.html</code>. SPA, PWA, judul untuk tautan yang dibagikan, serta <code>req.query</code>, <code>req.cookies</code>, <code>req.fields</code>, dan <code>req.files</code> ada di runtime. Proyek baru memakainya setelah <code>project.json</code> dan HTML diubah seperti di bagian SPA dan PWA. <code>server.js</code> hasil init hanya mencatat permintaan (kecuali <code>/.well-known/</code>) dan menjawab <code>/api/hello</code>.</p>
 <hr />
 <h2 id="s-3-struktur-proyek">3. Struktur proyek</h2>
 <pre class="doc-code mono"><code>proyek/
@@ -143,8 +147,9 @@ nx8v init</code></pre>
   &lt;h1&gt;About&lt;/h1&gt;
   &lt;p&gt;Isi yang masuk ke slot.&lt;/p&gt;
 &lt;/nx8v-page&gt;</code></pre>
-<p>Membuka URL langsung, memuat ulang, atau melihat sumber halaman memakai cangkang <code>index.html</code>. <code>&lt;title&gt;</code> dan <code>&lt;meta property="og:title"&gt;</code> diambil dari halaman tujuan, dan isi <code>&lt;nx8v-page&gt;</code> sudah berada di dalam <code>&lt;nx8v-spa&gt;</code>. Tautan yang dibagikan membawa judul dan isi halaman itu. Judul index disimpan di <code>data-shell-title</code>. Kembali ke <code>/</code> mengosongkan slot dan memulihkan judul itu.</p>
-<p>Skrip di halaman meminta berkas asli dengan header <code>X-Nx8v-Fragment: 1</code>. Respons itu adalah <code>about.html</code>, bukan cangkang.</p>
+<p>Membuka URL langsung, memuat ulang, atau melihat sumber halaman memakai cangkang <code>index.html</code>. <code>&lt;title&gt;</code> dan <code>&lt;meta property="og:title"&gt;</code> diambil dari halaman tujuan. Bila halaman tidak punya judul, segmen pertama dipakai, jadi <code>help.html</code> yang hanya berisi <code>&lt;h1&gt;</code> tetap berjudul Help. Deskripsi diambil dari <code>&lt;meta name="description"&gt;</code>, atau dari paragraf pertama. <code>og:description</code>, <code>og:image</code> (dari meta atau <code>&lt;img&gt;</code> pertama), <code>og:url</code>, dan <code>&lt;link rel="canonical"&gt;</code> ikut ditulis. Isi <code>&lt;nx8v-page&gt;</code> sudah berada di dalam <code>&lt;nx8v-spa&gt;</code>. Tautan yang dibagikan membawa judul, deskripsi, dan isi halaman itu. Judul index disimpan di <code>data-shell-title</code>. Jalur penuh ada di <code>data-path</code>, ekor URL di <code>data-rest</code>. Kembali ke <code>/</code> mengosongkan slot dan memulihkan judul cangkang.</p>
+<p>Klik menunggu respons sebelum URL diganti. Bila permintaan gagal dan tidak ada salinan offline, slot menampilkan <code>Gagal memuat halaman.</code> Hash ikut dibawa dan menggulir ke elemen dengan <code>id</code> itu. Halaman baru mulai dari atas. Tombol kembali memulihkan posisi gulir. Tautan yang path-nya sama dengan URL saat ini mendapat <code>aria-current="page"</code>. Setiap <code>&lt;nx8v-spa&gt;</code> diisi. Setelah isi tiba, halaman mengirim peristiwa <code>nx8v-route</code> dengan <code>detail.path</code>, <code>detail.rest</code>, dan <code>detail.hash</code>. Salinan isi slot disimpan di cache <code>nx8v-spa</code>, jadi klik menu yang pernah dibuka tetap tampil saat jaringan putus.</p>
+<p>Skrip di halaman meminta berkas asli dengan header <code>X-Nx8v-Fragment: 1</code>. Respons itu adalah <code>about.html</code>, bukan cangkang. Header <code>X-Nx8v-Data</code> berisi ekor URL, misalnya <code>asasas</code> untuk <code>/about/asasas</code>.</p>
 <p>Selama permintaan masih berjalan, slot dapat menampilkan spinner dari modul <code>spinner</code> bila nama itu tertulis di <code>dependencies</code>. Halaman yang selesai sebelum modul siap langsung menampilkan isi, tanpa jeda tambahan. Atribut pada tag:</p>
 <div class="tbl-wrap"><table><thead><tr><th scope="col">Atribut</th><th scope="col">Nilai</th><th scope="col">Bila tidak ditulis</th></tr></thead><tbody><tr><td><code>size</code></td><td><code>small</code> (20px), <code>medium</code> (40px), <code>large</code> (60px)</td><td><code>medium</code></td></tr><tr><td><code>color</code></td><td>warna CSS</td><td><code>#007bff</code></td></tr><tr><td><code>message</code></td><td>teks di samping spinner</td><td><code>Memuat...</code></td></tr><tr><td><code>position</code></td><td><code>center</code>, <code>top</code>, <code>bottom</code></td><td><code>center</code></td></tr><tr><td><code>type</code></td><td><code>inline</code>, <code>overlay</code>, <code>button</code></td><td><code>inline</code></td></tr></tbody></table></div>
 <p><code>message=""</code> meniadakan teks. <code>type="overlay"</code> menutup layar. Warna <code>type="button"</code> di modul tetap putih.</p>
@@ -159,7 +164,17 @@ nx8v init</code></pre>
   "PWA": true
 }</code></pre>
 <div class="tbl-wrap"><table><thead><tr><th scope="col">URL</th><th scope="col">Isi</th></tr></thead><tbody><tr><td><code>/manifest.webmanifest</code></td><td>nama dan deskripsi dari <code>project.json</code>, <code>start_url</code> <code>/</code>, <code>display</code> <code>standalone</code></td></tr><tr><td><code>/nx8v-sw.js</code></td><td>service worker</td></tr><tr><td><code>/nx8v-icon-192.png</code></td><td>ikon 192, diperbesar dari <code>public/assets/images/32x32.png</code></td></tr><tr><td><code>/nx8v-icon-512.png</code></td><td>ikon 512 dari berkas yang sama</td></tr></tbody></table></div>
-<p><code>"PWA": true</code> memasang manifes dan service worker pada <code>nx8v dev</code> maupun <code>nx8v start</code>. Service worker mengambil jaringan lebih dulu, lalu menyimpan salinan. Saat jaringan putus, halaman dan berkas yang pernah dibuka dilayani dari simpanan itu. Permintaan <code>/api</code>, pemeriksa <code>nx8v dev</code>, dan isi slot SPA tidak melewati service worker, jadi klik antar menu tetap bisa dibatalkan.</p>
+<p><code>"PWA": true</code> memasang manifes, ikon, dan service worker pada <code>nx8v dev</code> maupun <code>nx8v start</code>. Warna, tampilan, dan URL awal dibaca dari objek <code>website</code> yang sama. Bila tidak diisi, tema <code>#3b82f6</code>, latar <code>#ffffff</code>, <code>display</code> <code>standalone</code>, dan <code>start_url</code> <code>/</code>.</p>
+<pre class="doc-code mono"><code>"website": {
+  "SPA": true,
+  "PWA": true,
+  "theme_color": "#EA580C",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "start_url": "/"
+}</code></pre>
+<p>Nama cache mengikuti <code>version</code> di <code>project.json</code>, misalnya <code>nx8v-pwa-1.0.0</code>. Saat dipasang, worker menyimpan <code>/</code>, manifes, dan kedua ikon. Halaman juga mendapat <code>&lt;link rel="apple-touch-icon"&gt;</code>. Pemasangan memakai ikon di bilah alamat browser.</p>
+<p>Service worker mengambil jaringan lebih dulu, lalu menyimpan salinan. Saat jaringan putus, halaman dan berkas yang pernah dibuka dilayani dari simpanan itu. Permintaan <code>/api</code>, pemeriksa <code>nx8v dev</code>, dan isi slot SPA tidak melewati service worker, jadi klik antar menu tetap bisa dibatalkan. Isi slot yang sudah pernah tampil dibaca lagi dari cache <code>nx8v-spa</code>.</p>
 <p>Bila <code>PWA</code> mati, keempat URL itu tidak dibuat. Halaman melepas service worker yang sudah terpasang.</p>
 <h3 id="s-modul">Modul</h3>
 <p>Modul proyek ditaruh di <code>modules/</code>. Dua hal wajib:</p>
@@ -240,12 +255,13 @@ https.createServer({
 }).listen(8444);</code></pre>
 <p>Sertifikat PFX berunding TLS 1.2 dan 1.3. Pasangan <code>cert</code> dan <code>key</code> menerima <code>BEGIN CERTIFICATE</code> bersama <code>BEGIN PRIVATE KEY</code> (PKCS#8) atau <code>BEGIN RSA PRIVATE KEY</code>. Di Windows, PEM berunding TLS 1.2. Di Linux, PEM berunding TLS 1.2 dan 1.3. Kunci bertipe <code>BEGIN ENCRYPTED PRIVATE KEY</code> belum didukung; bungkus kunci itu ke dalam PFX. ALPN menawarkan <code>h2</code> lalu <code>http/1.1</code>. <code>req.httpVersion</code> berisi <code>"2.0"</code> saat klien memakai HTTP/2, dan <code>"HTTP/1.1"</code> saat klien memakai HTTP/1.1. HTTP/2 tanpa TLS (preface <code>PRI * HTTP/2.0</code>) juga diterima oleh <code>http.createServer</code>. Build Linux menautkan OpenSSL lewat <code>NX8V_USE_OPENSSL</code>, untuk klien <code>https://</code> dan <code>https.createServer</code>. Rilis v0.2.2 memuat server TLS ini. Ketiga panel di port 6002 menjalankan biner yang sama.</p>
 <p><strong>Request (<code>req</code>):</strong></p>
-<div class="tbl-wrap"><table><thead><tr><th scope="col">Properti/Method</th><th scope="col">Keterangan</th></tr></thead><tbody><tr><td><code>req.method</code></td><td><code>GET</code>, <code>POST</code>, …</td></tr><tr><td><code>req.url</code></td><td>path + query, apa adanya</td></tr><tr><td><code>req.httpVersion</code></td><td><code>"HTTP/1.1"</code> pada HTTP/1.1, <code>"2.0"</code> pada HTTP/2</td></tr><tr><td><code>req.headers</code></td><td>objek header (nama asli dari klien)</td></tr><tr><td><code>req.on('data', fn)</code></td><td>body (bila ada)</td></tr><tr><td><code>req.on('end', fn)</code></td><td>body selesai</td></tr></tbody></table></div>
+<div class="tbl-wrap"><table><thead><tr><th scope="col">Properti/Method</th><th scope="col">Keterangan</th></tr></thead><tbody><tr><td><code>req.method</code></td><td><code>GET</code>, <code>POST</code>, …</td></tr><tr><td><code>req.url</code></td><td>path + query, apa adanya</td></tr><tr><td><code>req.httpVersion</code></td><td><code>"HTTP/1.1"</code> pada HTTP/1.1, <code>"2.0"</code> pada HTTP/2</td></tr><tr><td><code>req.headers</code></td><td>objek header (nama asli dari klien)</td></tr><tr><td><code>req.query</code></td><td>objek query string, <code>?a=1</code> menjadi <code>{ a: "1" }</code></td></tr><tr><td><code>req.cookies</code></td><td>objek dari header <code>Cookie</code></td></tr><tr><td><code>req.fields</code></td><td>bidang formulir <code>application/x-www-form-urlencoded</code> atau <code>multipart/form-data</code></td></tr><tr><td><code>req.files</code></td><td>berkas unggahan. Setiap nama berisi <code>{ filename, type, data }</code> dan <code>data</code> adalah <code>Buffer</code></td></tr><tr><td><code>req.on('data', fn)</code></td><td>body (bila ada)</td></tr><tr><td><code>req.on('end', fn)</code></td><td>body selesai</td></tr></tbody></table></div>
 <p><strong>Response (<code>res</code>):</strong></p>
-<div class="tbl-wrap"><table><thead><tr><th scope="col">Method</th><th scope="col">Keterangan</th></tr></thead><tbody><tr><td><code>res.writeHead(status[, message][, headers])</code></td><td>kirim status + header. Tanpa <code>message</code>, kalimat status mengikuti kode: <code>404</code> menjadi <code>Not Found</code></td></tr><tr><td><code>res.setHeader(name, value)</code></td><td>set satu header</td></tr><tr><td><code>res.getHeader(name)</code></td><td>baca header</td></tr><tr><td><code>res.write(chunk)</code></td><td>tulis body (di-buffer). <code>chunk</code> boleh string atau <code>Buffer</code></td></tr><tr><td><code>res.end([chunk][, cb])</code></td><td>kirim respons, tutup koneksi. Byte <code>0x00</code> di dalam PNG ikut terkirim</td></tr><tr><td><code>res.statusCode</code></td><td>status default 200. Mengubah angka ini juga mengganti kalimat status</td></tr></tbody></table></div>
+<div class="tbl-wrap"><table><thead><tr><th scope="col">Method</th><th scope="col">Keterangan</th></tr></thead><tbody><tr><td><code>res.writeHead(status[, message][, headers])</code></td><td>kirim status + header. Tanpa <code>message</code>, kalimat status mengikuti kode: <code>404</code> menjadi <code>Not Found</code></td></tr><tr><td><code>res.setHeader(name, value)</code></td><td>set satu header</td></tr><tr><td><code>res.cookie(name, value[, opsi])</code></td><td>tambah <code>Set-Cookie</code>. Opsi: <code>path</code>, <code>maxAge</code>, <code>httpOnly</code>, <code>secure</code>, <code>sameSite</code></td></tr><tr><td><code>res.getHeader(name)</code></td><td>baca header</td></tr><tr><td><code>res.write(chunk)</code></td><td>tulis body (di-buffer). <code>chunk</code> boleh string atau <code>Buffer</code></td></tr><tr><td><code>res.end([chunk][, cb])</code></td><td>kirim respons, tutup koneksi. Byte <code>0x00</code> di dalam PNG ikut terkirim</td></tr><tr><td><code>res.statusCode</code></td><td>status default 200. Mengubah angka ini juga mengganti kalimat status</td></tr></tbody></table></div>
 <p><code>fs.readFile</code> dan <code>fs.readFileSync</code> tanpa encoding mengembalikan <code>Buffer</code>, jadi gambar tidak rusak saat dikirim lewat <code>res.end</code>. Encoding <code>'utf8'</code> tetap mengembalikan string. <code>data.toString()</code> memakai teks UTF-8.</p>
 <p><strong>Event server:</strong> <code>listening</code>, <code>request</code>, <code>connection</code>, <code>close</code>, <code>error</code>, <code>websocket</code>.</p>
-<p>Catatan: server selalu membalas <code>Connection: close</code> (satu request per koneksi). Ini disengaja — pipelining belum didukung, dan lebih aman untuk browser.</p>
+<p>Catatan: server membalas <code>Connection: close</code> (satu permintaan per koneksi). Pipelining belum didukung. Body di atas 8 MB dibalas <code>413 Payload Too Large</code>.</p>
+<p>Berkas di <code>public/</code> yang bukan HTML (CSS, JS, gambar, font) dikirim dengan <code>ETag</code>, <code>Cache-Control: public, max-age=3600</code>, <code>Range</code> (<code>206</code>), dan <code>gzip</code> bila klien meminta <code>Accept-Encoding: gzip</code>. <code>If-None-Match</code> yang cocok membalas <code>304</code>. HTML, termasuk cangkang SPA, tetap <code>Cache-Control: no-store</code> dan tetap bisa di-gzip.</p>
 <hr />
 <h2 id="s-5-router">5. Router</h2>
 <pre class="doc-code mono"><code>const app = require('router')();
@@ -435,8 +451,166 @@ nx8v package --name=toko --out=release</code></pre>
 <pre class="doc-code mono"><code>wsl -d Ubuntu-22.04 -u root bash /mnt/d/server/nx8v-app/install-servers.sh
 wsl -d Ubuntu-22.04 -u root bash /mnt/d/server/nx8v-app/enable-proxy.sh</code></pre>
 <hr />
+<h2 id="s-14-catatan-24-oktober-2026">14. Catatan 24 Oktober 2026</h2>
+<p>Yang sudah ada di runtime, dan apakah <code>nx8v init</code> ikut menuliskannya:</p>
+<div class="tbl-wrap"><table><thead><tr><th scope="col">Bagian</th><th scope="col">Runtime</th><th scope="col"><code>nx8v init</code></th></tr></thead><tbody><tr><td>SPA (<code>website.SPA</code> dan <code>&lt;nx8v-spa&gt;</code>)</td><td>ada</td><td>tidak</td></tr><tr><td>PWA (<code>website.PWA</code>, manifes, service worker)</td><td>ada</td><td>tidak</td></tr><tr><td>Judul, deskripsi, dan <code>og:*</code> saat tautan dibagikan</td><td>ada, ikut SPA</td><td>tidak</td></tr><tr><td><code>req.query</code>, <code>req.cookies</code>, <code>req.fields</code>, <code>req.files</code>, <code>res.cookie</code></td><td>ada pada setiap permintaan</td><td>tidak. Contoh init hanya <code>/api/hello</code></td></tr><tr><td>ETag, Range, dan gzip berkas publik selain HTML</td><td>ada</td><td>tidak perlu di template</td></tr><tr><td>Log <code>/.well-known/</code> tidak dicetak</td><td>ada</td><td>ada, satu syarat di <code>server.js</code></td></tr><tr><td><code>nx8v --fuzz</code> (korpus + 20.000 mutasi, benih <code>--fuzz=1:20000</code>)</td><td>ada</td><td>bukan berkas proyek</td></tr><tr><td><code>crypto.randomBytes</code> / <code>crypto.randomUUID</code> lewat <code>BCryptGenRandom</code> (Windows) dan <code>getrandom</code> (Linux)</td><td>ada</td><td>bukan berkas proyek</td></tr><tr><td>Hosting aaPanel, CyberPanel, dan Apache</td><td><a href="https://github.com/nx8v/web/blob/main/hosting.md">hosting.md</a></td><td>bukan berkas proyek</td></tr></tbody></table></div>
+<p>Parser chunked menolak panjang yang lebih besar dari data yang benar-benar ada, jadi klaim ukuran tidak membuat buffer sebesar angka itu.</p>
+<p>Pemasangan lewat SSH, dicatat di <a href="https://github.com/nx8v/web/blob/main/hosting.md">hosting.md</a>:</p>
+<div class="tbl-wrap"><table><thead><tr><th scope="col">Server</th><th scope="col">Hasil</th></tr></thead><tbody><tr><td>aaPanel</td><td><code>nx8v/0.2.2</code> terpasang di <code>/home/admin/.local/bin/nx8v</code></td></tr><tr><td>Apache</td><td><code>nx8v/0.2.2</code> terpasang di <code>/home/admin/.local/bin/nx8v</code></td></tr><tr><td>CyberPanel</td><td>berkas terpasang di jalur yang sama, tetapi tidak jalan: <code>libssl.so.3</code> tidak ada</td></tr></tbody></table></div>
+<hr />
 <h2 id="s-troubleshooting">Troubleshooting</h2>
 <div class="tbl-wrap"><table><thead><tr><th scope="col">Gejala</th><th scope="col">Penyebab &amp; solusi</th></tr></thead><tbody><tr><td><code>ERR_UNSAFE_PORT</code> di browser</td><td>Port diblokir Chrome (mis. 6000). Pakai 3000/4000/8080.</td></tr><tr><td>Browser reload terus</td><td>Sudah diperbaiki; pastikan exe terbaru.</td></tr><tr><td><code>Cannot find module 'X'</code></td><td>Modul bukan built-in → cek path relatif, atau daftar modul di §9.</td></tr><tr><td><code>EADDRINUSE</code> / <code>address already in use</code></td><td>Port dipakai proses lain → <code>nx8v list</code>, lalu <code>nx8v stop --port=N</code>.</td></tr><tr><td>Gambar rusak atau hanya beberapa byte</td><td><code>res.end</code> harus menerima <code>Buffer</code> dari <code>readFile</code>. Pakai exe terbaru.</td></tr><tr><td><code>404</code> pada <code>/favicon.ico</code></td><td>Letakkan <code>public/favicon.ico</code>, atau biarkan server memakai <code>public/assets/images/32x32.png</code>.</td></tr><tr><td><code>invalid URL</code> pada fetch</td><td>Skema harus <code>http://</code> atau <code>https://</code>.</td></tr><tr><td>Halaman tidak berubah</td><td><code>Cache-Control: no-store</code> + hard refresh (Ctrl+Shift+R).</td></tr></tbody></table></div></section>
+<section class="doc-part" id="h" data-part><div class="doc-ribbon mono">Hosting</div><h1 id="h-judul">Hosting NX8V</h1>
+<p>Satu aplikasi NX8V. Tiga web server di depannya: <strong>aaPanel</strong>, <strong>CyberPanel</strong>, dan <strong>Apache</strong>.</p>
+<p>Situs yang sudah ada tetap di <code>/</code>. Aplikasi NX8V tampil di <code>/nx8v/</code>. Web server hanya meneruskan jalur itu ke proses NX8V. NX8V sendiri yang menulis halaman dan API.</p>
+<p>Yang tampil di ketiga server sama.</p>
+<div class="tbl-wrap"><table><thead><tr><th scope="col"></th><th scope="col"></th></tr></thead><tbody><tr><td>Halaman</td><td><code>https://domain/nx8v/</code></td></tr><tr><td>Judul</td><td>NX8V Server &amp; web</td></tr><tr><td>API</td><td><code>https://domain/nx8v/api/where</code></td></tr><tr><td>Isi API</td><td><code>{"runtime":"nx8v","host":"nama-mesin"}</code></td></tr></tbody></table></div>
+<p>Nama host di halaman diisi dari API itu.</p>
+<hr />
+<h2 id="h-1-aplikasi">1. Aplikasi</h2>
+<p>Simpan di <code>/opt/nx8v</code>.</p>
+<p><code>project.json</code></p>
+<pre class="doc-code mono"><code>{
+  "name": "nx8v-web",
+  "version": "1.0.0",
+  "description": "NX8V Server and web",
+  "main": "server.js",
+  "nx8v": { "port": 6002 }
+}</code></pre>
+<p><code>public/index.html</code></p>
+<pre class="doc-code mono"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="id"&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;title&gt;NX8V Server &amp;amp; web&lt;/title&gt;
+  &lt;style&gt;
+    body { font-family: system-ui, sans-serif; margin: 2rem; }
+    h1 { color: #1d4ed8; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;NX8V Server &amp;amp; web&lt;/h1&gt;
+  &lt;p&gt;Halaman ini dilayani oleh runtime NX8V.&lt;/p&gt;
+  &lt;p&gt;Host: &lt;strong id="host"&gt;memuat&lt;/strong&gt;&lt;/p&gt;
+  &lt;script&gt;
+    fetch('api/where').then(function (r) { return r.json(); }).then(function (j) {
+      document.getElementById('host').textContent = j.host;
+    }).catch(function () {
+      document.getElementById('host').textContent = 'tidak terbaca';
+    });
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<p><code>server.js</code> mendengar di <code>127.0.0.1:6002</code>. Awalan <code>/nx8v</code> dibuang sebelum rute dipilih, karena halaman memakai <code>fetch('api/where')</code> dan browser mengirim <code>/nx8v/api/where</code>.</p>
+<pre class="doc-code mono"><code>const http = require('http');
+const fs = require('fs');
+const os = require('os');
+
+const PORT = 6002;
+const page = process.cwd().replace(/\/$/, '') + '/public/index.html';
+
+function route(url) {
+  let p = (url || '/').split('?')[0];
+  if (p === '/nx8v' || p === '/nx8v/') return '/';
+  if (p.indexOf('/nx8v/') === 0) return p.slice('/nx8v'.length);
+  return p;
+}
+
+const server = http.createServer((req, res) =&gt; {
+  const clean = route(req.url);
+  if (clean === '/api/where') {
+    res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+    res.end(JSON.stringify({ runtime: 'nx8v', host: os.hostname() }));
+    return;
+  }
+  if (clean === '/' || clean === '/index.html') {
+    res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+    res.end(fs.readFileSync(page, 'utf8'));
+    return;
+  }
+  res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
+  res.end('404');
+});
+
+server.listen(PORT, '127.0.0.1', () =&gt; {
+  console.log('nx8v web http://127.0.0.1:' + PORT);
+});</code></pre>
+<p>Port <code>6002</code> hanya untuk mesin itu. Dari internet yang terbuka tetap port web server, <code>80</code> atau <code>443</code>.</p>
+<hr />
+<h2 id="h-2-dari-mana-nx8v-dipasang">2. Dari mana NX8V dipasang</h2>
+<p>Runtime-nya tidak ikut panel. Di aaPanel, CyberPanel, dan Apache, sumbernya sama: rilis Linux di <a href="https://github.com/iyanrsaleh/nx8v/releases/latest">github.com/iyanrsaleh/nx8v/releases/latest</a>.</p>
+<p>Tiap server punya SSH sendiri. Perintah di bawah diketik di terminal SSH server itu, bukan dari mesin lain.</p>
+<p>Mesin membutuhkan glibc 2.34 atau lebih baru. <code>install.sh</code> mengunduh <code>nx8v-linux-x64.tar.gz</code>, mencocokkan hash di <code>SHA256SUMS</code>, lalu memasang biner ke <code>~/.local/bin/nx8v</code>.</p>
+<pre class="doc-code mono"><code>curl -fsSL -o install.sh https://raw.githubusercontent.com/iyanrsaleh/nx8v/main/install.sh
+sed -i 's/\r$//' install.sh
+sh install.sh
+sudo install -m 755 "$HOME/.local/bin/nx8v" /usr/local/bin/nx8v
+nx8v --version</code></pre>
+<p><code>sh install.sh</code> memasang biner untuk user SSH <code>admin</code>. Hasilnya di ketiga server:</p>
+<div class="tbl-wrap"><table><thead><tr><th scope="col">Server</th><th scope="col">Hasil</th></tr></thead><tbody><tr><td>aaPanel</td><td><code>nx8v/0.2.2</code> terpasang di <code>/home/admin/.local/bin/nx8v</code></td></tr><tr><td>Apache</td><td><code>nx8v/0.2.2</code> terpasang di <code>/home/admin/.local/bin/nx8v</code></td></tr><tr><td>CyberPanel</td><td>berkas terpasang di <code>/home/admin/.local/bin/nx8v</code>, tetapi tidak bisa dijalankan: <code>libssl.so.3</code> tidak ada</td></tr></tbody></table></div>
+<p><code>/usr/local/bin</code> membuat <code>nx8v</code> ketemu oleh layanan sistem. Di CyberPanel langkah <code>sudo install</code> tidak dijalankan, karena biner itu tidak bisa dieksekusi di mesin tersebut. Aplikasi di bagian 1 tetap berkas Anda sendiri. Salin <code>project.json</code>, <code>server.js</code>, dan <code>public/index.html</code> ke <code>/opt/nx8v</code>, lalu nyalakan.</p>
+<pre class="doc-code mono"><code>cd /opt/nx8v
+nx8v start
+curl -sS http://127.0.0.1:6002/api/where</code></pre>
+<p>Jawaban yang benar:</p>
+<pre class="doc-code mono"><code>{"runtime":"nx8v","host":"nama-mesin"}</code></pre>
+<p>Agar hidup lagi setelah mesin menyala, pasang unit dari skrip yang sama. Direktori kerja unit itu <code>/opt/nx8v</code>, perintahnya <code>nx8v start</code>.</p>
+<pre class="doc-code mono"><code>sudo sh install.sh --service /opt/nx8v
+sudo systemctl enable --now nx8v</code></pre>
+<hr />
+<h2 id="h-3-aapanel">3. aaPanel</h2>
+<p>aaPanel di sini memakai Apache. Situs lama tetap di konfigurasi situsnya. Tambahkan penerusan ini pada vhost situs, lalu muat ulang Apache dari panel.</p>
+<pre class="doc-code mono"><code>RedirectMatch ^/nx8v$ /nx8v/
+&lt;Location /nx8v/&gt;
+    ProxyPass http://127.0.0.1:6002/
+    ProxyPassReverse http://127.0.0.1:6002/
+&lt;/Location&gt;</code></pre>
+<p><code>/nx8v</code> tanpa garis miring diarahkan ke <code>/nx8v/</code>. Modul <code>proxy</code> dan <code>proxy_http</code> harus aktif. <code>httpd -t</code> bersih sebelum Apache dimuat ulang.</p>
+<p>Buka <code>https://domain/nx8v/</code>. Judulnya <strong>NX8V Server &amp; web</strong>. Baris host terisi nama mesin.</p>
+<hr />
+<h2 id="h-4-cyberpanel">4. CyberPanel</h2>
+<p>Web server CyberPanel adalah OpenLiteSpeed. Tambahkan proses luar dan context ini pada vhost situs, sekali saja. Lalu jalankan ulang OpenLiteSpeed.</p>
+<pre class="doc-code mono"><code>extprocessor nx8v {
+  type                    proxy
+  address                 127.0.0.1:6002
+  maxConns                100
+  initTimeout             60
+  retryTimeout            0
+  respBuffer              0
+}
+
+context /nx8v/ {
+  type                    proxy
+  handler                 nx8v
+  addDefaultCharset       off
+}</code></pre>
+<p>Context itu hanya menambah <code>/nx8v/</code>. Akar vhost tetap melayani situs yang sudah ada.</p>
+<p>Bila sistem CyberPanel lebih tua dari glibc 2.34, atau belum punya OpenSSL 3 (<code>libssl.so.3</code>), biner NX8V tidak bisa jalan di mesin itu. Jalankan aplikasi di mesin yang memenuhi syarat, ubah <code>address</code> ke <code>alamat-mesin-itu:6002</code>, dan buat <code>server.js</code> mendengar di <code>0.0.0.0</code> supaya OpenLiteSpeed bisa menjangkaunya. Jangan membuka port <code>6002</code> ke internet. Yang boleh dijangkau pengunjung tetap <code>80</code> dan <code>443</code>.</p>
+<p>Halaman dan API yang tampil sama dengan aaPanel.</p>
+<hr />
+<h2 id="h-5-apache">5. Apache</h2>
+<p>Aktifkan modul, simpan cuplikan yang sama dengan aaPanel, lalu muat ulang.</p>
+<pre class="doc-code mono"><code>a2enmod proxy proxy_http</code></pre>
+<p>Berkas <code>/etc/apache2/conf-available/nx8v.conf</code>:</p>
+<pre class="doc-code mono"><code>RedirectMatch ^/nx8v$ /nx8v/
+&lt;Location /nx8v/&gt;
+    ProxyPass http://127.0.0.1:6002/
+    ProxyPassReverse http://127.0.0.1:6002/
+&lt;/Location&gt;</code></pre>
+<pre class="doc-code mono"><code>a2enconf nx8v
+apache2ctl configtest
+apache2ctl graceful</code></pre>
+<p><code>configtest</code> harus menjawab <code>Syntax OK</code> sebelum <code>graceful</code>.</p>
+<hr />
+<h2 id="h-6-cek">6. Cek</h2>
+<p>Di tiap server, dua alamat ini harus menjawab.</p>
+<div class="tbl-wrap"><table><thead><tr><th scope="col">Alamat</th><th scope="col">Hasil</th></tr></thead><tbody><tr><td><code>/nx8v/</code></td><td>halaman <strong>NX8V Server &amp; web</strong>, host terisi</td></tr><tr><td><code>/nx8v/api/where</code></td><td><code>{"runtime":"nx8v","host":"..."}</code></td></tr><tr><td><code>/</code></td><td>situs lama, tidak berubah</td></tr></tbody></table></div>
+<pre class="doc-code mono"><code>curl -sS -o /dev/null -w "%{http_code}\n" https://domain/nx8v/
+curl -sS https://domain/nx8v/api/where
+curl -sS -o /dev/null -w "%{http_code}\n" https://domain/</code></pre>
+<hr />
+<h2 id="h-7-bila-gagal">7. Bila gagal</h2>
+<div class="tbl-wrap"><table><thead><tr><th scope="col">Gejala</th><th scope="col">Yang dicek</th></tr></thead><tbody><tr><td><code>/nx8v/</code> menjawab 502 atau 503</td><td><code>curl http://127.0.0.1:6002/api/where</code> di mesin yang menjalankan <code>nx8v start</code></td></tr><tr><td>Halaman tampil, host tetap "memuat" atau "tidak terbaca"</td><td><code>/nx8v/api/where</code> dari browser. Awalan <code>/nx8v</code> di <code>server.js</code> harus terbuang</td></tr><tr><td>Akar situs ikut pindah</td><td>Penerusan hanya pada <code>/nx8v/</code>, bukan pada <code>/</code></td></tr><tr><td><code>curl</code> berhenti dengan kesalahan sertifikat</td><td>port 443 yang keluar dari server ikut dialihkan ke panel, jadi sertifikat yang tampil milik panel. Batasi pengalihan itu pada alamat server sendiri, lalu ulangi <code>install.sh</code></td></tr><tr><td><code>nx8v: cannot execute</code> atau <code>libssl.so.3</code> tidak ketemu</td><td>glibc di bawah 2.34, atau OpenSSL 3 belum ada. Pindahkan proses ke mesin yang lebih baru, lalu arahkan <code>address</code> proxy ke sana</td></tr><tr><td>Perubahan <code>server.js</code> belum terasa</td><td>hentikan proses lama, lalu <code>nx8v start</code> lagi dari <code>/opt/nx8v</code></td></tr></tbody></table></div></section>
 <section class="doc-part" id="d" data-part><div class="doc-ribbon mono">Desktop</div><h1 id="d-judul">NX8V — Desktop (WebView2)</h1>
 <p>Panduan lengkap membangun <strong>aplikasi desktop</strong> dengan NX8V: jendela native, bridge JS ↔ native, dialog, tray, notifikasi, dan packaging.</p>
 <blockquote>Untuk aplikasi <strong>web/server</strong>, lihat <strong><a href="https://github.com/nx8v/web/blob/main/server.md">server.md</a></strong>. Untuk gambaran umum runtime, lihat <strong><a href="https://github.com/nx8v/web/blob/main/README.md">README.md</a></strong>.</blockquote>
@@ -680,6 +854,70 @@ dist/&lt;nama&gt;-&lt;versi&gt;-linux-x64.tar.gz</code></pre>
 <li><code>exit: false</code> meniadakan <strong>Keluar</strong> bawaan. <code>exitLabel</code> mengganti tulisannya.</li>
 <li>Klik kanan di halaman bisa diganti lewat <code>nx8v.contextMenu.set([...])</code>, bukan menu browser yang tetap.</li>
 </ul></section>
+<section class="doc-part" id="k" data-part><div class="doc-ribbon mono">Keamanan</div><h1 id="k-judul">SECURITY — Catatan Keamanan NX8V (referensi internal)</h1>
+<blockquote>Dokumen bacaan: model ancaman, pemetaan kerentanan ekosistem, dan pengerasan terencana. <strong>Tidak dimasukkan ke git</strong> — sifatnya internal.</blockquote>
+<h2 id="k-1-permukaan-serang-apa-yang-terbuka-ke-luar">1. Permukaan serang (apa yang terbuka ke luar)</h2>
+<div class="tbl-wrap"><table><thead><tr><th scope="col">Permukaan</th><th scope="col">Berkas</th><th scope="col">Catatan</th></tr></thead><tbody><tr><td>HTTP server &amp; client</td><td><code>http.h</code></td><td>parser/keep-alive/chunked ditulis sendiri</td></tr><tr><td>HTTPS client</td><td><code>tls.h</code></td><td>WinHTTP (Windows) — TLS &amp; validasi sertifikat diserahkan ke Windows; OpenSSL hanya via <code>-DNX8V_USE_OPENSSL</code> (Linux)</td></tr><tr><td>WebSocket client/server</td><td><code>ws.h</code>, <code>http.h</code></td><td>RFC 6455 implementasi sendiri (server) + WinHttpWebSocket (client)</td></tr><tr><td>Static server</td><td><code>static.h</code></td><td>ETag/Range/HEAD — anti path traversal sudah ada</td></tr><tr><td>Bridge jendela</td><td><code>window.h</code></td><td><code>postMessage</code> halaman↔host; <code>desktop.devtools</code> bisa dimatikan produksi</td></tr><tr><td>Terminal di halaman</td><td><code>desktop.md</code> §Terminal</td><td>ConPTY — input keyboard halaman masuk ke shell</td></tr><tr><td>CLI</td><td><code>init.h</code>, <code>dev.h</code>, <code>list.h</code>, <code>logs.h</code></td><td><code>nx8v i/u/p/d/r</code> menyentuh GitHub (dibaca dari gh CLI)</td></tr></tbody></table></div>
+<h2 id="k-2-lapisan-bersama-yang-wajib-dantau">2. Lapisan bersama yang wajib dantau</h2>
+<ul>
+<li><strong>V8</strong> — CVE-nya mengalir kemari (contoh: hash seed / HashDoS, 2026). Respons:</li>
+</ul>
+<p>  build ulang tinju (increment ~90 detik) segera setelah advisory.</p>
+<ul>
+<li><strong>libuv</strong> — sama; <code>uv_getaddrinfo</code> dipakai <code>dns</code>.</li>
+<li><strong>zlib</strong> — <code>compress.h</code> (gzip/deflate) — pantau advisory zlib.</li>
+<li><strong>OpenSSL</strong> — hanya build Linux (<code>NX8V_USE_OPENSSL</code>).</li>
+<li><strong>ca-cert Linux</strong> — build Linux harus ikut pembaruan trust store; di Windows</li>
+</ul>
+<p>  validasi sertifikat via WinHTTP + Windows Update (otomatis).</p>
+<h2 id="k-3-pemetaan-batch-cve-nodejs-21-okt-2026-10-cve">3. Pemetaan batch CVE Node.js 21 Okt 2026 (10 CVE)</h2>
+<div class="tbl-wrap"><table><thead><tr><th scope="col">CVE kelas</th><th scope="col">Permukaan di nx8v</th><th scope="col">Status</th></tr></thead><tbody><tr><td>c-ares — dns.resolve NUL (high)</td><td>❌ — <code>dns.h</code> pakai <code>uv_getaddrinfo</code></td><td>tidak berlaku</td></tr><tr><td>TLS hostname bypass (fullwidth/loose-IP, high)</td><td>Windows: delegasi ke WinHTTP</td><td>tidak berlaku (Win); cek saat build Linux</td></tr><tr><td>Brotli OOB-write RCE (high)</td><td>❌ — zlib module tanpa Brotli</td><td>tidak berlaku</td></tr><tr><td>Undici / SQLite / zipfile</td><td>❌ — fetch ditulis sendiri; tanpa modul itu</td><td>tidak berlaku</td></tr><tr><td>Keep-alive pra-request (medium)</td><td>kelas serupa ada di <code>http.h</code> sendiri</td><td>🔶 jaga: selalu <code>Connection: close</code> + fuzzing</td></tr><tr><td>APA entropi <code>randomUUID</code> di snapshot (medium)</td><td>❌ tidak ada snapshot — <code>crypto.h</code> pakai <code>std::random_device</code> per panggilan</td><td>tidak berlaku (lihat §4-i)</td></tr><tr><td>Permission Model ×2 (rendah)</td><td>❌ belum ada permission model</td><td>tidak berlaku — 🔶 trade-off: proteksinya juga belum ada</td></tr><tr><td>ca-cert (eMudhra, medium)</td><td>Windows tidak terdampak; Linux ikut OpenSSL</td><td>🔶 cek pada build Linux</td></tr></tbody></table></div>
+<h2 id="k-4-pengerasan-terencana-urut-prioritas">4. Pengerasan terencana (urut prioritas)</h2>
+<ul>
+</ul>
+<ol>
+<li><strong>Fuzzing <code>http.h</code> / <code>ws.h</code></strong> — ✅ berlaku sejak v0.2.2: perintah</li>
+</ol>
+<p>   <code>nx8v --fuzz</code> (korpus + 20.000 mutasi, benih <code>--fuzz=1:20000</code>). Jawaban    untuk kelas "CVE RCE tanpa autentikasi": parser C++ milik sendiri.</p>
+<ul>
+</ul>
+<ol>
+<li><strong><code>crypto.h</code></strong> — ✅ berlaku sejak v0.2.2: <code>randomBytes</code>/<code>randomUUID</code> kini</li>
+</ol>
+<p>   lewat <code>BCryptGenRandom</code> (Windows) dan <code>getrandom</code> (Linux).</p>
+<ul>
+</ul>
+<ol>
+<li><strong>Rilis</strong> — ✅ berlaku sejak <code>v0.2.2</code>: aset <code>SHA256SUMS</code> dilampirkan dan</li>
+</ol>
+<p>   <code>install.ps1</code> memverifikasi hash sebelum memasang.</p>
+<ul>
+</ul>
+<ol>
+<li><strong>Linux</strong> — audit versi OpenSSL terbundel + pembaruan ca-cert path sebelum</li>
+</ol>
+<p>   pemasangan dipublikasikan luas.</p>
+<ul>
+</ul>
+<ol>
+<li><strong>Terminal bridge</strong> — uji batas pesan halaman↔host; halaman tak boleh bisa</li>
+</ol>
+<p>   meminta operasi di luar set (setTitle/setSize/...) tanpa hardening.</p>
+<ul>
+</ul>
+<ol>
+<li><strong>Batas HTTPS client</strong> — <code>req.httpVersion</code> berhenti di HTTP/2 via ALPN;</li>
+</ol>
+<p>   pantau spec upgrade berikutnya.</p>
+<h2 id="k-5-disklaimer">5. Disklaimer</h2>
+<ul>
+<li>Batch CVE-2026-10-21 Node.js <strong>tidak menular</strong> langsung ke nx8v karena</li>
+</ul>
+<p>  lapisan yang bermasalahnya (c-ares/Brotli/Undici/SQLite/permission/ca-cert)   tidak diimplementasi ulang di sini — namun <strong>kelas</strong> kerentanannya   (keep-alive, entropi, path, parser) tetap relevan dan masuk §4.</p>
+<ul>
+<li>PHP RCE (2 CVE, 21 Okt 2026) — stack berbeda; pelajaran: parser</li>
+</ul>
+<p>  tanpa autentikasi harus selalu diasumsikan diserang.</p></section>
     </main>
   </div>
   <footer class="doc-footer mono">Dokumentasi NX8V &middot; sumber: D:\NX8V (server.md &amp; desktop.md)</footer>

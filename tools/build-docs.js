@@ -133,7 +133,9 @@ function mdToHtml(md, prefix, toc) {
 
 const PARTS = [
   { file: 'server.md', id: 's', ribbon: 'Server &amp; Web', title: 'Panduan Server &amp; Web' },
+  { file: 'hosting.md', id: 'h', ribbon: 'Hosting', title: 'Panduan Hosting' },
   { file: 'desktop.md', id: 'd', ribbon: 'Desktop', title: 'Panduan Desktop' },
+  { file: 'SECURITY.md', id: 'k', ribbon: 'Keamanan', title: 'Keamanan' },
 ];
 
 const bodies = [];

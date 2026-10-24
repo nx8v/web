@@ -21,6 +21,7 @@ Daftar isi:
 11. [Deployment](#11-deployment)
 12. [Contoh di repo](#12-contoh-di-repo)
 13. [Uji tiga server](#13-uji-tiga-server)
+14. [Catatan 24 Oktober 2026](#14-catatan-24-oktober-2026)
 
 ---
 
@@ -117,6 +118,8 @@ Halaman juga memasang `<link rel="icon" href="/images/32x32.png">`. Permintaan o
 Port bisa dioverride tanpa mengubah file: `nx8v start --port=5000`, atau lewat
 environment `NX8V_PORT` / `PORT` (dibaca `server.js`).
 
+`nx8v init` tidak menulis objek `website` dan tidak menaruh `<nx8v-spa>` di `index.html`. SPA, PWA, judul untuk tautan yang dibagikan, serta `req.query`, `req.cookies`, `req.fields`, dan `req.files` ada di runtime. Proyek baru memakainya setelah `project.json` dan HTML diubah seperti di bagian SPA dan PWA. `server.js` hasil init hanya mencatat permintaan (kecuali `/.well-known/`) dan menjawab `/api/hello`.
+
 ---
 
 ## 3. Struktur proyek
@@ -181,9 +184,11 @@ Nama halaman yang sama dengan nama modul, misalnya `/form` dan modul `form`, mem
 </nx8v-page>
 ```
 
-Membuka URL langsung, memuat ulang, atau melihat sumber halaman memakai cangkang `index.html`. `<title>` dan `<meta property="og:title">` diambil dari halaman tujuan, dan isi `<nx8v-page>` sudah berada di dalam `<nx8v-spa>`. Tautan yang dibagikan membawa judul dan isi halaman itu. Judul index disimpan di `data-shell-title`. Kembali ke `/` mengosongkan slot dan memulihkan judul itu.
+Membuka URL langsung, memuat ulang, atau melihat sumber halaman memakai cangkang `index.html`. `<title>` dan `<meta property="og:title">` diambil dari halaman tujuan. Bila halaman tidak punya judul, segmen pertama dipakai, jadi `help.html` yang hanya berisi `<h1>` tetap berjudul Help. Deskripsi diambil dari `<meta name="description">`, atau dari paragraf pertama. `og:description`, `og:image` (dari meta atau `<img>` pertama), `og:url`, dan `<link rel="canonical">` ikut ditulis. Isi `<nx8v-page>` sudah berada di dalam `<nx8v-spa>`. Tautan yang dibagikan membawa judul, deskripsi, dan isi halaman itu. Judul index disimpan di `data-shell-title`. Jalur penuh ada di `data-path`, ekor URL di `data-rest`. Kembali ke `/` mengosongkan slot dan memulihkan judul cangkang.
 
-Skrip di halaman meminta berkas asli dengan header `X-Nx8v-Fragment: 1`. Respons itu adalah `about.html`, bukan cangkang.
+Klik menunggu respons sebelum URL diganti. Bila permintaan gagal dan tidak ada salinan offline, slot menampilkan `Gagal memuat halaman.` Hash ikut dibawa dan menggulir ke elemen dengan `id` itu. Halaman baru mulai dari atas. Tombol kembali memulihkan posisi gulir. Tautan yang path-nya sama dengan URL saat ini mendapat `aria-current="page"`. Setiap `<nx8v-spa>` diisi. Setelah isi tiba, halaman mengirim peristiwa `nx8v-route` dengan `detail.path`, `detail.rest`, dan `detail.hash`. Salinan isi slot disimpan di cache `nx8v-spa`, jadi klik menu yang pernah dibuka tetap tampil saat jaringan putus.
+
+Skrip di halaman meminta berkas asli dengan header `X-Nx8v-Fragment: 1`. Respons itu adalah `about.html`, bukan cangkang. Header `X-Nx8v-Data` berisi ekor URL, misalnya `asasas` untuk `/about/asasas`.
 
 Selama permintaan masih berjalan, slot dapat menampilkan spinner dari modul `spinner` bila nama itu tertulis di `dependencies`. Halaman yang selesai sebelum modul siap langsung menampilkan isi, tanpa jeda tambahan. Atribut pada tag:
 
@@ -227,7 +232,22 @@ Ekor URL tercatat sebagai data. Berkas yang dilayani tetap `about.html`.
 | `/nx8v-icon-192.png` | ikon 192, diperbesar dari `public/assets/images/32x32.png` |
 | `/nx8v-icon-512.png` | ikon 512 dari berkas yang sama |
 
-`"PWA": true` memasang manifes dan service worker pada `nx8v dev` maupun `nx8v start`. Service worker mengambil jaringan lebih dulu, lalu menyimpan salinan. Saat jaringan putus, halaman dan berkas yang pernah dibuka dilayani dari simpanan itu. Permintaan `/api`, pemeriksa `nx8v dev`, dan isi slot SPA tidak melewati service worker, jadi klik antar menu tetap bisa dibatalkan.
+`"PWA": true` memasang manifes, ikon, dan service worker pada `nx8v dev` maupun `nx8v start`. Warna, tampilan, dan URL awal dibaca dari objek `website` yang sama. Bila tidak diisi, tema `#3b82f6`, latar `#ffffff`, `display` `standalone`, dan `start_url` `/`.
+
+```json
+"website": {
+  "SPA": true,
+  "PWA": true,
+  "theme_color": "#EA580C",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "start_url": "/"
+}
+```
+
+Nama cache mengikuti `version` di `project.json`, misalnya `nx8v-pwa-1.0.0`. Saat dipasang, worker menyimpan `/`, manifes, dan kedua ikon. Halaman juga mendapat `<link rel="apple-touch-icon">`. Pemasangan memakai ikon di bilah alamat browser.
+
+Service worker mengambil jaringan lebih dulu, lalu menyimpan salinan. Saat jaringan putus, halaman dan berkas yang pernah dibuka dilayani dari simpanan itu. Permintaan `/api`, pemeriksa `nx8v dev`, dan isi slot SPA tidak melewati service worker, jadi klik antar menu tetap bisa dibatalkan. Isi slot yang sudah pernah tampil dibaca lagi dari cache `nx8v-spa`.
 
 Bila `PWA` mati, keempat URL itu tidak dibuat. Halaman melepas service worker yang sudah terpasang.
 
@@ -375,6 +395,10 @@ Sertifikat PFX berunding TLS 1.2 dan 1.3. Pasangan `cert` dan `key` menerima `BE
 | `req.url` | path + query, apa adanya |
 | `req.httpVersion` | `"HTTP/1.1"` pada HTTP/1.1, `"2.0"` pada HTTP/2 |
 | `req.headers` | objek header (nama asli dari klien) |
+| `req.query` | objek query string, `?a=1` menjadi `{ a: "1" }` |
+| `req.cookies` | objek dari header `Cookie` |
+| `req.fields` | bidang formulir `application/x-www-form-urlencoded` atau `multipart/form-data` |
+| `req.files` | berkas unggahan. Setiap nama berisi `{ filename, type, data }` dan `data` adalah `Buffer` |
 | `req.on('data', fn)` | body (bila ada) |
 | `req.on('end', fn)` | body selesai |
 
@@ -384,6 +408,7 @@ Sertifikat PFX berunding TLS 1.2 dan 1.3. Pasangan `cert` dan `key` menerima `BE
 |---|---|
 | `res.writeHead(status[, message][, headers])` | kirim status + header. Tanpa `message`, kalimat status mengikuti kode: `404` menjadi `Not Found` |
 | `res.setHeader(name, value)` | set satu header |
+| `res.cookie(name, value[, opsi])` | tambah `Set-Cookie`. Opsi: `path`, `maxAge`, `httpOnly`, `secure`, `sameSite` |
 | `res.getHeader(name)` | baca header |
 | `res.write(chunk)` | tulis body (di-buffer). `chunk` boleh string atau `Buffer` |
 | `res.end([chunk][, cb])` | kirim respons, tutup koneksi. Byte `0x00` di dalam PNG ikut terkirim |
@@ -393,8 +418,9 @@ Sertifikat PFX berunding TLS 1.2 dan 1.3. Pasangan `cert` dan `key` menerima `BE
 
 **Event server:** `listening`, `request`, `connection`, `close`, `error`, `websocket`.
 
-Catatan: server selalu membalas `Connection: close` (satu request per koneksi).
-Ini disengaja — pipelining belum didukung, dan lebih aman untuk browser.
+Catatan: server membalas `Connection: close` (satu permintaan per koneksi). Pipelining belum didukung. Body di atas 8 MB dibalas `413 Payload Too Large`.
+
+Berkas di `public/` yang bukan HTML (CSS, JS, gambar, font) dikirim dengan `ETag`, `Cache-Control: public, max-age=3600`, `Range` (`206`), dan `gzip` bila klien meminta `Accept-Encoding: gzip`. `If-None-Match` yang cocok membalas `304`. HTML, termasuk cangkang SPA, tetap `Cache-Control: no-store` dan tetap bisa di-gzip.
 
 ---
 
@@ -809,6 +835,34 @@ Menyalakan ulang setelah WSL atau container hidup kembali:
 wsl -d Ubuntu-22.04 -u root bash /mnt/d/server/nx8v-app/install-servers.sh
 wsl -d Ubuntu-22.04 -u root bash /mnt/d/server/nx8v-app/enable-proxy.sh
 ```
+
+---
+
+## 14. Catatan 24 Oktober 2026
+
+Yang sudah ada di runtime, dan apakah `nx8v init` ikut menuliskannya:
+
+| Bagian | Runtime | `nx8v init` |
+|---|---|---|
+| SPA (`website.SPA` dan `<nx8v-spa>`) | ada | tidak |
+| PWA (`website.PWA`, manifes, service worker) | ada | tidak |
+| Judul, deskripsi, dan `og:*` saat tautan dibagikan | ada, ikut SPA | tidak |
+| `req.query`, `req.cookies`, `req.fields`, `req.files`, `res.cookie` | ada pada setiap permintaan | tidak. Contoh init hanya `/api/hello` |
+| ETag, Range, dan gzip berkas publik selain HTML | ada | tidak perlu di template |
+| Log `/.well-known/` tidak dicetak | ada | ada, satu syarat di `server.js` |
+| `nx8v --fuzz` (korpus + 20.000 mutasi, benih `--fuzz=1:20000`) | ada | bukan berkas proyek |
+| `crypto.randomBytes` / `crypto.randomUUID` lewat `BCryptGenRandom` (Windows) dan `getrandom` (Linux) | ada | bukan berkas proyek |
+| Hosting aaPanel, CyberPanel, dan Apache | [hosting.md](hosting.md) | bukan berkas proyek |
+
+Parser chunked menolak panjang yang lebih besar dari data yang benar-benar ada, jadi klaim ukuran tidak membuat buffer sebesar angka itu.
+
+Pemasangan lewat SSH, dicatat di [hosting.md](hosting.md):
+
+| Server | Hasil |
+|---|---|
+| aaPanel | `nx8v/0.2.2` terpasang di `/home/admin/.local/bin/nx8v` |
+| Apache | `nx8v/0.2.2` terpasang di `/home/admin/.local/bin/nx8v` |
+| CyberPanel | berkas terpasang di jalur yang sama, tetapi tidak jalan: `libssl.so.3` tidak ada |
 
 ---
 
