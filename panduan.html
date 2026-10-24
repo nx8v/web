@@ -130,6 +130,28 @@ nx8v init</code></pre>
 <p>NX8V melayani berkas di <code>public/</code> sebelum <code>server.js</code>. Menambah halaman cukup dengan menaruh file di folder itu:</p>
 <div class="tbl-wrap"><table><thead><tr><th scope="col">URL</th><th scope="col">File yang dicari</th></tr></thead><tbody><tr><td><code>/</code></td><td><code>public/index.html</code></td></tr><tr><td><code>/about</code></td><td><code>public/about.html</code> lalu <code>public/about/index.html</code></td></tr><tr><td><code>/about/data/u</code></td><td><code>public/about/data/u.html</code>, <code>about/data.html</code>, <strong><code>about.html</code></strong></td></tr><tr><td><code>/js/dll.js</code></td><td><code>public/assets/js/dll.js</code>. Path halaman diawali <code>/js</code></td></tr><tr><td><code>/css/style.css</code></td><td><code>public/assets/css/style.css</code></td></tr><tr><td><code>/images/32x32.png</code></td><td><code>public/assets/images/32x32.png</code></td></tr><tr><td><code>/favicon.ico</code></td><td><code>public/favicon.ico</code>, lalu ikon <code>public/assets/images/32x32.png</code></td></tr><tr><td><code>/contoh</code></td><td><code>modules/contoh/index.js</code></td></tr></tbody></table></div>
 <p>Bila tidak ada berkas yang cocok, permintaan masuk ke <code>server.js</code>. Di situ cukup rute milik proyek, misalnya <code>GET /api/hello</code>. <code>server.js</code> hasil <code>init</code> tidak lagi memuat pemetaan folder.</p>
+<h3 id="s-spa">SPA</h3>
+<p>Dua syarat sekaligus. <code>project.json</code> memuat objek <code>website</code> dengan <code>"SPA": true</code>, dan <code>public/index.html</code> memuat tag <code>&lt;nx8v-spa&gt;</code>. Tag itu boleh diletakkan di mana saja di halaman index. Bila keduanya ada, klik tautan tetap di dokumen index dan isi tautan masuk ke dalam tag. Bila salah satu tidak ada, URL kembali ke berkas HTML-nya sendiri. <code>PWA</code> ada di objek yang sama dan belum mengubah perilaku.</p>
+<pre class="doc-code mono"><code>"website": {
+  "SPA": true,
+  "PWA": false
+}</code></pre>
+<p>Klik tautan pada origin yang sama mengisi slot dan mengganti URL. Yang dilewati: <code>/api</code>, berkas berekstensi, <code>target</code> selain <code>_self</code>, dan tautan unduhan. Formulir GET dan POST dengan syarat yang sama menaruh hasil di dalam tag, dan URL mengikuti <code>action</code>.</p>
+<p>Halaman tujuan boleh membungkus potongan yang masuk slot dengan <code>&lt;nx8v-page&gt;</code>. Tanpa tag itu, isi <code>&lt;body&gt;</code> yang dipakai, termasuk <code>&lt;script&gt;</code> halaman itu, dan skrip tersebut dijalankan. Berkas yang sendiri berisi <code>&lt;nx8v-spa&gt;</code> tanpa <code>&lt;nx8v-page&gt;</code> tidak disalin ke dalam slot. Berkas tanpa <code>&lt;html&gt;</code>, misalnya teks polos, masuk utuh.</p>
+<p>Nama halaman yang sama dengan nama modul, misalnya <code>/form</code> dan modul <code>form</code>, membuka <code>public/form.html</code> saat browser meminta HTML. <code>import</code> dari <code>/form</code> tetap menerima <code>modules/form/index.js</code>.</p>
+<pre class="doc-code mono"><code>&lt;nx8v-page&gt;
+  &lt;h1&gt;About&lt;/h1&gt;
+  &lt;p&gt;Isi yang masuk ke slot.&lt;/p&gt;
+&lt;/nx8v-page&gt;</code></pre>
+<p>Membuka URL langsung, memuat ulang, atau melihat sumber halaman memakai cangkang <code>index.html</code>. <code>&lt;title&gt;</code> dan <code>&lt;meta property="og:title"&gt;</code> diambil dari halaman tujuan, dan isi <code>&lt;nx8v-page&gt;</code> sudah berada di dalam <code>&lt;nx8v-spa&gt;</code>. Tautan yang dibagikan membawa judul dan isi halaman itu. Judul index disimpan di <code>data-shell-title</code>. Kembali ke <code>/</code> mengosongkan slot dan memulihkan judul itu.</p>
+<p>Skrip di halaman meminta berkas asli dengan header <code>X-Nx8v-Fragment: 1</code>. Respons itu adalah <code>about.html</code>, bukan cangkang.</p>
+<p>Selama permintaan masih berjalan, slot dapat menampilkan spinner dari modul <code>spinner</code> bila nama itu tertulis di <code>dependencies</code>. Halaman yang selesai sebelum modul siap langsung menampilkan isi, tanpa jeda tambahan. Atribut pada tag:</p>
+<div class="tbl-wrap"><table><thead><tr><th scope="col">Atribut</th><th scope="col">Nilai</th><th scope="col">Bila tidak ditulis</th></tr></thead><tbody><tr><td><code>size</code></td><td><code>small</code> (20px), <code>medium</code> (40px), <code>large</code> (60px)</td><td><code>medium</code></td></tr><tr><td><code>color</code></td><td>warna CSS</td><td><code>#007bff</code></td></tr><tr><td><code>message</code></td><td>teks di samping spinner</td><td><code>Memuat...</code></td></tr><tr><td><code>position</code></td><td><code>center</code>, <code>top</code>, <code>bottom</code></td><td><code>center</code></td></tr><tr><td><code>type</code></td><td><code>inline</code>, <code>overlay</code>, <code>button</code></td><td><code>inline</code></td></tr></tbody></table></div>
+<p><code>message=""</code> meniadakan teks. <code>type="overlay"</code> menutup layar. Warna <code>type="button"</code> di modul tetap putih.</p>
+<pre class="doc-code mono"><code>&lt;nx8v-spa size="small" color="#EA580C" message="" position="center" type="inline"&gt;&lt;/nx8v-spa&gt;</code></pre>
+<p>Log untuk <code>/about/asasas</code>:</p>
+<pre class="doc-code mono"><code>route: /about/asasas -&gt; index.html | spa | about.html | data: asasas</code></pre>
+<p>Ekor URL tercatat sebagai data. Berkas yang dilayani tetap <code>about.html</code>.</p>
 <h3 id="s-modul">Modul</h3>
 <p>Modul proyek ditaruh di <code>modules/</code>. Dua hal wajib:</p>
 <ul>

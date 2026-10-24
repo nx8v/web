@@ -157,6 +157,58 @@ Bila tidak ada berkas yang cocok, permintaan masuk ke `server.js`. Di situ cukup
 rute milik proyek, misalnya `GET /api/hello`. `server.js` hasil `init` tidak
 lagi memuat pemetaan folder.
 
+### SPA
+
+Dua syarat sekaligus. `project.json` memuat objek `website` dengan `"SPA": true`, dan `public/index.html` memuat tag `<nx8v-spa>`. Tag itu boleh diletakkan di mana saja di halaman index. Bila keduanya ada, klik tautan tetap di dokumen index dan isi tautan masuk ke dalam tag. Bila salah satu tidak ada, URL kembali ke berkas HTML-nya sendiri. `PWA` ada di objek yang sama dan belum mengubah perilaku.
+
+```json
+"website": {
+  "SPA": true,
+  "PWA": false
+}
+```
+
+Klik tautan pada origin yang sama mengisi slot dan mengganti URL. Yang dilewati: `/api`, berkas berekstensi, `target` selain `_self`, dan tautan unduhan. Formulir GET dan POST dengan syarat yang sama menaruh hasil di dalam tag, dan URL mengikuti `action`.
+
+Halaman tujuan boleh membungkus potongan yang masuk slot dengan `<nx8v-page>`. Tanpa tag itu, isi `<body>` yang dipakai, termasuk `<script>` halaman itu, dan skrip tersebut dijalankan. Berkas yang sendiri berisi `<nx8v-spa>` tanpa `<nx8v-page>` tidak disalin ke dalam slot. Berkas tanpa `<html>`, misalnya teks polos, masuk utuh.
+
+Nama halaman yang sama dengan nama modul, misalnya `/form` dan modul `form`, membuka `public/form.html` saat browser meminta HTML. `import` dari `/form` tetap menerima `modules/form/index.js`.
+
+```html
+<nx8v-page>
+  <h1>About</h1>
+  <p>Isi yang masuk ke slot.</p>
+</nx8v-page>
+```
+
+Membuka URL langsung, memuat ulang, atau melihat sumber halaman memakai cangkang `index.html`. `<title>` dan `<meta property="og:title">` diambil dari halaman tujuan, dan isi `<nx8v-page>` sudah berada di dalam `<nx8v-spa>`. Tautan yang dibagikan membawa judul dan isi halaman itu. Judul index disimpan di `data-shell-title`. Kembali ke `/` mengosongkan slot dan memulihkan judul itu.
+
+Skrip di halaman meminta berkas asli dengan header `X-Nx8v-Fragment: 1`. Respons itu adalah `about.html`, bukan cangkang.
+
+Selama permintaan masih berjalan, slot dapat menampilkan spinner dari modul `spinner` bila nama itu tertulis di `dependencies`. Halaman yang selesai sebelum modul siap langsung menampilkan isi, tanpa jeda tambahan. Atribut pada tag:
+
+| Atribut | Nilai | Bila tidak ditulis |
+|---|---|---|
+| `size` | `small` (20px), `medium` (40px), `large` (60px) | `medium` |
+| `color` | warna CSS | `#007bff` |
+| `message` | teks di samping spinner | `Memuat...` |
+| `position` | `center`, `top`, `bottom` | `center` |
+| `type` | `inline`, `overlay`, `button` | `inline` |
+
+`message=""` meniadakan teks. `type="overlay"` menutup layar. Warna `type="button"` di modul tetap putih.
+
+```html
+<nx8v-spa size="small" color="#EA580C" message="" position="center" type="inline"></nx8v-spa>
+```
+
+Log untuk `/about/asasas`:
+
+```
+route: /about/asasas -> index.html | spa | about.html | data: asasas
+```
+
+Ekor URL tercatat sebagai data. Berkas yang dilayani tetap `about.html`.
+
 ### Modul
 
 Modul proyek ditaruh di `modules/`. Dua hal wajib:

@@ -277,6 +277,7 @@ D:\NX8V\
 - [x] `nx8v dev`: simpan `.html`/`.css`/`.svg` memuat ulang browser; simpan `.js`/`.json` me-restart server lalu halaman ikut memuat ulang
 - [x] `nx8v test` (test runner bawaan)
 - [x] Smart file routing (`/about/data/u` → `about.html`)
+- [x] SPA: `<nx8v-spa>` mengisi slot dari halaman tujuan, URL ikut, dan muat ulang serta view-source membawa judul serta isi halaman itu. Lihat [server.md](server.md)
 - [x] Peringatan port unsafe Chromium (mis. 6000 → ERR_UNSAFE_PORT)
 - [x] Perbaikan: duplikat request, RST saat close, keep-alive setengah jadi
 - [x] Static server mengirim `Content-Encoding: gzip` bila klien meminta `Accept-Encoding: gzip`
