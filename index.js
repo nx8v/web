@@ -9,7 +9,7 @@
   var I18N = {
     id: {
       "meta.title": "NX8V — Runtime aplikasi JavaScript yang mandiri",
-      "meta.desc": "NX8V adalah runtime aplikasi JavaScript yang mandiri — server dan desktop — dalam satu binary C++. Mesin V8, event loop libuv, HTTP/HTTPS, WebSocket, router, hingga jendela desktop. Tanpa dependensi.",
+      "meta.desc": "NX8V adalah runtime aplikasi JavaScript yang mandiri — server dan desktop — dalam satu binary C++. Cukup HTML, CSS, JS & JSON: PWA, database, WebSocket, router, hingga jendela desktop. Tanpa dependensi.",
       "skip": "Langsung ke konten",
       "ui.menu.open": "Buka menu",
       "ui.menu.close": "Tutup menu",
@@ -91,7 +91,7 @@
     },
     en: {
       "meta.title": "NX8V — A self-contained JavaScript application runtime",
-      "meta.desc": "NX8V is a self-contained JavaScript application runtime — server and desktop — in a single C++ binary. The V8 engine, a libuv event loop, HTTP/HTTPS, WebSockets, a router, even a desktop window. No dependencies.",
+      "meta.desc": "NX8V is a self-contained JavaScript application runtime — server and desktop — in a single C++ binary. Just HTML, CSS, JS & JSON: PWA, database, WebSockets, a router, even a desktop window. No dependencies.",
       "skip": "Skip to main content",
       "ui.menu.open": "Open menu",
       "ui.menu.close": "Close menu",
