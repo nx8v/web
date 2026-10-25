@@ -547,7 +547,7 @@ sh install.sh
 sudo install -m 755 "$HOME/.local/bin/nx8v" /usr/local/bin/nx8v
 nx8v --version</code></pre>
 <p><code>sh install.sh</code> memasang biner untuk user SSH <code>admin</code>. Hasilnya di ketiga server:</p>
-<div class="tbl-wrap"><table><thead><tr><th scope="col">Server</th><th scope="col">Hasil</th></tr></thead><tbody><tr><td>aaPanel</td><td><code>nx8v/0.2.2</code> terpasang di <code>/home/admin/.local/bin/nx8v</code></td></tr><tr><td>Apache</td><td><code>nx8v/0.2.2</code> terpasang di <code>/home/admin/.local/bin/nx8v</code></td></tr><tr><td>CyberPanel</td><td>berkas terpasang di <code>/home/admin/.local/bin/nx8v</code>, tetapi tidak bisa dijalankan: <code>libssl.so.3</code> tidak ada</td></tr></tbody></table></div>
+<div class="tbl-wrap"><table><thead><tr><th scope="col">Server</th><th scope="col">Hasil</th></tr></thead><tbody><tr><td>aaPanel</td><td><code>nx8v/0.2.2</code> terpasang di <code>/home/admin/.local/bin/nx8v</code></td></tr><tr><td>Apache</td><td><code>nx8v/0.2.2</code> terpasang di <code>/home/admin/.local/bin/nx8v</code></td></tr><tr><td>CyberPanel</td><td>biner tidak bisa jalan sendiri (glibc 2.17). Ditambal dengan glibc 2.36 dari Ubuntu 24.04 (<code>patchelf</code>) agar bisa digunakan</td></tr></tbody></table></div>
 <p><code>/usr/local/bin</code> membuat <code>nx8v</code> ketemu oleh layanan sistem. Di CyberPanel langkah <code>sudo install</code> tidak dijalankan, karena biner itu tidak bisa dieksekusi di mesin tersebut. Aplikasi di bagian 1 tetap berkas Anda sendiri. Salin <code>project.json</code>, <code>server.js</code>, dan <code>public/index.html</code> ke <code>/opt/nx8v</code>, lalu nyalakan.</p>
 <pre class="doc-code mono"><code>cd /opt/nx8v
 nx8v start
@@ -569,23 +569,67 @@ sudo systemctl enable --now nx8v</code></pre>
 <p>Buka <code>https://domain/nx8v/</code>. Judulnya <strong>NX8V Server &amp; web</strong>. Baris host terisi nama mesin.</p>
 <hr />
 <h2 id="h-4-cyberpanel">4. CyberPanel</h2>
-<p>Web server CyberPanel adalah OpenLiteSpeed. Tambahkan proses luar dan context ini pada vhost situs, sekali saja. Lalu jalankan ulang OpenLiteSpeed.</p>
-<pre class="doc-code mono"><code>extprocessor nx8v {
-  type                    proxy
-  address                 127.0.0.1:6002
-  maxConns                100
-  initTimeout             60
-  retryTimeout            0
-  respBuffer              0
-}
-
-context /nx8v/ {
+<p>Web server CyberPanel adalah OpenLiteSpeed. Container berbasis CentOS 7.6 (glibc 2.17) — terlalu lama untuk biner NX8V (butuh glibc 2.34+, OpenSSL 3). Solusinya: salin glibc 2.36 + OpenSSL 3 dari Ubuntu 24.04, lalu patch biner dengan <code>patchelf</code> agar memakai library baru itu. Tidak ada yang ditimpa di sistem; semuanya di <code>/opt/glibc236</code>.</p>
+<h3 id="h-4a-pasang-library-dari-ubuntu-2404">4a. Pasang library dari Ubuntu 24.04</h3>
+<p>Jalankan di <strong>host Windows</strong> (bukan di dalam container):</p>
+<pre class="doc-code mono"><code># Ambil library dari image Ubuntu 24.04 (sekali saja)
+docker pull ubuntu:24.04 --quiet
+docker create --name tmp-ub24 ubuntu:24.04 true
+docker cp tmp-ub24:/lib/x86_64-linux-gnu/libssl.so.3   &lt;dir&gt;\libssl.so.3
+docker cp tmp-ub24:/lib/x86_64-linux-gnu/libcrypto.so.3 &lt;dir&gt;\libcrypto.so.3
+docker cp tmp-ub24:/lib/x86_64-linux-gnu/libm.so.6       &lt;dir&gt;\libm.so.6
+docker cp tmp-ub24:/lib/x86_64-linux-gnu/libgcc_s.so.1   &lt;dir&gt;\libgcc_s.so.1
+docker cp tmp-ub24:/lib/x86_64-linux-gnu/libc.so.6       &lt;dir&gt;\libc.so.6
+docker cp tmp-ub24:/lib64/ld-linux-x86-64.so.2           &lt;dir&gt;\ld-linux-x86-64.so.2
+docker rm tmp-ub24</code></pre>
+<p><code>&lt;dir&gt;</code> adalah direktori sementara, mis. <code>D:\tmp-libs</code>. Semua file berikutnya diletakkan di <code>/opt/glibc236</code> di dalam container:</p>
+<pre class="doc-code mono"><code># Dari Windows
+docker cp &lt;dir&gt;\libssl.so.3   cyberpanel:/opt/glibc236/libssl.so.3
+docker cp &lt;dir&gt;\libcrypto.so.3 cyberpanel:/opt/glibc236/libcrypto.so.3
+docker cp &lt;dir&gt;\libm.so.6       cyberpanel:/opt/glibc236/libm.so.6
+docker cp &lt;dir&gt;\libgcc_s.so.1   cyberpanel:/opt/glibc236/libgcc_s.so.1
+docker cp &lt;dir&gt;\libc.so.6       cyberpanel:/opt/glibc236/libc.so.6
+docker cp &lt;dir&gt;\ld-linux-x86-64.so.2 cyberpanel:/opt/glibc236/ld-linux-x86-64.so.2</code></pre>
+<h3 id="h-4b-patch-biner-nx8v">4b. Patch biner nx8v</h3>
+<p>Pasang <code>patchelf</code> (sekali saja):</p>
+<pre class="doc-code mono"><code>curl -fsSL https://github.com/NixOS/patchelf/releases/download/0.18.0/patchelf-0.18.0-x86_64.tar.gz -o /tmp/p.tar.gz
+tar -xzf /tmp/p.tar.gz -C /tmp
+cp /tmp/patchelf-0.18.0-x86_64/bin/patchelf /usr/local/bin/</code></pre>
+<p>Patch interpreter dan RPATH:</p>
+<pre class="doc-code mono"><code>NX8V=/home/admin/.local/bin/nx8v
+patchelf --set-interpreter /opt/glibc236/ld-linux-x86-64.so.2 $NX8V
+patchelf --set-rpath /opt/glibc236 $NX8V
+$NX8V --version   # nx8v/0.2.2</code></pre>
+<h3 id="h-4c-jalankan">4c. Jalankan</h3>
+<pre class="doc-code mono"><code>cd /opt/nx8v
+nohup env LD_LIBRARY_PATH=/opt/glibc236 /home/admin/.local/bin/nx8v start &gt;/var/log/nx8v.log 2&gt;&amp;1 &amp;
+curl -sS http://127.0.0.1:6002/api/where</code></pre>
+<p>Jawaban yang benar:</p>
+<pre class="doc-code mono"><code>{"runtime":"nx8v","host":"nama-mesin"}</code></pre>
+<p>Auto-start di <code>/opt/entrypoint-cyberpanel.sh</code> (host: <code>docker/cyberpanel/entrypoint.sh</code>):</p>
+<pre class="doc-code mono"><code>NX8V=/home/admin/.local/bin/nx8v
+if [ -x "$NX8V" ] &amp;&amp; [ -f /opt/nx8v/project.json ] &amp;&amp; ! pgrep -f "$NX8V start" &gt;/dev/null 2&gt;&amp;1; then
+    echo "[cyberpanel] mulai nx8v (glibc 2.36 patched)..."
+    cd /opt/nx8v &amp;&amp; nohup env LD_LIBRARY_PATH=/opt/glibc236 $NX8V start &gt;/var/log/nx8v.log 2&gt;&amp;1 &amp;
+fi</code></pre>
+<h3 id="h-4d-openlitespeed">4d. OpenLiteSpeed</h3>
+<p>Sama dengan aaPanel, tetapi perlu stop + start penuh (restart SIGUSR1 tidak cukup untuk config baru). <code>extProcessor</code> harus di <strong>level server</strong> (<code>httpd_config.conf</code>), bukan di vhconf:</p>
+<pre class="doc-code mono"><code>extProcessor nx8v{
+    type                            proxy
+    address                         127.0.0.1:6002
+    maxConns                        100
+    initTimeout                     60
+    retryTimeout                    0
+    respBuffer                      0
+}</code></pre>
+<p><code>context</code> pada vhconf situs:</p>
+<pre class="doc-code mono"><code>context /nx8v/ {
   type                    proxy
   handler                 nx8v
   addDefaultCharset       off
 }</code></pre>
-<p>Context itu hanya menambah <code>/nx8v/</code>. Akar vhost tetap melayani situs yang sudah ada.</p>
-<p>Bila sistem CyberPanel lebih tua dari glibc 2.34, atau belum punya OpenSSL 3 (<code>libssl.so.3</code>), biner NX8V tidak bisa jalan di mesin itu. Jalankan aplikasi di mesin yang memenuhi syarat, ubah <code>address</code> ke <code>alamat-mesin-itu:6002</code>, dan buat <code>server.js</code> mendengar di <code>0.0.0.0</code> supaya OpenLiteSpeed bisa menjangkaunya. Jangan membuka port <code>6002</code> ke internet. Yang boleh dijangkau pengunjung tetap <code>80</code> dan <code>443</code>.</p>
+<pre class="doc-code mono"><code>/usr/local/lsws/bin/lswsctrl stop
+/usr/local/lsws/bin/lswsctrl start</code></pre>
 <p>Halaman dan API yang tampil sama dengan aaPanel.</p>
 <hr />
 <h2 id="h-5-apache">5. Apache</h2>
@@ -610,7 +654,7 @@ curl -sS https://domain/nx8v/api/where
 curl -sS -o /dev/null -w "%{http_code}\n" https://domain/</code></pre>
 <hr />
 <h2 id="h-7-bila-gagal">7. Bila gagal</h2>
-<div class="tbl-wrap"><table><thead><tr><th scope="col">Gejala</th><th scope="col">Yang dicek</th></tr></thead><tbody><tr><td><code>/nx8v/</code> menjawab 502 atau 503</td><td><code>curl http://127.0.0.1:6002/api/where</code> di mesin yang menjalankan <code>nx8v start</code></td></tr><tr><td>Halaman tampil, host tetap "memuat" atau "tidak terbaca"</td><td><code>/nx8v/api/where</code> dari browser. Awalan <code>/nx8v</code> di <code>server.js</code> harus terbuang</td></tr><tr><td>Akar situs ikut pindah</td><td>Penerusan hanya pada <code>/nx8v/</code>, bukan pada <code>/</code></td></tr><tr><td><code>curl</code> berhenti dengan kesalahan sertifikat</td><td>port 443 yang keluar dari server ikut dialihkan ke panel, jadi sertifikat yang tampil milik panel. Batasi pengalihan itu pada alamat server sendiri, lalu ulangi <code>install.sh</code></td></tr><tr><td><code>nx8v: cannot execute</code> atau <code>libssl.so.3</code> tidak ketemu</td><td>glibc di bawah 2.34, atau OpenSSL 3 belum ada. Pindahkan proses ke mesin yang lebih baru, lalu arahkan <code>address</code> proxy ke sana</td></tr><tr><td>Perubahan <code>server.js</code> belum terasa</td><td>hentikan proses lama, lalu <code>nx8v start</code> lagi dari <code>/opt/nx8v</code></td></tr></tbody></table></div></section>
+<div class="tbl-wrap"><table><thead><tr><th scope="col">Gejala</th><th scope="col">Yang dicek</th></tr></thead><tbody><tr><td><code>/nx8v/</code> menjawab 502 atau 503</td><td><code>curl http://127.0.0.1:6002/api/where</code> di mesin yang menjalankan <code>nx8v start</code></td></tr><tr><td>Halaman tampil, host tetap "memuat" atau "tidak terbaca"</td><td><code>/nx8v/api/where</code> dari browser. Awalan <code>/nx8v</code> di aplikasi harus terbuang</td></tr><tr><td>Akar situs ikut pindah</td><td>Penerusan hanya pada <code>/nx8v/</code>, bukan pada <code>/</code></td></tr><tr><td><code>curl</code> berhenti dengan kesalahan sertifikat</td><td>port 443 yang keluar dari server ikut dialihkan ke panel, jadi sertifikat yang tampil milik panel. Batasi pengalihan itu pada alamat server sendiri, lalu ulangi <code>install.sh</code></td></tr><tr><td><code>nx8v: cannot execute</code> atau <code>libssl.so.3</code> tidak ketemu (aaPanel/Apache)</td><td>glibc di bawah 2.34, atau OpenSSL 3 belum ada. <code>sh install.sh</code> ulang, atau periksa <code>ldd /home/admin/.local/bin/nx8v</code></td></tr><tr><td><code>nx8v: cannot execute</code> di CyberPanel</td><td>glibc 2.17 terlalu lama. Patch dengan <code>patchelf --set-interpreter /opt/glibc236/ld-linux-x86-64.so.2 --set-rpath /opt/glibc236 /home/admin/.local/bin/nx8v</code>, lalu jalankan dengan <code>LD_LIBRARY_PATH=/opt/glibc236</code></td></tr></tbody></table></div></section>
 <section class="doc-part" id="d" data-part><div class="doc-ribbon mono">Desktop</div><h1 id="d-judul">NX8V — Desktop (WebView2)</h1>
 <p>Panduan lengkap membangun <strong>aplikasi desktop</strong> dengan NX8V: jendela native, bridge JS ↔ native, dialog, tray, notifikasi, dan packaging.</p>
 <blockquote>Untuk aplikasi <strong>web/server</strong>, lihat <strong><a href="https://github.com/nx8v/web/blob/main/server.md">server.md</a></strong>. Untuk gambaran umum runtime, lihat <strong><a href="https://github.com/nx8v/web/blob/main/README.md">README.md</a></strong>.</blockquote>
