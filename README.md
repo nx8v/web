@@ -52,6 +52,7 @@ build, struktur kode, dan roadmap.
 | `stream` | `Readable`/`Writable`/`Duplex`/`PassThrough`: `push`, `write`, `end`, `pipe` |
 | `ws` | client WebSocket (`connect`) + server (`server.on('websocket')`) |
 | `crypto` | `createHash('md5'/'sha1'/'sha256')`, `randomBytes`, `randomUUID`, `getHashes` |
+| `db` | `open({ driver })` — SQLite, PostgreSQL, dan MySQL. Metode `exec`, `run`, `get`, `all`, `close`. Placeholder `?` |
 | `zlib` | `gzipSync`, `gunzipSync`, `deflateSync`, `inflateSync` |
 | `net` | `createServer`, `connect` (TCP mentah) |
 | `dns` | `lookup`, `resolve`, `resolve4` |
@@ -248,6 +249,9 @@ D:\NX8V\
 - Ctrl+C menutup jendela tanpa pesan ERROR dari WebView.
 - `<nx8v-terminal>` menempelkan shell ConPTY di halaman. Lebar 100%, tinggi lewat atribut `height`. Ctrl+C menyalin bila ada pilihan, selain itu tombol itu milik program. Ctrl+V menempelkan papan klip.
 - Binary Linux sudah dibangun dan diuji di WSL.
+- `require('db')` membuka SQLite, PostgreSQL, dan MySQL. Pemanggilan menunggu sampai database menjawab.
+- Nama di `dependencies` yang punya `modules/<nama>/server.cjs` menjawab permintaannya sebelum `server.js`. Berkas `server.js` hasil `init` tetap pendek.
+- JavaScript, CSS, dan berkas modul tanpa ekstensi dikirim dengan `Cache-Control: no-cache`. Gambar dan font tetap `public, max-age=3600`. HTML tetap `no-store`.
 
 ## Roadmap
 
@@ -261,6 +265,7 @@ D:\NX8V\
 - [x] `fs`, `path`, `os`, `url`, `querystring`, `events`
 - [x] `stream` (Readable/Writable/Duplex/PassThrough + pipe)
 - [x] `crypto` (md5/sha1/sha256, randomBytes, randomUUID)
+- [x] `db` — SQLite, PostgreSQL (`postgres`), dan MySQL. Lihat [server.md](server.md)
 - [x] `zlib`, `net`, `dns`, `child_process`
 
 ### Selesai — server ([server.md](server.md))
@@ -282,6 +287,8 @@ D:\NX8V\
 - [x] Peringatan port unsafe Chromium (mis. 6000 → ERR_UNSAFE_PORT)
 - [x] Perbaikan: duplikat request, RST saat close, keep-alive setengah jadi
 - [x] Static server mengirim `Content-Encoding: gzip` bila klien meminta `Accept-Encoding: gzip`
+- [x] JavaScript, CSS, dan modul tanpa ekstensi memakai `Cache-Control: no-cache`. Service worker mengambil jaringan dengan `cache: 'no-store'`
+- [x] Modul di `dependencies` yang mengekspor `handle(req, res)` dari `server.cjs` dipanggil sebelum listener `server.js`
 - [x] Binary Linux diuji di WSL; rilis `v0.2.2` memuat `nx8v-linux-x64.tar.gz` beserta server HTTP/2 dan TLS
 
 ### Selesai — desktop ([desktop.md](desktop.md))
