@@ -5,6 +5,9 @@ const path = require('path');
 
 const PORT   = Number(process.env.NX8V_PORT) || 7182;
 const ROOT   = path.resolve(__dirname);
+// NX8V versions that return binary fs reads as UTF-8 strings can corrupt PNGs.
+// Keep the original icon bytes in a text-safe sidecar and restore them here.
+const ICON_B64 = path.join(ROOT, 'icon.png.b64');
 
 const MIME = {
   '.html': 'text/html; charset=utf-8',
@@ -42,6 +45,10 @@ const server = http.createServer((req, res) => {
       res.writeHead(500, { 'Content-Type': 'text/plain' });
       res.end('500 Internal Server Error');
       return;
+    }
+    if (path.basename(full).toLowerCase() === 'icon.png' && fs.existsSync(ICON_B64)) {
+      try { data = Buffer.from(fs.readFileSync(ICON_B64, 'utf8').trim(), 'base64'); }
+      catch (e) { /* use the normal response below */ }
     }
     const type = MIME[path.extname(full).toLowerCase()] || 'application/octet-stream';
     res.writeHead(200, { 'Content-Type': type });

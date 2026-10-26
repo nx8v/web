@@ -6,22 +6,47 @@
   <title>Panduan NX8V — Server &amp; Desktop</title>
   <meta name="description" content="Panduan lengkap NX8V: server/web dan desktop (WebView2), modul, CLI, test, dan packaging." />
   <meta name="theme-color" content="#ffffff" />
-  <link rel="icon" type="image/png" href="icon.png" />
+  <link rel="icon" type="image/png" href="icon.svg" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="doc-page">
   <header class="doc-nav">
-    <a class="brand" href="index.html"><span class="mono">&larr;</span> NX8V</a>
-    <span class="doc-crumb mono">Panduan</span>
+    <a class="brand" href="index.html"><img src="icon.png" alt="NX8V" width="30" height="30"><span>NX8V</span></a>
+    <div class="doc-nav-right"><span class="doc-crumb mono">DOCUMENTATION</span><div class="docs-language" aria-label="Documentation language"><button type="button" data-doc-lang="id" class="active">ID</button><button type="button" data-doc-lang="en">EN</button></div><a class="doc-home-link" href="index.html">Back to nx8v.com &rarr;</a></div>
   </header>
+  <section class="docs-hero">
+    <div class="docs-hero-grid"></div>
+    <div class="docs-hero-inner">
+      <div>
+        <span class="docs-kicker mono">NX8V / DOCUMENTATION</span>
+        <h1>Bangun. Jalankan.<br><em>Distribusikan.</em></h1>
+        <p>Panduan praktis untuk membangun server web, API, aplikasi data, dan desktop app dengan NX8V.</p>
+        <div class="docs-tags"><span>JavaScript runtime</span><span>Server + desktop</span><span>V8 + libuv</span></div>
+      </div>
+      <div class="docs-command">
+        <div class="docs-command-top"><span class="traffic"><i></i><i></i><i></i></span><span class="mono">quick-start</span></div>
+        <pre class="mono"><span class="muted"># create a project</span>
+<b>&gt; nx8v init</b>
+<span class="ok">✓ project.json created</span>
+<span class="ok">✓ server.js created</span>
+<span class="ok">✓ public/ ready</span>
+
+<span class="muted"># start development</span>
+<b>&gt; nx8v dev</b>
+<span class="ok">✓ server listening on :3000</span></pre>
+      </div>
+    </div>
+  </section>
   <div class="doc-layout">
     <aside class="toc" aria-label="Daftar isi">
+      <div class="toc-brand"><img src="icon.png" alt="" width="28" height="28"><div><strong>NX8V Docs</strong><span class="mono">v0.2.2</span></div></div>
+      <div class="toc-intro"><span class="mono">EXPLORE THE RUNTIME</span><p>Reference untuk membangun aplikasi dengan NX8V.</p></div>
 <div class="toc-group"><a class="toc-top" href="#s-judul">Panduan Server &amp; Web</a><ul><li><a href="#s-1-alur-kerja">1. Alur kerja</a></li><li><a href="#s-2-membuat-proyek">2. Membuat proyek</a></li><li><a href="#s-3-struktur-proyek">3. Struktur proyek</a></li><li><a href="#s-4-http-server">4. HTTP server</a></li><li><a href="#s-5-router">5. Router</a></li><li><a href="#s-6-static-file-server">6. Static file server</a></li><li><a href="#s-7-websocket-server">7. WebSocket server</a></li><li><a href="#s-8-httphttps-client-fetch">8. HTTP/HTTPS client + fetch</a></li><li><a href="#s-9-modul-pendukung">9. Modul pendukung</a></li><li><a href="#s-10-cli-server">10. CLI server</a></li><li><a href="#s-11-deployment">11. Deployment</a></li><li><a href="#s-12-contoh-di-repo">12. Contoh di repo</a></li><li><a href="#s-13-uji-tiga-server">13. Uji tiga server</a></li><li><a href="#s-14-catatan-24-oktober-2026">14. Catatan 24 Oktober 2026</a></li><li><a href="#s-troubleshooting">Troubleshooting</a></li></ul></div>
 <div class="toc-group"><a class="toc-top" href="#h-judul">Panduan Hosting</a><ul><li><a href="#h-1-aplikasi">1. Aplikasi</a></li><li><a href="#h-2-dari-mana-nx8v-dipasang">2. Dari mana NX8V dipasang</a></li><li><a href="#h-3-aapanel">3. aaPanel</a></li><li><a href="#h-4-cyberpanel">4. CyberPanel</a></li><li><a href="#h-5-apache">5. Apache</a></li><li><a href="#h-6-cek">6. Cek</a></li><li><a href="#h-7-bila-gagal">7. Bila gagal</a></li></ul></div>
 <div class="toc-group"><a class="toc-top" href="#d-judul">Panduan Desktop</a><ul><li><a href="#d-1-cara-kerja">1. Cara kerja</a></li><li><a href="#d-2-menjalankan">2. Menjalankan</a></li><li><a href="#d-3-bridge-windownx8v">3. Bridge window.nx8v</a></li><li><a href="#d-4-dialog-native">4. Dialog native</a></li><li><a href="#d-5-tray-menu">5. Tray & menu</a></li><li><a href="#d-6-notifikasi">6. Notifikasi</a></li><li><a href="#d-7-multi-window">7. Multi-window</a></li><li><a href="#d-8-packaging">8. Packaging</a></li><li><a href="#d-9-detail-teknis">9. Detail teknis</a></li><li><a href="#d-10-prasyarat-troubleshooting">10. Prasyarat & troubleshooting</a></li><li><a href="#d-contoh-di-repo">Contoh di repo</a></li><li><a href="#d-pembungkusan">Pembungkusan</a></li></ul></div>
 <div class="toc-group"><a class="toc-top" href="#k-judul">Keamanan</a><ul><li><a href="#k-1-permukaan-serang-apa-yang-terbuka-ke-luar">1. Permukaan serang (apa yang terbuka ke luar)</a></li><li><a href="#k-2-lapisan-bersama-yang-wajib-dantau">2. Lapisan bersama yang wajib dantau</a></li><li><a href="#k-3-pemetaan-batch-cve-nodejs-21-okt-2026-10-cve">3. Pemetaan batch CVE Node.js 21 Okt 2026 (10 CVE)</a></li><li><a href="#k-4-pengerasan-terencana-urut-prioritas">4. Pengerasan terencana (urut prioritas)</a></li><li><a href="#k-5-disklaimer">5. Disklaimer</a></li></ul></div>
     </aside>
-    <main class="doc-main article">
+    <main class="doc-main article article-id">
 <section class="doc-part" id="s" data-part><div class="doc-ribbon mono">Server &amp; Web</div><h1 id="s-judul">NX8V — Server &amp; Web</h1>
 <p>Panduan lengkap membangun aplikasi <strong>web/server</strong> dengan NX8V.</p>
 <blockquote>Untuk aplikasi <strong>desktop</strong> (jendela WebView2, tray, dialog), lihat <strong><a href="https://github.com/nx8v/web/blob/main/desktop.md">desktop.md</a></strong>. Untuk gambaran umum runtime, lihat <strong><a href="https://github.com/nx8v/web/blob/main/README.md">README.md</a></strong>.</blockquote>
@@ -988,6 +1013,45 @@ dist/&lt;nama&gt;-&lt;versi&gt;-linux-x64.tar.gz</code></pre>
 <li>PHP RCE (2 CVE, 21 Okt 2026) — stack berbeda; pelajaran: parser</li>
 </ul>
 <p>  tanpa autentikasi harus selalu diasumsikan diserang.</p></section>
+      <article class="article article-en" aria-label="NX8V English documentation">
+        <div class="doc-ribbon mono">ENGLISH REFERENCE</div>
+        <h1>Build with NX8V</h1>
+        <p class="en-lead">NX8V is a self-contained JavaScript application runtime for web servers, APIs, data products, and native desktop windows. This reference covers the practical path from a new project to a packaged application.</p>
+        <blockquote>Use ordinary HTML, CSS, JavaScript, and JSON. NX8V provides the runtime, event loop, networking, modules, and desktop bridge.</blockquote>
+        <h2>1. Create a project</h2>
+        <pre class="doc-code mono"><code>$ nx8v init
+$ nx8v dev
+$ nx8v test
+$ nx8v package</code></pre>
+        <div class="en-card-grid"><div class="en-card"><strong>init</strong><span>Creates project.json, server.js, public/, and modules/.</span></div><div class="en-card"><strong>dev</strong><span>Watches the project and reloads the page or server when files change.</span></div><div class="en-card"><strong>test</strong><span>Runs built-in JavaScript tests with assertions.</span></div><div class="en-card"><strong>package</strong><span>Builds a distributable desktop or server folder.</span></div></div>
+        <h2>2. Server and Web</h2>
+        <p>Use the built-in <code>http</code> module for a server, or the <code>router</code> module for routes and middleware. Static files are served with caching, ETag, Range, HEAD, gzip, and path traversal protection.</p>
+        <pre class="doc-code mono"><code>const http = require('http');
+
+http.createServer((req, res) =&gt; {
+  res.writeHead(200, { 'Content-Type': 'application/json' });
+  res.end(JSON.stringify({ runtime: 'nx8v', ok: true }));
+}).listen(3000, () =&gt; console.log('listening on :3000'));</code></pre>
+        <h2>3. Data, APIs, and modules</h2>
+        <p>Built-in modules cover files, paths, URLs, events, streams, crypto, compression, TCP, DNS, child processes, HTTP, HTTPS, WebSockets, and databases. Project modules can expose browser helpers or handle server requests through <code>server.cjs</code>.</p>
+        <pre class="doc-code mono"><code>const db = require('db');
+const app = require('router')();
+
+app.get('/api/health', (req, res) =&gt; {
+  res.json({ ok: true, runtime: 'nx8v' });
+});</code></pre>
+        <h2>4. Desktop applications</h2>
+        <p>Run the same project in a native window with <code>nx8v window</code>. On Windows, NX8V uses WebView2. The <code>window.nx8v</code> bridge provides window controls, dialogs, tray menus, notifications, and multiple windows.</p>
+        <pre class="doc-code mono"><code>nx8v window
+
+// inside the page
+nx8v.setTitle('My application');
+nx8v.setSize(1200, 800);
+await nx8v.dialog.openFile();</code></pre>
+        <h2>5. Deployment checklist</h2>
+        <ol><li>Set the port in project.json or use <code>NX8V_PORT</code>.</li><li>Run <code>nx8v start</code> for production.</li><li>Put a reverse proxy such as Apache in front of the local port.</li><li>Use <code>nx8v package</code> when shipping a desktop application.</li></ol>
+        <p>Return to <a href="?lang=id">ID documentation</a> for the complete Indonesian reference and detailed API notes.</p>
+      </article>
     </main>
   </div>
   <footer class="doc-footer mono">Dokumentasi NX8V &middot; sumber: D:\NX8V (server.md &amp; desktop.md)</footer>

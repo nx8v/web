@@ -1,262 +1,83 @@
 <!doctype html>
 <html lang="id">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title data-i18n="meta.title">NX8V — Runtime aplikasi JavaScript yang mandiri</title>
-  <meta name="description" content="NX8V adalah runtime aplikasi JavaScript yang mandiri — server dan desktop — dalam satu binary C++. Cukup HTML, CSS, JS & JSON: PWA, database, WebSocket, router, hingga jendela desktop. Tanpa dependensi." data-i18n-attr="content|meta.desc" />
-  <meta name="theme-color" content="#ffffff" />
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="NX8V — Runtime aplikasi JavaScript yang mandiri" />
-  <meta property="og:description" content="Runtime aplikasi JavaScript mandiri — server dan desktop — dalam satu binary: V8 + libuv, modul lengkap, tooling proyek, tanpa dependensi." />
-  <link rel="icon" type="image/png" href="icon.png" />
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://unpkg.com/lucide@latest" defer></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NX8V — Runtime JavaScript untuk Web & Desktop</title>
+  <meta name="description" content="NX8V adalah runtime JavaScript mandiri untuk membangun server web, API, aplikasi desktop, dan produk data dalam satu binary.">
+  <meta name="theme-color" content="#0a1026">
+  <link rel="icon" type="image/png" href="icon.png">
+  <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <a class="skip-link" href="#main" data-i18n="skip">Langsung ke konten</a>
-
-  <header class="navbar">
-    <div class="container inner">
-      <a class="brand" href="#">
-        <img src="icon.png" alt="" width="32" height="32" />
-        <span>NX8V</span>
-      </a>
-      <nav class="menu" id="menu" aria-label="Navigasi utama">
-        <a href="#fitur" data-i18n="nav.fitur">Fitur</a>
-        <a href="#modul" data-i18n="nav.modul">Modul</a>
-        <a href="#contoh" data-i18n="nav.contoh">Contoh</a>
-        <a href="#mulai" data-i18n="nav.mulai">Mulai</a>
-        <a href="panduan.html" data-i18n="nav.panduan">Panduan</a>
-        <a href="https://github.com/iyanrsaleh" target="_blank" rel="noopener" data-i18n="nav.github">GitHub</a>
-        <div class="lang-switch" role="group" aria-label="Bahasa">
-          <button type="button" data-lang-btn="id" class="active">ID</button>
-          <button type="button" data-lang-btn="en">EN</button>
-        </div>
+<body class="home-page">
+  <a class="skip-link" href="#main">Lewati ke konten</a>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="#top" aria-label="NX8V home"><img src="icon.png" alt="NX8V" width="38" height="38"></a>
+      <nav class="site-nav" id="siteNav">
+        <a href="#platform" data-id="Platform" data-en="Platform">Platform</a>
+        <a href="#modules" data-id="Modul" data-en="Modules">Modul</a>
+        <a href="#workflow" data-id="Alur kerja" data-en="Workflow">Alur kerja</a>
+        <a href="panduan.html" data-id="Dokumentasi" data-en="Docs">Dokumentasi</a>
+        <a href="https://github.com/iyanrsaleh/nx8v" target="_blank" rel="noopener">GitHub</a>
+        <div class="language"><button data-lang="id" class="active">ID</button><button data-lang="en">EN</button></div>
+        <a class="nav-button" href="#start" data-id="Mulai sekarang" data-en="Get started">Mulai sekarang</a>
       </nav>
-      <button class="toggle" id="toggle" aria-expanded="false" aria-controls="menu" aria-label="Buka menu" data-i18n-attr="aria-label|ui.menu.open">
-        <span></span><span></span><span></span>
-      </button>
+      <button class="menu-button" id="menuButton" aria-label="Buka menu" aria-expanded="false"><span></span><span></span><span></span></button>
     </div>
   </header>
 
   <main id="main">
-    <!-- Hero -->
-    <section class="hero">
-      <div class="container grid">
-        <div>
-          <p class="hero-claim mono" data-i18n="hero.claim">Cukup HTML, CSS, JavaScript &amp; JSON — sisanya NX8V.</p>
-          <h1 data-i18n="hero.title">Jalankan JavaScript.</h1>
-          <p data-i18n="hero.desc">
-            NX8V adalah runtime JavaScript open source dalam satu binary C++ — mesin V8,
-            event loop libuv, HTTP/HTTPS, WebSocket, router, hingga jendela desktop.
-            Satu perintah, tanpa dependensi, tanpa setup.
-          </p>
-          <div class="actions">
-            <a class="btn primary lg" href="https://github.com/iyanrsaleh/nx8v/releases/latest" target="_blank" rel="noopener" data-i18n="hero.cta1">Unduh NX8V</a>
-            <a class="btn ghost lg" href="#contoh" data-i18n="hero.cta2">Lihat Contoh</a>
+    <section class="hero" id="top">
+      <div class="hero-grid glow-grid"></div>
+      <div class="wrap hero-layout hero-simple">
+        <div class="hero-copy reveal">
+          <div class="hero-mark"><img src="icon.png" alt="Logo NX8V" width="76" height="76"><span class="overline">JAVASCRIPT APPLICATION RUNTIME</span></div>
+          <h1 data-id="Satu runtime untuk aplikasi nyata." data-en="One runtime for real applications.">Satu runtime untuk aplikasi nyata.</h1>
+          <p class="hero-lead" data-id="Bangun server, API, database, dan aplikasi desktop dengan JavaScript yang sama. NX8V menangani runtime-nya; Anda fokus pada produk." data-en="Build servers, APIs, databases, and desktop apps with the same JavaScript. NX8V handles the runtime; you focus on the product.">Bangun server, API, database, dan aplikasi desktop dengan JavaScript yang sama. NX8V menangani runtime-nya; Anda fokus pada produk.</p>
+          <div class="hero-actions"><a class="button button-primary" href="https://github.com/iyanrsaleh/nx8v/releases/latest" target="_blank" rel="noopener" data-id="Unduh dan mulai" data-en="Download and start">Unduh dan mulai</a><a class="button button-outline" href="panduan.html" data-id="Jelajahi dokumentasi" data-en="Explore documentation">Jelajahi dokumentasi</a></div>
+          <div class="hero-proofline"><span>✓ <b data-id="Satu binary" data-en="One binary">Satu binary</b></span><span>✓ <b data-id="Tanpa setup berat" data-en="No heavy setup">Tanpa setup berat</b></span><span>✓ <b data-id="Open source" data-en="Open source">Open source</b></span></div>
+        </div>
+        <div class="hero-terminal-wrap reveal reveal-delay">
+          <div class="hero-terminal">
+            <div class="terminal-head"><span class="traffic"><i></i><i></i><i></i></span><span class="mono">hello-nx8v</span><span class="terminal-live">● running</span></div>
+            <div class="terminal-body mono"><div class="terminal-line muted">// your JavaScript application</div><div><span class="purple">const</span> <span class="green">http</span> = <span class="blue">require</span>(<span class="orange">'http'</span>);</div><br><div><span class="green">http</span>.<span class="blue">createServer</span>((req, res) =&gt; {</div><div>&nbsp;&nbsp;res.<span class="blue">end</span>(<span class="orange">'Hello from NX8V'</span>);</div><div>}).<span class="blue">listen</span>(<span class="number">3000</span>);</div><br><div class="terminal-success">✓ server listening on http://localhost:3000</div><div class="terminal-success">✓ V8 runtime ready</div><div class="terminal-success">✓ libuv event loop active</div><div class="terminal-cursor">$ <span></span></div></div>
           </div>
-          <p class="meta mono" data-i18n="hero.meta">C++17 · mesin V8 · libuv · Windows &amp; Linux</p>
-        </div>
-        <figure class="code-card">
-          <figcaption class="bar mono">httpserver.js</figcaption>
-          <pre class="mono"><code><span class="k">const</span> <span class="v">http</span> = <span class="f">require</span>(<span class="s">'http'</span>);
-
-http.<span class="f">createServer</span>((req, res) =&gt; {
-  res.<span class="f">writeHead</span>(<span class="n">200</span>, { <span class="s">'Content-Type'</span>: <span class="s">'text/plain'</span> });
-  res.<span class="f">end</span>(<span class="s">'Halo dari NX8V!'</span>);
-}).<span class="f">listen</span>(<span class="n">8080</span>, () =&gt; console.<span class="f">log</span>(<span class="s">'listening on :8080'</span>));</code></pre>
-        </figure>
-      </div>
-    </section>
-
-
-    <!-- Dua jalur penggunaan -->
-    <section id="jalur" class="section alt">
-      <div class="container">
-        <h2 class="sec-title" data-i18n="pj.title">Dua jalur penggunaan</h2>
-        <p class="sec-sub" data-i18n="pj.sub">Pilih jalur: server web atau aplikasi desktop — runtime yang sama.</p>
-        <div class="cards two">
-          <article class="card path">
-            <span class="p-ico"><i data-lucide="server"></i></span><h3 data-i18n="pj.1.t">Server &amp; web</h3>
-            <p data-i18n="pj.1.d">Jalankan aplikasi web penuh: HTTP/HTTPS, router, static file dengan ETag &amp; Range, WebSocket, dan komponen HTML partial.</p>
-            <ul class="path-list mono">
-              <li>http / https</li>
-              <li>router</li>
-              <li>static (ETag / Range)</li>
-              <li>websocket</li>
-              <li>html partial</li>
-              <li>dev hot-reload</li>
-              <li>modul registry (i/u/p/d/r)</li>
-              <li>nx8v --fuzz</li>
-              <li>req.cookies/fields/files</li>
-              <li>http/2 (ALPN)</li>
-              <li>spa &lt;nx8v-spa&gt;</li>
-              <li>PWA manifest + sw</li>
-              <li>gzip otomatis</li>
-              <li>teruji 3 server produksi</li>
-            </ul>
-            <a class="path-link mono" href="panduan.html#s-judul" data-i18n="pj.1.link">Buka panduan server &#8594;</a>
-          </article>
-          <article class="card path">
-            <span class="p-ico"><i data-lucide="app-window"></i></span><h3 data-i18n="pj.2.t">Desktop</h3>
-            <p data-i18n="pj.2.d"><code class="mono">nx8v window</code> membuka jendela WebView2 dengan bridge <code class="mono">window.nx8v</code> — jendela desktop native yang ringan.</p>
-            <ul class="path-list mono">
-              <li>webview2 window</li>
-              <li>bridge window.nx8v</li>
-              <li>dialog + alert/confirm</li>
-              <li>tray &amp; menu</li>
-              <li>notification</li>
-              <li>multi-window</li><li>nx8v-terminal</li>
-              <li>opsi jendela &amp; ikon</li>
-            </ul>
-            <a class="path-link mono" href="panduan.html#d-judul" data-i18n="pj.2.link">Buka panduan desktop &#8594;</a>
-          </article>
+          <div class="hero-logo-float"><img src="icon.png" alt="NX8V" width="44" height="44"><div><b>NX8V</b><small>runtime ready</small></div></div>
         </div>
       </div>
     </section>
 
-    <!-- Fitur -->
-    <section id="fitur" class="section">
-      <div class="container">
-        <h2 class="sec-title" data-i18n="fit.title">Fitur</h2>
-        <p class="sec-sub" data-i18n="fit.sub">API inti yang tersedia langsung di dalam runtime.</p>
-        <div class="cards">
-          <article class="card">
-            <span class="c-ico"><i data-lucide="terminal"></i></span><h3 data-i18n="fit.1.t">Eksekusi script &amp; REPL</h3>
-            <p data-i18n="fit.1.d">Jalankan <code class="mono">nx8v script.js</code> atau masuk REPL interaktif dengan <code class="mono">nx8v</code> tanpa argumen.</p>
-          </article>
-          <article class="card">
-            <span class="c-ico"><i data-lucide="refresh-cw"></i></span><h3 data-i18n="fit.2.t">Event loop libuv</h3>
-            <p data-i18n="fit.2.d"><code class="mono">Promise</code> dan <code class="mono">async/await</code> bekerja secara native lewat microtask pump.</p>
-          </article>
-          <article class="card">
-            <span class="c-ico"><i data-lucide="package"></i></span><h3 data-i18n="fit.3.t">require() &amp; ES Modules</h3>
-            <p data-i18n="fit.3.d">CommonJS dengan cache (<code class="mono">__filename</code>, <code class="mono">__dirname</code>) plus <code class="mono">import</code>/<code class="mono">export</code> untuk file <code class="mono">.mjs</code>.</p>
-          </article>
-          <article class="card">
-            <span class="c-ico"><i data-lucide="globe"></i></span><h3 data-i18n="fit.4.t">HTTPS server &amp; klien</h3>
-            <p data-i18n="fit.4.d">Server HTTPS bawaan dengan PFX/PEM (TLS 1.2/1.3, ALPN h2 untuk HTTP/2), fetch HTTP/HTTPS berbasis Promise, router (params &amp; middleware), plus komponen HTML <code class="mono">partial</code>.</p>
-          </article>
-          <article class="card">
-            <span class="c-ico"><i data-lucide="zap"></i></span><h3 data-i18n="fit.5.t">WebSocket &amp; stream</h3>
-            <p data-i18n="fit.5.d">Server + client WebSocket (RFC 6455), dan stream <code class="mono">Readable</code>/<code class="mono">Writable</code>/<code class="mono">Duplex</code> dengan <code class="mono">pipe</code>.</p>
-          </article>
-          <article class="card">
-            <span class="c-ico"><i data-lucide="sliders-horizontal"></i></span><h3 data-i18n="fit.6.t">Tooling, test &amp; desktop</h3>
-            <p data-i18n="fit.6.d"><code class="mono">nx8v init/dev/start/stop/list/logs</code> + <code class="mono">package</code> — dev menyegarkan browser saat HTML/CSS berubah; <code class="mono">nx8v window</code>: dialog, tray, notifikasi, multi-window.</p>
-          </article>
-        </div>
-      </div>
+    <section class="trust-bar"><div class="wrap trust-inner"><span class="trust-intro" data-id="SATU RUNTIME UNTUK" data-en="ONE RUNTIME FOR">SATU RUNTIME UNTUK</span><span><b>WEB</b> apps</span><span><b>API</b> services</span><span><b>DATA</b> products</span><span><b>DESKTOP</b> apps</span><span><b>CLI</b> tools</span></div></section>
+
+    <section class="section platform-section" id="platform">
+      <div class="wrap"><div class="section-heading reveal"><span class="section-kicker">01 / PLATFORM</span><h2 data-id="Satu runtime. Setiap lapisan produk." data-en="One runtime. Every product layer.">Satu runtime. Setiap lapisan produk.</h2><p data-id="Tidak perlu menyatukan banyak tool hanya untuk menjalankan satu ide. NX8V memberi fondasi yang sama untuk backend, frontend, data, dan desktop." data-en="You do not need to stitch together a pile of tools just to run one idea. NX8V gives backend, frontend, data, and desktop the same foundation.">Tidak perlu menyatukan banyak tool hanya untuk menjalankan satu ide. NX8V memberi fondasi yang sama untuk backend, frontend, data, dan desktop.</p></div><div class="platform-grid">
+        <article class="platform-card card-server reveal"><div class="card-symbol" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="6" rx="1.5"></rect><rect x="3" y="14" width="18" height="6" rx="1.5"></rect><path d="M7 7h.01M7 17h.01M11 7h7M11 17h7"></path></svg></div><span class="card-label">01</span><h3 data-id="Server & API" data-en="Server & APIs">Server &amp; API</h3><p data-id="Buat layanan web dengan HTTP/HTTPS, router, WebSocket, middleware, static files, dan endpoint JSON." data-en="Build web services with HTTP/HTTPS, routing, WebSockets, middleware, static files, and JSON endpoints.">Buat layanan web dengan HTTP/HTTPS, router, WebSocket, middleware, static files, dan endpoint JSON.</p><div class="card-code mono">nx8v start</div><a href="panduan.html#s-judul" data-id="Pelajari server" data-en="Explore server">Pelajari server <span>→</span></a></article>
+        <article class="platform-card card-data reveal reveal-delay"><div class="card-symbol" aria-hidden="true"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"></ellipse><path d="M4 5v7c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12v7c0 1.7 3.6 3 8 3s8-1.3 8-3v-7"></path></svg></div><span class="card-label">02</span><h3 data-id="Data & Integrasi" data-en="Data & Integrations">Data &amp; Integrasi</h3><p data-id="Mulai dari localStorage dan SQLite hingga MySQL, PostgreSQL, Firebase, REST API, dan proxy." data-en="Go from localStorage and SQLite to MySQL, PostgreSQL, Firebase, REST APIs, and proxies.">Mulai dari localStorage dan SQLite hingga MySQL, PostgreSQL, Firebase, REST API, dan proxy.</p><div class="card-code mono">require('db')</div><a href="#modules" data-id="Lihat modul data" data-en="Explore data modules">Lihat modul data <span>→</span></a></article>
+        <article class="platform-card card-desktop reveal reveal-delay-2"><div class="card-symbol" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"></rect><path d="M8 21h8M12 17v4M7 8h10M7 11h6"></path></svg></div><span class="card-label">03</span><h3 data-id="Desktop Native" data-en="Native Desktop">Desktop Native</h3><p data-id="Gunakan HTML, CSS, dan JavaScript yang sama dalam jendela WebView2 dengan dialog, tray, notifikasi, dan packaging." data-en="Use the same HTML, CSS, and JavaScript in a WebView2 window with dialogs, tray, notifications, and packaging.">Gunakan HTML, CSS, dan JavaScript yang sama dalam jendela WebView2 dengan dialog, tray, notifikasi, dan packaging.</p><div class="card-code mono">nx8v window</div><a href="panduan.html#d-judul" data-id="Pelajari desktop" data-en="Explore desktop">Pelajari desktop <span>→</span></a></article>
+      </div></div>
     </section>
 
-    <!-- Modul -->
-    <section id="modul" class="section alt">
-      <div class="container">
-        <h2 class="sec-title" data-i18n="mod.title">Modul built-in</h2>
-        <p class="sec-sub" data-i18n="mod.sub">Delapan belas modul siap <code class="mono">require()</code> — detail API tiap modul ada di Panduan.</p>
-        <div class="mod-chips mono">
-          <span>http</span><span>https</span><span>router</span><span>static</span><span>fs</span><span>path</span><span>os</span><span>url</span><span>querystring</span><span>events</span><span>stream</span><span>ws</span><span>crypto</span><span>zlib</span><span>net</span><span>dns</span><span>child_process</span><span>db</span>
-        </div>
-        <p class="mod-note"><a href="panduan.html" data-i18n="mod.note">Lihat detail API tiap modul di Panduan &#8594;</a></p>
-      </div>
-    </section>
+    <section class="section modules-section" id="modules"><div class="wrap"><div class="section-heading light reveal"><span class="section-kicker">02 / BUILT-IN CAPABILITIES</span><h2 data-id="Yang biasanya butuh banyak dependency, sudah ada di sini." data-en="What usually takes many dependencies is already here.">Yang biasanya butuh banyak dependency, sudah ada di sini.</h2><p data-id="Contoh nyata di D:\\modules memakai modul NX8V untuk form, tabel, storage, API, middleware, proxy, dan spinner." data-en="The real project in D:\\modules uses NX8V modules for forms, tables, storage, APIs, middleware, proxies, and spinners.">Contoh nyata di <code>D:\modules</code> memakai modul NX8V untuk form, tabel, storage, API, middleware, proxy, dan spinner.</p></div><div class="module-showcase"><div class="module-list reveal"><div class="module-item active"><span>01</span><div><b>Storage</b><small>SQLite · MySQL · PostgreSQL · Firebase</small></div><strong>→</strong></div><div class="module-item"><span>02</span><div><b>Form</b><small>Validation · collection · upload</small></div><strong>→</strong></div><div class="module-item"><span>03</span><div><b>Table</b><small>Filter · sort · pagination · export</small></div><strong>→</strong></div><div class="module-item"><span>04</span><div><b>API &amp; Middleware</b><small>REST resources · Bearer grants</small></div><strong>→</strong></div><div class="module-item"><span>05</span><div><b>Proxy &amp; Spinner</b><small>Upstreams · loading states</small></div><strong>→</strong></div></div><div class="module-preview reveal reveal-delay"><div class="preview-toolbar"><span class="mono">storage / users</span><span class="preview-dot">● connected</span></div><div class="data-table"><div class="table-row table-head"><span>name</span><span>role</span><span>status</span></div><div class="table-row"><span><i class="table-avatar a1">B</i> Budi Rahman</span><span>admin</span><b>active</b></div><div class="table-row"><span><i class="table-avatar a2">S</i> Sari Putri</span><span>editor</span><b>active</b></div><div class="table-row"><span><i class="table-avatar a3">D</i> Dimas Ari</span><span>viewer</span><b>active</b></div><div class="table-row"><span><i class="table-avatar a4">N</i> Nadia K.</span><span>editor</span><b>pending</b></div></div><div class="preview-footer mono">4 records <span>SQLite · 12ms</span></div></div></div></div></section>
 
-    <!-- Contoh -->
-    <section id="contoh" class="section">
-      <div class="container">
-        <h2 class="sec-title" data-i18n="ex.title">Contoh kode</h2>
-        <p class="sec-sub" data-i18n="ex.sub">Simpan sebagai file .js lalu eksekusi dengan <code class="mono">nx8v</code>.</p>
-        <div class="demo">
-          <div class="tabs" role="tablist" aria-label="Pilih contoh kode">
-            <button role="tab" aria-selected="true" id="tab-http" aria-controls="pane-http" class="tab active" data-i18n="ex.tab.http">HTTP server</button>
-            <button role="tab" aria-selected="false" id="tab-events" aria-controls="pane-events" class="tab" data-i18n="ex.tab.events">EventEmitter</button>
-            <button role="tab" aria-selected="false" id="tab-fetch" aria-controls="pane-fetch" class="tab" data-i18n="ex.tab.fetch">fetch</button>
-            <button role="tab" aria-selected="false" id="tab-crypto" aria-controls="pane-crypto" class="tab" data-i18n="ex.tab.crypto">crypto</button>
-          </div>
-          <div class="panes">
-            <pre id="pane-http" role="tabpanel" aria-labelledby="tab-http" class="pane mono active" data-name="httpserver.js"><code><span class="k">const</span> <span class="v">http</span> = <span class="f">require</span>(<span class="s">'http'</span>);
+    <section class="section workflow-section" id="workflow"><div class="wrap"><div class="section-heading reveal"><span class="section-kicker">03 / DEVELOPER WORKFLOW</span><h2 data-id="Dari ide ke aplikasi, tanpa pindah konteks." data-en="From idea to app, without changing context.">Dari ide ke aplikasi, tanpa pindah konteks.</h2><p data-id="Tooling sederhana untuk siklus yang nyata: buat, kembangkan, uji, lalu distribusikan." data-en="Simple tooling for a real cycle: create, develop, test, then distribute.">Tooling sederhana untuk siklus yang nyata: buat, kembangkan, uji, lalu distribusikan.</p></div><div class="workflow-grid"><div class="workflow-steps reveal"><div class="workflow-step"><span>01</span><div><h3 data-id="Init" data-en="Init">Init</h3><p data-id="Buat project dengan struktur yang siap dijalankan." data-en="Create a project with a ready-to-run structure.">Buat project dengan struktur yang siap dijalankan.</p></div><code>nx8v init</code></div><div class="workflow-step"><span>02</span><div><h3 data-id="Develop" data-en="Develop">Develop</h3><p data-id="Simpan file dan lihat perubahan tanpa setup bundler." data-en="Save files and see changes without bundler setup.">Simpan file dan lihat perubahan tanpa setup bundler.</p></div><code>nx8v dev</code></div><div class="workflow-step"><span>03</span><div><h3 data-id="Test" data-en="Test">Test</h3><p data-id="Jalankan test bawaan untuk menjaga perilaku aplikasi." data-en="Run the built-in test runner to protect application behavior.">Jalankan test bawaan untuk menjaga perilaku aplikasi.</p></div><code>nx8v test</code></div><div class="workflow-step"><span>04</span><div><h3 data-id="Ship" data-en="Ship">Ship</h3><p data-id="Jalankan di server atau paketkan sebagai desktop app." data-en="Run on a server or package it as a desktop app.">Jalankan di server atau paketkan sebagai desktop app.</p></div><code>nx8v package</code></div></div><div class="terminal-panel reveal reveal-delay"><div class="terminal-head"><span class="traffic"><i></i><i></i><i></i></span><span class="mono">terminal</span></div><pre class="mono"><span class="t-muted"># create a project</span>
+<span class="t-prompt">$</span> nx8v init
+<span class="t-ok">✓</span> project.json created
+<span class="t-ok">✓</span> server.js created
+<span class="t-ok">✓</span> public/ ready
 
-http.<span class="f">createServer</span>((req, res) =&gt; {
-  res.<span class="f">writeHead</span>(<span class="n">200</span>, { <span class="s">'Content-Type'</span>: <span class="s">'text/plain'</span> });
-  res.<span class="f">end</span>(<span class="s">'Halo dari NX8V!'</span>);
-}).<span class="f">listen</span>(<span class="n">8080</span>, () =&gt; console.<span class="f">log</span>(<span class="s">'listening on :8080'</span>));</code></pre>
-            <pre id="pane-events" role="tabpanel" aria-labelledby="tab-events" class="pane mono" data-name="events.js" hidden><code><span class="k">const</span> <span class="v">EventEmitter</span> = <span class="f">require</span>(<span class="s">'events'</span>);
+<span class="t-muted"># start development</span>
+<span class="t-prompt">$</span> nx8v dev
+<span class="t-ok">✓</span> server listening on :3000
+<span class="t-ok">✓</span> watching project files
+<span class="cursor"></span></pre></div></div></div></section>
 
-<span class="k">const</span> <span class="v">em</span> = <span class="k">new</span> <span class="f">EventEmitter</span>();
-em.<span class="f">on</span>(<span class="s">'sapa'</span>, (nama) =&gt; console.<span class="f">log</span>(<span class="s">`Hai, ${nama}!`</span>));
-em.<span class="f">emit</span>(<span class="s">'sapa'</span>, <span class="s">'dunia'</span>);</code></pre>
-            <pre id="pane-fetch" role="tabpanel" aria-labelledby="tab-fetch" class="pane mono" data-name="fetchuser.js" hidden><code><span class="k">const</span> <span class="v">res</span> = <span class="k">await</span> <span class="f">fetch</span>(<span class="s">'https://api.github.com/users/octocat'</span>);
+    <section class="section start-section" id="start"><div class="wrap start-box reveal"><div><span class="section-kicker">04 / GET STARTED</span><h2 data-id="Coba dalam satu menit." data-en="Try it in one minute.">Coba dalam satu menit.</h2><p data-id="Download binary, buat project, dan jalankan server pertama Anda." data-en="Download the binary, create a project, and run your first server.">Download binary, buat project, dan jalankan server pertama Anda.</p></div><div class="start-code mono"><div><span class="comment"># install</span><br>nx8v --version</div><div><span class="comment"># create &amp; run</span><br>nx8v init<br>nx8v dev</div><a href="https://github.com/iyanrsaleh/nx8v/releases/latest" target="_blank" rel="noopener" class="button button-primary" data-id="Unduh release" data-en="Download release">Unduh release</a></div></div></section>
 
-<span class="k">if</span> (res.ok) {
-  <span class="k">const</span> <span class="v">user</span> = <span class="k">await</span> res.<span class="f">json</span>();
-  console.<span class="f">log</span>(user.name);
-}</code></pre>
-            <pre id="pane-crypto" role="tabpanel" aria-labelledby="tab-crypto" class="pane mono" data-name="hash.js" hidden><code><span class="k">const</span> <span class="v">crypto</span> = <span class="f">require</span>(<span class="s">'crypto'</span>);
-
-console.<span class="f">log</span>(crypto.<span class="f">createHash</span>(<span class="s">'sha256'</span>).<span class="f">update</span>(<span class="s">'nx8v'</span>).<span class="f">digest</span>(<span class="s">'hex'</span>));
-console.<span class="f">log</span>(crypto.<span class="f">randomUUID</span>());</code></pre>
-          </div>
-          <div class="run mono">
-            <span class="prompt">$</span>&nbsp;<span class="mono-cmd">nx8v</span> <span id="runFile">httpserver.js</span>
-            <button class="copy" id="copyBtn" type="button" data-i18n="ui.copy">Salin kode</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Mulai -->
-    <section id="mulai" class="section alt">
-      <div class="container">
-        <h2 class="sec-title" data-i18n="qs.title">Mulai dalam 60 detik</h2>
-        <p class="sec-sub" data-i18n="qs.sub">Tiga langkah dari nol sampai HTTP server berjalan.</p>
-        <ol class="steps">
-          <li>
-            <span class="s-ico"><i data-lucide="download"></i></span><h3 data-i18n="qs.1.t">1. Pasang sekali</h3>
-            <p data-i18n="qs.1.d">Installer mengunduh dari GitHub Releases, memverifikasi SHA256SUMS, lalu binary masuk ke PATH user.</p>
-            <pre class="snip mono"><code><span class="c"># Windows</span>
-powershell -ExecutionPolicy Bypass -Command "irm https://github.com/iyanrsaleh/nx8v/releases/latest/download/install.ps1 | iex"
-
-<span class="c"># Linux</span>
-curl -fsSL https://github.com/iyanrsaleh/nx8v/releases/latest/download/install.sh | sh</code></pre>
-          </li>
-          <li>
-            <span class="s-ico"><i data-lucide="file-plus-2"></i></span><h3 data-i18n="qs.2.t">2. Buat proyek</h3>
-            <p data-i18n="qs.2.d">Wizard menghasilkan <code class="mono">project.json</code>, <code class="mono">server.js</code>, dan folder <code class="mono">public/</code>.</p>
-            <pre class="snip mono"><code>cd D:\proyek-saya
-nx8v init</code></pre>
-          </li>
-          <li>
-            <span class="s-ico"><i data-lucide="play"></i></span><h3 data-i18n="qs.3.t">3. Jalankan</h3>
-            <p data-i18n="qs.3.d">Server statik aktif beserta contoh endpoint <code class="mono">GET /api/hello</code>.</p>
-            <pre class="snip mono"><code>nx8v server.js</code></pre>
-          </li>
-        </ol>
-      </div>
-    </section>
+    <section class="final-cta"><div class="wrap final-inner"><img src="icon.png" alt="NX8V" width="70" height="70"><div><span class="overline">NX8V RUNTIME</span><h2 data-id="Runtime kecil. Ruang besar untuk ide." data-en="Small runtime. Big room for ideas.">Runtime kecil. Ruang besar untuk ide.</h2><p data-id="Server, API, database, dan desktop dalam bahasa yang sudah Anda kuasai." data-en="Server, APIs, databases, and desktop in the language you already know.">Server, API, database, dan desktop dalam bahasa yang sudah Anda kuasai.</p></div><a class="button button-light" href="https://github.com/iyanrsaleh/nx8v" target="_blank" rel="noopener">GitHub <span>↗</span></a></div></section>
   </main>
 
-  <footer class="footer">
-    <div class="container inner">
-      <a class="brand" href="#">
-        <img src="icon.png" alt="" width="24" height="24" />
-        <span>NX8V</span>
-      </a>
-      <nav aria-label="Tautan footer">
-        <a href="#fitur" data-i18n="nav.fitur">Fitur</a>
-        <a href="#modul" data-i18n="nav.modul">Modul</a>
-        <a href="#contoh" data-i18n="nav.contoh">Contoh</a>
-        <a href="#mulai" data-i18n="nav.mulai">Mulai</a>
-        <a href="panduan.html" data-i18n="nav.panduan">Panduan</a>
-        <a href="https://github.com/iyanrsaleh" target="_blank" rel="noopener" data-i18n="nav.github">GitHub</a>
-      </nav>
-    </div>
-    <div class="container legal">
-      <span data-i18n="foot.copy">&copy; 2026 NX8V</span>
-      <span class="mono">nx8v/0.2.2</span>
-    </div>
-  </footer>
-
+  <footer class="site-footer"><div class="wrap footer-inner"><a class="brand" href="#top"><img src="icon.png" alt="NX8V" width="30" height="30"><span>NX8V</span></a><div class="footer-links"><a href="#platform">Platform</a><a href="#modules">Modul</a><a href="panduan.html">Dokumentasi</a><a href="https://github.com/iyanrsaleh/nx8v" target="_blank" rel="noopener">GitHub</a></div><span class="footer-copy">© 2026 NX8V · C++17 · V8 · libuv</span></div></footer>
   <script src="index.js" defer></script>
 </body>
 </html>
