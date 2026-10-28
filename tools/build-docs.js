@@ -156,6 +156,17 @@ const nav = tocItems.map(function (g) {
     if (it.lvl !== 2) return;
     html += '<li><a href="#' + it.id + '">' + it.text.replace(/`/g, '') + '</a></li>';
   });
+  // sub-daftar "Inti" pada grup Server: fitur headline yang sering dicari
+  if (g.items.length && g.items[0].id.indexOf('s-') === 0) {
+    const core = [
+      ['s-komponen-html-partial', 'Komponen HTML (partial)'],
+      ['s-spa', 'SPA'],
+      ['s-pwa', 'PWA'],
+      ['s-modul', 'Modul'],
+    ];
+    html += '<li class="toc-hr"><strong>Inti</strong></li>';
+    core.forEach(function (c) { html += '<li><a href="#' + c[0] + '">' + c[1] + '</a></li>'; });
+  }
   html += '</ul></div>';
   return html;
 }).join('\n');
