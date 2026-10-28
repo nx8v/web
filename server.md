@@ -118,7 +118,7 @@ Halaman juga memasang `<link rel="icon" href="/images/32x32.png">`. Permintaan o
 Port bisa dioverride tanpa mengubah file: `nx8v start --port=5000`, atau lewat
 environment `NX8V_PORT` / `PORT` (dibaca `server.js`).
 
-`nx8v init` tidak menulis objek `website` dan tidak menaruh `<nx8v-spa>` di `index.html`. SPA, PWA, judul untuk tautan yang dibagikan, serta `req.query`, `req.cookies`, `req.fields`, dan `req.files` ada di runtime. Proyek baru memakainya setelah `project.json` dan HTML diubah seperti di bagian SPA dan PWA. `server.js` hasil init hanya mencatat permintaan (kecuali `/.well-known/`) dan menjawab `/api/hello`. Modul yang namanya ada di `dependencies` dan punya `server.cjs` menjawab lebih dulu, tanpa baris tambahan di `server.js`.
+`nx8v init` tidak menulis objek `website` dan tidak menaruh `<nx8v-spa>` di `index.html`. SPA, PWA, judul untuk tautan yang dibagikan, serta `req.query`, `req.cookies`, `req.fields`, dan `req.files` ada di runtime. Proyek baru memakainya setelah `project.json` dan HTML diubah seperti di bagian SPA dan PWA. `server.js` hasil init hanya mencatat permintaan selain `GET` halaman dan modul (serta selain `/.well-known/`) dan membalas `404` untuk sisanya. `GET /api/` tetap dicatat. Modul yang namanya ada di `dependencies` dan punya `server.cjs` menjawab lebih dulu, tanpa baris tambahan di `server.js`.
 
 ---
 
@@ -156,7 +156,7 @@ dengan menaruh file di folder itu:
 | `/favicon.ico` | `public/favicon.ico`, lalu ikon `public/assets/images/32x32.png` |
 | `/contoh` | `modules/contoh/index.js` |
 
-Bila tidak ada berkas yang cocok, NX8V menanyakan `modules/<nama>/server.cjs` untuk setiap nama di `dependencies`. `handle(req, res)` yang mengembalikan `true` memiliki permintaan itu. Sisanya masuk ke `server.js`, misalnya `GET /api/hello`. `server.js` hasil `init` tetap pendek dan tidak memuat pemetaan folder.
+Bila tidak ada berkas yang cocok, NX8V menanyakan `modules/<nama>/server.cjs` untuk setiap nama di `dependencies`. `handle(req, res)` yang mengembalikan `true` memiliki permintaan itu. Sisanya masuk ke `server.js`, yang membalas `404`. `server.js` hasil `init` tetap pendek dan tidak memuat pemetaan folder.
 
 ### SPA
 
@@ -169,7 +169,7 @@ Dua syarat sekaligus. `project.json` memuat objek `website` dengan `"SPA": true`
 }
 ```
 
-Klik tautan pada origin yang sama mengisi slot dan mengganti URL. Yang dilewati: `/api`, berkas berekstensi, `target` selain `_self`, dan tautan unduhan. Formulir GET dan POST dengan syarat yang sama menaruh hasil di dalam tag, dan URL mengikuti `action`.
+Klik tautan pada origin yang sama mengisi slot dan mengganti URL. Yang dilewati: `/api`, `/middleware`, berkas berekstensi, `target` selain `_self`, dan tautan unduhan. Formulir GET dan POST dengan syarat yang sama menaruh hasil di dalam tag, dan URL mengikuti `action`.
 
 Halaman tujuan boleh membungkus potongan yang masuk slot dengan `<nx8v-page>`. Tanpa tag itu, isi `<body>` yang dipakai, termasuk `<script>` halaman itu, dan skrip tersebut dijalankan. Berkas yang sendiri berisi `<nx8v-spa>` tanpa `<nx8v-page>` tidak disalin ke dalam slot. Berkas tanpa `<html>`, misalnya teks polos, masuk utuh.
 
@@ -245,7 +245,7 @@ Ekor URL tercatat sebagai data. Berkas yang dilayani tetap `about.html`.
 
 Nama cache mengikuti `version` di `project.json`, misalnya `nx8v-pwa-1.0.0`. Saat dipasang, worker menyimpan `/`, manifes, dan kedua ikon. Halaman juga mendapat `<link rel="apple-touch-icon">`. Pemasangan memakai ikon di bilah alamat browser.
 
-Service worker mengambil jaringan lebih dulu dengan `cache: 'no-store'`, lalu menyimpan salinan di cache-nya sendiri. Saat jaringan putus, halaman dan berkas yang pernah dibuka dilayani dari simpanan itu. Permintaan `/api`, pemeriksa `nx8v dev`, dan isi slot SPA tidak melewati service worker, jadi klik antar menu tetap bisa dibatalkan. Isi slot yang sudah pernah tampil dibaca lagi dari cache `nx8v-spa`.
+Service worker mengambil jaringan lebih dulu dengan `cache: 'no-store'`, lalu menyimpan salinan di cache-nya sendiri. Saat jaringan putus, halaman dan berkas yang pernah dibuka dilayani dari simpanan itu. Permintaan `/api`, `/middleware`, pemeriksa `nx8v dev`, dan isi slot SPA tidak melewati service worker, jadi klik antar menu tetap bisa dibatalkan. Isi slot yang sudah pernah tampil dibaca lagi dari cache `nx8v-spa`.
 
 Bila `PWA` mati, keempat URL itu tidak dibuat. Halaman melepas service worker yang sudah terpasang.
 
@@ -278,7 +278,7 @@ Di HTML cukup nama itu:
 <script type="module" src="contoh"></script>
 ```
 
-Browser meminta `/contoh`. NX8V mengembalikan `modules/contoh/index.js`. `/contoh/index.js` adalah berkas yang sama. Nama yang tidak tertulis di `dependencies` tidak dilayani.
+Browser meminta `/contoh`. Untuk impor skrip, NX8V mengarahkan ke `/contoh/index.js` dan mengembalikan `modules/contoh/index.js`. Path relatif di berkas itu (`./lain.js`, `./gaya.css`) tetap di dalam `modules/contoh/`. `import "./gaya.css"` dipasang sebagai stylesheet. `/contoh/index.js` adalah berkas yang sama bila diminta langsung. Nama yang tidak tertulis di `dependencies` tidak dilayani. Berkas tersembunyi, `config.json`, serta ekstensi `.php`, `.sql`, `.pem`, `.key`, `.so`, dan `.dll` tidak dikirim.
 
 `require('./modules/photos')` di `server.js` juga membuka `index.js` folder itu. `photos` untuk server. `contoh` untuk halaman. `nx8v init` membuat folder `modules/`, `"dependencies": {}`, dan `repository` yang menunjuk ke mega-repo internal NX8V.
 
@@ -296,9 +296,13 @@ function handle(req, res) {
 module.exports = { handle };
 ```
 
-NX8V memuat berkas itu saat permintaan pertama, hanya bila nama foldernya tertulis di `dependencies` dan berkasnya ada. `handle` menerima `req` dan `res` yang sama dengan listener `server.js`. Balasan `true` berarti modul itu yang menjawab, dan listener `server.js` tidak dipanggil. Balasan `false` meneruskan permintaan ke modul berikutnya, lalu ke `server.js`. Body tetap sampai lewat `req.on('data')` dan `req.on('end')`.
+NX8V memuat berkas itu saat permintaan pertama, hanya bila nama foldernya tertulis di `dependencies` dan berkasnya ada. `handle` menerima `req` dan `res` yang sama dengan listener `server.js`. Balasan `true` berarti modul itu yang menjawab, dan listener `server.js` tidak dipanggil. Balasan `false` meneruskan permintaan ke modul berikutnya, lalu ke `server.js`.
 
-`server.js` tidak perlu `require` modul itu. Menambah atau menghapus nama di `dependencies` sudah cukup. Setelah `server.cjs` atau `project.json` berubah, jalankan ulang nx8v.
+`handle` dipanggil setelah badan permintaan utuh. Angka `Content-Length` harus sudah tiba. Badan `chunked` ditunggu sampai potongan penutup. Pada saat itu `req.fields` dan `req.files` sudah terisi. `req.on('data')` dan `req.on('end')` menyusul dengan badan yang sama. Header saja tidak cukup: unggahan yang datang dalam beberapa paket kehilangan berkas bila dibaca lebih awal.
+
+Urutan kunci `dependencies` adalah urutan pemanggilan `handle`. Nama yang lebih awal dapat menguasai satu path sebelum modul berikutnya.
+
+`server.js` tidak perlu `require` modul itu. Menambah atau menghapus nama di `dependencies` sudah cukup. Simpan `.js` atau `.json` me-restart proses lewat `nx8v dev`. Simpan `.cjs` tidak. Setelah `server.cjs` atau `project.json` berubah, jalankan ulang nx8v.
 
 ### Dependensi
 
@@ -414,9 +418,9 @@ Sertifikat PFX berunding TLS 1.2 dan 1.3. Pasangan `cert` dan `key` menerima `BE
 | `req.query` | objek query string, `?a=1` menjadi `{ a: "1" }` |
 | `req.cookies` | objek dari header `Cookie` |
 | `req.fields` | bidang formulir `application/x-www-form-urlencoded` atau `multipart/form-data` |
-| `req.files` | berkas unggahan. Setiap nama berisi `{ filename, type, data }` dan `data` adalah `Buffer` |
-| `req.on('data', fn)` | body (bila ada) |
-| `req.on('end', fn)` | body selesai |
+| `req.files` | berkas unggahan. Setiap nama berisi `{ filename, type, data }` dan `data` adalah `Buffer`. Terisi bila badan multipart sudah utuh |
+| `req.on('data', fn)` | badan utuh, setelah `handle` mulai |
+| `req.on('end', fn)` | badan selesai |
 
 **Response (`res`):**
 
@@ -434,7 +438,7 @@ Sertifikat PFX berunding TLS 1.2 dan 1.3. Pasangan `cert` dan `key` menerima `BE
 
 **Event server:** `listening`, `request`, `connection`, `close`, `error`, `websocket`.
 
-Catatan: server membalas `Connection: close` (satu permintaan per koneksi). Pipelining belum didukung. Body di atas 8 MB dibalas `413 Payload Too Large`.
+Catatan: server membalas `Connection: close` (satu permintaan per koneksi). Pipelining belum didukung. Permintaan baru diproses setelah badan pesan utuh, paling besar 8 MB. Lebih dari itu dibalas `413 Payload Too Large`.
 
 HTML, termasuk cangkang SPA, dikirim dengan `Cache-Control: no-store` dan tetap bisa di-gzip. JavaScript, CSS, dan berkas modul tanpa ekstensi dikirim dengan `ETag` dan `Cache-Control: no-cache`, jadi browser menanyakan ulang ke server. Gambar, font, dan berkas lain dikirim dengan `ETag`, `Cache-Control: public, max-age=3600`, `Range` (`206`), dan `gzip` bila klien meminta `Accept-Encoding: gzip`. `If-None-Match` yang cocok pada kelompok itu membalas `304`.
 
@@ -571,7 +575,7 @@ ws.onmessage = (e) => console.log(e.data);
 ```js
 const http = require('http');
 
-http.get('http://127.0.0.1:3000/api/hello', (res) => {
+http.get('http://127.0.0.1:3000/', (res) => {
   console.log('status:', res.statusCode, res.statusMessage);
   let body = '';
   res.on('data', (c) => { body += c; });
@@ -675,7 +679,7 @@ sql.close();
 | `all(sql[, params])` | array objek |
 | `close()` | menutup koneksi |
 
-PostgreSQL menerima sandi cleartext, `md5`, dan SCRAM-SHA-256. MySQL menerima `mysql_native_password` dan jalur cepat `caching_sha2_password`. Pertukaran autentikasi penuh `caching_sha2` (penanda `0x01` `0x04`) belum dikerjakan dan mengembalikan pesan kesalahan. SQLite menyalakan `foreign_keys` dan tidak memuat ekstensi.
+PostgreSQL menerima sandi cleartext, `md5`, dan SCRAM-SHA-256. MySQL menerima `mysql_native_password` dan `caching_sha2_password`, termasuk autentikasi penuh lewat kunci RSA server bila cache host belum ada. SQLite menyalakan `foreign_keys` dan tidak memuat ekstensi.
 
 Contoh `querystring`:
 
@@ -896,14 +900,14 @@ Yang sudah ada di runtime, dan apakah `nx8v init` ikut menuliskannya:
 | SPA (`website.SPA` dan `<nx8v-spa>`) | ada | tidak |
 | PWA (`website.PWA`, manifes, service worker) | ada | tidak |
 | Judul, deskripsi, dan `og:*` saat tautan dibagikan | ada, ikut SPA | tidak |
-| `req.query`, `req.cookies`, `req.fields`, `req.files`, `res.cookie` | ada pada setiap permintaan | tidak. Contoh init hanya `/api/hello` |
+| `req.query`, `req.cookies`, `req.fields`, `req.files`, `res.cookie` | ada pada setiap permintaan | tidak. `server.js` hasil init hanya log dan `404` |
 | ETag, Range, dan gzip berkas publik selain HTML | ada | tidak perlu di template |
-| Log `/.well-known/` tidak dicetak | ada | ada, satu syarat di `server.js` |
+| Log `GET` berkas publik tidak dicetak. `server.js` juga diam untuk `GET` di luar `/api/` dan untuk `/.well-known/` | ada | syarat di `server.js` |
 | `nx8v --fuzz` (korpus + 20.000 mutasi, benih `--fuzz=1:20000`) | ada | bukan berkas proyek |
 | `crypto.randomBytes` / `crypto.randomUUID` lewat `BCryptGenRandom` (Windows) dan `getrandom` (Linux) | ada | bukan berkas proyek |
 | Hosting aaPanel, CyberPanel, dan Apache | [hosting.md](hosting.md) | bukan berkas proyek |
 | `require('db')`: SQLite, PostgreSQL, MySQL | ada | bukan berkas proyek |
-| `modules/<nama>/server.cjs` untuk nama di `dependencies` | ada. `handle` yang mengembalikan `true` menjawab sebelum `server.js` | tidak. `server.js` tetap contoh `/api/hello` |
+| `modules/<nama>/server.cjs` untuk nama di `dependencies` | ada. `handle` yang mengembalikan `true` menjawab sebelum `server.js` | tidak. `server.js` tetap log dan `404` |
 | JavaScript, CSS, dan modul tanpa ekstensi: `Cache-Control: no-cache` | ada | tidak perlu di template |
 | Service worker `fetch` memakai `cache: 'no-store'` | ada, bila `PWA` hidup | tidak |
 

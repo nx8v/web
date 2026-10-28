@@ -6,47 +6,22 @@
   <title>Panduan NX8V — Server &amp; Desktop</title>
   <meta name="description" content="Panduan lengkap NX8V: server/web dan desktop (WebView2), modul, CLI, test, dan packaging." />
   <meta name="theme-color" content="#ffffff" />
-  <link rel="icon" type="image/png" href="icon.svg" />
+  <link rel="icon" type="image/png" href="icon.png" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="doc-page">
   <header class="doc-nav">
-    <a class="brand" href="index.html"><img src="icon.png" alt="NX8V" width="30" height="30"><span>NX8V</span></a>
-    <div class="doc-nav-right"><span class="doc-crumb mono">DOCUMENTATION</span><div class="docs-language" aria-label="Documentation language"><button type="button" data-doc-lang="id" class="active">ID</button><button type="button" data-doc-lang="en">EN</button></div><a class="doc-home-link" href="index.html">Back to nx8v.com &rarr;</a></div>
+    <a class="brand" href="index.html"><span class="mono">&larr;</span> NX8V</a>
+    <span class="doc-crumb mono">Panduan</span>
   </header>
-  <section class="docs-hero">
-    <div class="docs-hero-grid"></div>
-    <div class="docs-hero-inner">
-      <div>
-        <span class="docs-kicker mono">NX8V / DOCUMENTATION</span>
-        <h1>Bangun. Jalankan.<br><em>Distribusikan.</em></h1>
-        <p>Panduan praktis untuk membangun server web, API, aplikasi data, dan desktop app dengan NX8V.</p>
-        <div class="docs-tags"><span>JavaScript runtime</span><span>Server + desktop</span><span>V8 + libuv</span></div>
-      </div>
-      <div class="docs-command">
-        <div class="docs-command-top"><span class="traffic"><i></i><i></i><i></i></span><span class="mono">quick-start</span></div>
-        <pre class="mono"><span class="muted"># create a project</span>
-<b>&gt; nx8v init</b>
-<span class="ok">✓ project.json created</span>
-<span class="ok">✓ server.js created</span>
-<span class="ok">✓ public/ ready</span>
-
-<span class="muted"># start development</span>
-<b>&gt; nx8v dev</b>
-<span class="ok">✓ server listening on :3000</span></pre>
-      </div>
-    </div>
-  </section>
   <div class="doc-layout">
     <aside class="toc" aria-label="Daftar isi">
-      <div class="toc-brand"><img src="icon.png" alt="" width="28" height="28"><div><strong>NX8V Docs</strong><span class="mono">v0.2.2</span></div></div>
-      <div class="toc-intro"><span class="mono">EXPLORE THE RUNTIME</span><p>Reference untuk membangun aplikasi dengan NX8V.</p></div>
 <div class="toc-group"><a class="toc-top" href="#s-judul">Panduan Server &amp; Web</a><ul><li><a href="#s-1-alur-kerja">1. Alur kerja</a></li><li><a href="#s-2-membuat-proyek">2. Membuat proyek</a></li><li><a href="#s-3-struktur-proyek">3. Struktur proyek</a></li><li><a href="#s-4-http-server">4. HTTP server</a></li><li><a href="#s-5-router">5. Router</a></li><li><a href="#s-6-static-file-server">6. Static file server</a></li><li><a href="#s-7-websocket-server">7. WebSocket server</a></li><li><a href="#s-8-httphttps-client-fetch">8. HTTP/HTTPS client + fetch</a></li><li><a href="#s-9-modul-pendukung">9. Modul pendukung</a></li><li><a href="#s-10-cli-server">10. CLI server</a></li><li><a href="#s-11-deployment">11. Deployment</a></li><li><a href="#s-12-contoh-di-repo">12. Contoh di repo</a></li><li><a href="#s-13-uji-tiga-server">13. Uji tiga server</a></li><li><a href="#s-14-catatan-24-oktober-2026">14. Catatan 24 Oktober 2026</a></li><li><a href="#s-troubleshooting">Troubleshooting</a></li></ul></div>
 <div class="toc-group"><a class="toc-top" href="#h-judul">Panduan Hosting</a><ul><li><a href="#h-1-aplikasi">1. Aplikasi</a></li><li><a href="#h-2-dari-mana-nx8v-dipasang">2. Dari mana NX8V dipasang</a></li><li><a href="#h-3-aapanel">3. aaPanel</a></li><li><a href="#h-4-cyberpanel">4. CyberPanel</a></li><li><a href="#h-5-apache">5. Apache</a></li><li><a href="#h-6-cek">6. Cek</a></li><li><a href="#h-7-bila-gagal">7. Bila gagal</a></li></ul></div>
 <div class="toc-group"><a class="toc-top" href="#d-judul">Panduan Desktop</a><ul><li><a href="#d-1-cara-kerja">1. Cara kerja</a></li><li><a href="#d-2-menjalankan">2. Menjalankan</a></li><li><a href="#d-3-bridge-windownx8v">3. Bridge window.nx8v</a></li><li><a href="#d-4-dialog-native">4. Dialog native</a></li><li><a href="#d-5-tray-menu">5. Tray & menu</a></li><li><a href="#d-6-notifikasi">6. Notifikasi</a></li><li><a href="#d-7-multi-window">7. Multi-window</a></li><li><a href="#d-8-packaging">8. Packaging</a></li><li><a href="#d-9-detail-teknis">9. Detail teknis</a></li><li><a href="#d-10-prasyarat-troubleshooting">10. Prasyarat & troubleshooting</a></li><li><a href="#d-contoh-di-repo">Contoh di repo</a></li><li><a href="#d-pembungkusan">Pembungkusan</a></li></ul></div>
 <div class="toc-group"><a class="toc-top" href="#k-judul">Keamanan</a><ul><li><a href="#k-1-permukaan-serang-apa-yang-terbuka-ke-luar">1. Permukaan serang (apa yang terbuka ke luar)</a></li><li><a href="#k-2-lapisan-bersama-yang-wajib-dantau">2. Lapisan bersama yang wajib dantau</a></li><li><a href="#k-3-pemetaan-batch-cve-nodejs-21-okt-2026-10-cve">3. Pemetaan batch CVE Node.js 21 Okt 2026 (10 CVE)</a></li><li><a href="#k-4-pengerasan-terencana-urut-prioritas">4. Pengerasan terencana (urut prioritas)</a></li><li><a href="#k-5-disklaimer">5. Disklaimer</a></li></ul></div>
     </aside>
-    <main class="doc-main article article-id">
+    <main class="doc-main article">
 <section class="doc-part" id="s" data-part><div class="doc-ribbon mono">Server &amp; Web</div><h1 id="s-judul">NX8V — Server &amp; Web</h1>
 <p>Panduan lengkap membangun aplikasi <strong>web/server</strong> dengan NX8V.</p>
 <blockquote>Untuk aplikasi <strong>desktop</strong> (jendela WebView2, tray, dialog), lihat <strong><a href="https://github.com/nx8v/web/blob/main/desktop.md">desktop.md</a></strong>. Untuk gambaran umum runtime, lihat <strong><a href="https://github.com/nx8v/web/blob/main/README.md">README.md</a></strong>.</blockquote>
@@ -138,7 +113,7 @@ nx8v init</code></pre>
 }</code></pre>
 <p><code>"icon": "./images/32x32.png"</code> menunjuk berkas <code>public/assets/images/32x32.png</code>. Path panjang seperti <code>./public/assets/images/32x32.png</code> tetap berlaku bila berkasnya ada di situ.</p>
 <p>Port bisa dioverride tanpa mengubah file: <code>nx8v start --port=5000</code>, atau lewat environment <code>NX8V_PORT</code> / <code>PORT</code> (dibaca <code>server.js</code>).</p>
-<p><code>nx8v init</code> tidak menulis objek <code>website</code> dan tidak menaruh <code>&lt;nx8v-spa&gt;</code> di <code>index.html</code>. SPA, PWA, judul untuk tautan yang dibagikan, serta <code>req.query</code>, <code>req.cookies</code>, <code>req.fields</code>, dan <code>req.files</code> ada di runtime. Proyek baru memakainya setelah <code>project.json</code> dan HTML diubah seperti di bagian SPA dan PWA. <code>server.js</code> hasil init hanya mencatat permintaan (kecuali <code>/.well-known/</code>) dan menjawab <code>/api/hello</code>. Modul yang namanya ada di <code>dependencies</code> dan punya <code>server.cjs</code> menjawab lebih dulu, tanpa baris tambahan di <code>server.js</code>.</p>
+<p><code>nx8v init</code> tidak menulis objek <code>website</code> dan tidak menaruh <code>&lt;nx8v-spa&gt;</code> di <code>index.html</code>. SPA, PWA, judul untuk tautan yang dibagikan, serta <code>req.query</code>, <code>req.cookies</code>, <code>req.fields</code>, dan <code>req.files</code> ada di runtime. Proyek baru memakainya setelah <code>project.json</code> dan HTML diubah seperti di bagian SPA dan PWA. <code>server.js</code> hasil init hanya mencatat permintaan selain <code>GET</code> halaman dan modul (serta selain <code>/.well-known/</code>) dan membalas <code>404</code> untuk sisanya. <code>GET /api/</code> tetap dicatat. Modul yang namanya ada di <code>dependencies</code> dan punya <code>server.cjs</code> menjawab lebih dulu, tanpa baris tambahan di <code>server.js</code>.</p>
 <hr />
 <h2 id="s-3-struktur-proyek">3. Struktur proyek</h2>
 <pre class="doc-code mono"><code>proyek/
@@ -158,14 +133,14 @@ nx8v init</code></pre>
 └── nx8v.log          # dibuat otomatis saat `nx8v start`</code></pre>
 <p>NX8V melayani berkas di <code>public/</code> sebelum <code>server.js</code>. Menambah halaman cukup dengan menaruh file di folder itu:</p>
 <div class="tbl-wrap"><table><thead><tr><th scope="col">URL</th><th scope="col">File yang dicari</th></tr></thead><tbody><tr><td><code>/</code></td><td><code>public/index.html</code></td></tr><tr><td><code>/about</code></td><td><code>public/about.html</code> lalu <code>public/about/index.html</code></td></tr><tr><td><code>/about/data/u</code></td><td><code>public/about/data/u.html</code>, <code>about/data.html</code>, <strong><code>about.html</code></strong></td></tr><tr><td><code>/js/dll.js</code></td><td><code>public/assets/js/dll.js</code>. Path halaman diawali <code>/js</code></td></tr><tr><td><code>/css/style.css</code></td><td><code>public/assets/css/style.css</code></td></tr><tr><td><code>/images/32x32.png</code></td><td><code>public/assets/images/32x32.png</code></td></tr><tr><td><code>/favicon.ico</code></td><td><code>public/favicon.ico</code>, lalu ikon <code>public/assets/images/32x32.png</code></td></tr><tr><td><code>/contoh</code></td><td><code>modules/contoh/index.js</code></td></tr></tbody></table></div>
-<p>Bila tidak ada berkas yang cocok, NX8V menanyakan <code>modules/&lt;nama&gt;/server.cjs</code> untuk setiap nama di <code>dependencies</code>. <code>handle(req, res)</code> yang mengembalikan <code>true</code> memiliki permintaan itu. Sisanya masuk ke <code>server.js</code>, misalnya <code>GET /api/hello</code>. <code>server.js</code> hasil <code>init</code> tetap pendek dan tidak memuat pemetaan folder.</p>
+<p>Bila tidak ada berkas yang cocok, NX8V menanyakan <code>modules/&lt;nama&gt;/server.cjs</code> untuk setiap nama di <code>dependencies</code>. <code>handle(req, res)</code> yang mengembalikan <code>true</code> memiliki permintaan itu. Sisanya masuk ke <code>server.js</code>, yang membalas <code>404</code>. <code>server.js</code> hasil <code>init</code> tetap pendek dan tidak memuat pemetaan folder.</p>
 <h3 id="s-spa">SPA</h3>
 <p>Dua syarat sekaligus. <code>project.json</code> memuat objek <code>website</code> dengan <code>"SPA": true</code>, dan <code>public/index.html</code> memuat tag <code>&lt;nx8v-spa&gt;</code>. Tag itu boleh diletakkan di mana saja di halaman index. Bila keduanya ada, klik tautan tetap di dokumen index dan isi tautan masuk ke dalam tag. Bila salah satu tidak ada, URL kembali ke berkas HTML-nya sendiri. Objek <code>website</code> yang dipakai adalah yang sejajar dengan <code>name</code> di <code>project.json</code>.</p>
 <pre class="doc-code mono"><code>"website": {
   "SPA": true,
   "PWA": false
 }</code></pre>
-<p>Klik tautan pada origin yang sama mengisi slot dan mengganti URL. Yang dilewati: <code>/api</code>, berkas berekstensi, <code>target</code> selain <code>_self</code>, dan tautan unduhan. Formulir GET dan POST dengan syarat yang sama menaruh hasil di dalam tag, dan URL mengikuti <code>action</code>.</p>
+<p>Klik tautan pada origin yang sama mengisi slot dan mengganti URL. Yang dilewati: <code>/api</code>, <code>/middleware</code>, berkas berekstensi, <code>target</code> selain <code>_self</code>, dan tautan unduhan. Formulir GET dan POST dengan syarat yang sama menaruh hasil di dalam tag, dan URL mengikuti <code>action</code>.</p>
 <p>Halaman tujuan boleh membungkus potongan yang masuk slot dengan <code>&lt;nx8v-page&gt;</code>. Tanpa tag itu, isi <code>&lt;body&gt;</code> yang dipakai, termasuk <code>&lt;script&gt;</code> halaman itu, dan skrip tersebut dijalankan. Berkas yang sendiri berisi <code>&lt;nx8v-spa&gt;</code> tanpa <code>&lt;nx8v-page&gt;</code> tidak disalin ke dalam slot. Berkas tanpa <code>&lt;html&gt;</code>, misalnya teks polos, masuk utuh.</p>
 <p>Nama halaman yang sama dengan nama modul, misalnya <code>/form</code> dan modul <code>form</code>, membuka <code>public/form.html</code> saat browser meminta HTML. <code>import</code> dari <code>/form</code> tetap menerima <code>modules/form/index.js</code>.</p>
 <pre class="doc-code mono"><code>&lt;nx8v-page&gt;
@@ -199,7 +174,7 @@ nx8v init</code></pre>
   "start_url": "/"
 }</code></pre>
 <p>Nama cache mengikuti <code>version</code> di <code>project.json</code>, misalnya <code>nx8v-pwa-1.0.0</code>. Saat dipasang, worker menyimpan <code>/</code>, manifes, dan kedua ikon. Halaman juga mendapat <code>&lt;link rel="apple-touch-icon"&gt;</code>. Pemasangan memakai ikon di bilah alamat browser.</p>
-<p>Service worker mengambil jaringan lebih dulu dengan <code>cache: 'no-store'</code>, lalu menyimpan salinan di cache-nya sendiri. Saat jaringan putus, halaman dan berkas yang pernah dibuka dilayani dari simpanan itu. Permintaan <code>/api</code>, pemeriksa <code>nx8v dev</code>, dan isi slot SPA tidak melewati service worker, jadi klik antar menu tetap bisa dibatalkan. Isi slot yang sudah pernah tampil dibaca lagi dari cache <code>nx8v-spa</code>.</p>
+<p>Service worker mengambil jaringan lebih dulu dengan <code>cache: 'no-store'</code>, lalu menyimpan salinan di cache-nya sendiri. Saat jaringan putus, halaman dan berkas yang pernah dibuka dilayani dari simpanan itu. Permintaan <code>/api</code>, <code>/middleware</code>, pemeriksa <code>nx8v dev</code>, dan isi slot SPA tidak melewati service worker, jadi klik antar menu tetap bisa dibatalkan. Isi slot yang sudah pernah tampil dibaca lagi dari cache <code>nx8v-spa</code>.</p>
 <p>Bila <code>PWA</code> mati, keempat URL itu tidak dibuat. Halaman melepas service worker yang sudah terpasang.</p>
 <h3 id="s-modul">Modul</h3>
 <p>Modul proyek ditaruh di <code>modules/</code>. Dua hal wajib:</p>
@@ -217,7 +192,7 @@ nx8v init</code></pre>
 <div class="tbl-wrap"><table><thead><tr><th scope="col">Yang dibuat</th><th scope="col">Bentuk</th></tr></thead><tbody><tr><td>Nama</td><td>kunci <code>contoh</code></td></tr><tr><td>Versi</td><td><code>1.0.0</code></td></tr><tr><td>Folder</td><td><code>modules/contoh</code></td></tr><tr><td>Berkas masuk</td><td><code>modules/contoh/index.js</code></td></tr></tbody></table></div>
 <p>Di HTML cukup nama itu:</p>
 <pre class="doc-code mono"><code>&lt;script type="module" src="contoh"&gt;&lt;/script&gt;</code></pre>
-<p>Browser meminta <code>/contoh</code>. NX8V mengembalikan <code>modules/contoh/index.js</code>. <code>/contoh/index.js</code> adalah berkas yang sama. Nama yang tidak tertulis di <code>dependencies</code> tidak dilayani.</p>
+<p>Browser meminta <code>/contoh</code>. Untuk impor skrip, NX8V mengarahkan ke <code>/contoh/index.js</code> dan mengembalikan <code>modules/contoh/index.js</code>. Path relatif di berkas itu (<code>./lain.js</code>, <code>./gaya.css</code>) tetap di dalam <code>modules/contoh/</code>. <code>import "./gaya.css"</code> dipasang sebagai stylesheet. <code>/contoh/index.js</code> adalah berkas yang sama bila diminta langsung. Nama yang tidak tertulis di <code>dependencies</code> tidak dilayani. Berkas tersembunyi, <code>config.json</code>, serta ekstensi <code>.php</code>, <code>.sql</code>, <code>.pem</code>, <code>.key</code>, <code>.so</code>, dan <code>.dll</code> tidak dikirim.</p>
 <p><code>require('./modules/photos')</code> di <code>server.js</code> juga membuka <code>index.js</code> folder itu. <code>photos</code> untuk server. <code>contoh</code> untuk halaman. <code>nx8v init</code> membuat folder <code>modules/</code>, <code>"dependencies": {}</code>, dan <code>repository</code> yang menunjuk ke mega-repo internal NX8V.</p>
 <p>Modul yang juga melayani HTTP menaruh <code>server.cjs</code> di folder yang sama:</p>
 <pre class="doc-code mono"><code>function handle(req, res) {
@@ -229,8 +204,10 @@ nx8v init</code></pre>
 }
 
 module.exports = { handle };</code></pre>
-<p>NX8V memuat berkas itu saat permintaan pertama, hanya bila nama foldernya tertulis di <code>dependencies</code> dan berkasnya ada. <code>handle</code> menerima <code>req</code> dan <code>res</code> yang sama dengan listener <code>server.js</code>. Balasan <code>true</code> berarti modul itu yang menjawab, dan listener <code>server.js</code> tidak dipanggil. Balasan <code>false</code> meneruskan permintaan ke modul berikutnya, lalu ke <code>server.js</code>. Body tetap sampai lewat <code>req.on('data')</code> dan <code>req.on('end')</code>.</p>
-<p><code>server.js</code> tidak perlu <code>require</code> modul itu. Menambah atau menghapus nama di <code>dependencies</code> sudah cukup. Setelah <code>server.cjs</code> atau <code>project.json</code> berubah, jalankan ulang nx8v.</p>
+<p>NX8V memuat berkas itu saat permintaan pertama, hanya bila nama foldernya tertulis di <code>dependencies</code> dan berkasnya ada. <code>handle</code> menerima <code>req</code> dan <code>res</code> yang sama dengan listener <code>server.js</code>. Balasan <code>true</code> berarti modul itu yang menjawab, dan listener <code>server.js</code> tidak dipanggil. Balasan <code>false</code> meneruskan permintaan ke modul berikutnya, lalu ke <code>server.js</code>.</p>
+<p><code>handle</code> dipanggil setelah badan permintaan utuh. Angka <code>Content-Length</code> harus sudah tiba. Badan <code>chunked</code> ditunggu sampai potongan penutup. Pada saat itu <code>req.fields</code> dan <code>req.files</code> sudah terisi. <code>req.on('data')</code> dan <code>req.on('end')</code> menyusul dengan badan yang sama. Header saja tidak cukup: unggahan yang datang dalam beberapa paket kehilangan berkas bila dibaca lebih awal.</p>
+<p>Urutan kunci <code>dependencies</code> adalah urutan pemanggilan <code>handle</code>. Nama yang lebih awal dapat menguasai satu path sebelum modul berikutnya.</p>
+<p><code>server.js</code> tidak perlu <code>require</code> modul itu. Menambah atau menghapus nama di <code>dependencies</code> sudah cukup. Simpan <code>.js</code> atau <code>.json</code> me-restart proses lewat <code>nx8v dev</code>. Simpan <code>.cjs</code> tidak. Setelah <code>server.cjs</code> atau <code>project.json</code> berubah, jalankan ulang nx8v.</p>
 <h3 id="s-dependensi">Dependensi</h3>
 <p><code>repository</code> di <code>project.json</code> adalah tempat modul diambil dan diterbitkan. Bawaannya repo internal NX8V. Saat materi dependensi dipublikasikan dari repo milik user, <code>url</code> diganti.</p>
 <pre class="doc-code mono"><code>"repository": {
@@ -292,12 +269,12 @@ https.createServer({
 }).listen(8444);</code></pre>
 <p>Sertifikat PFX berunding TLS 1.2 dan 1.3. Pasangan <code>cert</code> dan <code>key</code> menerima <code>BEGIN CERTIFICATE</code> bersama <code>BEGIN PRIVATE KEY</code> (PKCS#8) atau <code>BEGIN RSA PRIVATE KEY</code>. Di Windows, PEM berunding TLS 1.2. Di Linux, PEM berunding TLS 1.2 dan 1.3. Kunci bertipe <code>BEGIN ENCRYPTED PRIVATE KEY</code> belum didukung; bungkus kunci itu ke dalam PFX. ALPN menawarkan <code>h2</code> lalu <code>http/1.1</code>. <code>req.httpVersion</code> berisi <code>"2.0"</code> saat klien memakai HTTP/2, dan <code>"HTTP/1.1"</code> saat klien memakai HTTP/1.1. HTTP/2 tanpa TLS (preface <code>PRI * HTTP/2.0</code>) juga diterima oleh <code>http.createServer</code>. Build Linux menautkan OpenSSL lewat <code>NX8V_USE_OPENSSL</code>, untuk klien <code>https://</code> dan <code>https.createServer</code>. Rilis v0.2.2 memuat server TLS ini. Ketiga panel di port 6002 menjalankan biner yang sama.</p>
 <p><strong>Request (<code>req</code>):</strong></p>
-<div class="tbl-wrap"><table><thead><tr><th scope="col">Properti/Method</th><th scope="col">Keterangan</th></tr></thead><tbody><tr><td><code>req.method</code></td><td><code>GET</code>, <code>POST</code>, …</td></tr><tr><td><code>req.url</code></td><td>path + query, apa adanya</td></tr><tr><td><code>req.httpVersion</code></td><td><code>"HTTP/1.1"</code> pada HTTP/1.1, <code>"2.0"</code> pada HTTP/2</td></tr><tr><td><code>req.headers</code></td><td>objek header (nama asli dari klien)</td></tr><tr><td><code>req.query</code></td><td>objek query string, <code>?a=1</code> menjadi <code>{ a: "1" }</code></td></tr><tr><td><code>req.cookies</code></td><td>objek dari header <code>Cookie</code></td></tr><tr><td><code>req.fields</code></td><td>bidang formulir <code>application/x-www-form-urlencoded</code> atau <code>multipart/form-data</code></td></tr><tr><td><code>req.files</code></td><td>berkas unggahan. Setiap nama berisi <code>{ filename, type, data }</code> dan <code>data</code> adalah <code>Buffer</code></td></tr><tr><td><code>req.on('data', fn)</code></td><td>body (bila ada)</td></tr><tr><td><code>req.on('end', fn)</code></td><td>body selesai</td></tr></tbody></table></div>
+<div class="tbl-wrap"><table><thead><tr><th scope="col">Properti/Method</th><th scope="col">Keterangan</th></tr></thead><tbody><tr><td><code>req.method</code></td><td><code>GET</code>, <code>POST</code>, …</td></tr><tr><td><code>req.url</code></td><td>path + query, apa adanya</td></tr><tr><td><code>req.httpVersion</code></td><td><code>"HTTP/1.1"</code> pada HTTP/1.1, <code>"2.0"</code> pada HTTP/2</td></tr><tr><td><code>req.headers</code></td><td>objek header (nama asli dari klien)</td></tr><tr><td><code>req.query</code></td><td>objek query string, <code>?a=1</code> menjadi <code>{ a: "1" }</code></td></tr><tr><td><code>req.cookies</code></td><td>objek dari header <code>Cookie</code></td></tr><tr><td><code>req.fields</code></td><td>bidang formulir <code>application/x-www-form-urlencoded</code> atau <code>multipart/form-data</code></td></tr><tr><td><code>req.files</code></td><td>berkas unggahan. Setiap nama berisi <code>{ filename, type, data }</code> dan <code>data</code> adalah <code>Buffer</code>. Terisi bila badan multipart sudah utuh</td></tr><tr><td><code>req.on('data', fn)</code></td><td>badan utuh, setelah <code>handle</code> mulai</td></tr><tr><td><code>req.on('end', fn)</code></td><td>badan selesai</td></tr></tbody></table></div>
 <p><strong>Response (<code>res</code>):</strong></p>
 <div class="tbl-wrap"><table><thead><tr><th scope="col">Method</th><th scope="col">Keterangan</th></tr></thead><tbody><tr><td><code>res.writeHead(status[, message][, headers])</code></td><td>kirim status + header. Tanpa <code>message</code>, kalimat status mengikuti kode: <code>404</code> menjadi <code>Not Found</code></td></tr><tr><td><code>res.setHeader(name, value)</code></td><td>set satu header</td></tr><tr><td><code>res.cookie(name, value[, opsi])</code></td><td>tambah <code>Set-Cookie</code>. Opsi: <code>path</code>, <code>maxAge</code>, <code>httpOnly</code>, <code>secure</code>, <code>sameSite</code></td></tr><tr><td><code>res.getHeader(name)</code></td><td>baca header</td></tr><tr><td><code>res.write(chunk)</code></td><td>tulis body (di-buffer). <code>chunk</code> boleh string atau <code>Buffer</code></td></tr><tr><td><code>res.end([chunk][, cb])</code></td><td>kirim respons, tutup koneksi. Byte <code>0x00</code> di dalam PNG ikut terkirim</td></tr><tr><td><code>res.statusCode</code></td><td>status default 200. Mengubah angka ini juga mengganti kalimat status</td></tr></tbody></table></div>
 <p><code>fs.readFile</code> dan <code>fs.readFileSync</code> tanpa encoding mengembalikan <code>Buffer</code>, jadi gambar tidak rusak saat dikirim lewat <code>res.end</code>. Encoding <code>'utf8'</code> tetap mengembalikan string. <code>data.toString()</code> memakai teks UTF-8.</p>
 <p><strong>Event server:</strong> <code>listening</code>, <code>request</code>, <code>connection</code>, <code>close</code>, <code>error</code>, <code>websocket</code>.</p>
-<p>Catatan: server membalas <code>Connection: close</code> (satu permintaan per koneksi). Pipelining belum didukung. Body di atas 8 MB dibalas <code>413 Payload Too Large</code>.</p>
+<p>Catatan: server membalas <code>Connection: close</code> (satu permintaan per koneksi). Pipelining belum didukung. Permintaan baru diproses setelah badan pesan utuh, paling besar 8 MB. Lebih dari itu dibalas <code>413 Payload Too Large</code>.</p>
 <p>HTML, termasuk cangkang SPA, dikirim dengan <code>Cache-Control: no-store</code> dan tetap bisa di-gzip. JavaScript, CSS, dan berkas modul tanpa ekstensi dikirim dengan <code>ETag</code> dan <code>Cache-Control: no-cache</code>, jadi browser menanyakan ulang ke server. Gambar, font, dan berkas lain dikirim dengan <code>ETag</code>, <code>Cache-Control: public, max-age=3600</code>, <code>Range</code> (<code>206</code>), dan <code>gzip</code> bila klien meminta <code>Accept-Encoding: gzip</code>. <code>If-None-Match</code> yang cocok pada kelompok itu membalas <code>304</code>.</p>
 <hr />
 <h2 id="s-5-router">5. Router</h2>
@@ -377,7 +354,7 @@ ws.onmessage = (e) =&gt; console.log(e.data);</code></pre>
 <h3 id="s-httpget-httprequest"><code>http.get</code> / <code>http.request</code></h3>
 <pre class="doc-code mono"><code>const http = require('http');
 
-http.get('http://127.0.0.1:3000/api/hello', (res) =&gt; {
+http.get('http://127.0.0.1:3000/', (res) =&gt; {
   console.log('status:', res.statusCode, res.statusMessage);
   let body = '';
   res.on('data', (c) =&gt; { body += c; });
@@ -423,7 +400,7 @@ const semua = sql.all('SELECT * FROM t');                          // array
 sql.close();</code></pre>
 <div class="tbl-wrap"><table><thead><tr><th scope="col"><code>driver</code></th><th scope="col">Bawaan</th></tr></thead><tbody><tr><td><code>sqlite</code></td><td><code>file</code> = <code>data.db</code>. <code>:memory:</code> membuka basis di memori. <code>timeout</code> milidetik, bawaan <code>10000</code></td></tr><tr><td><code>postgres</code> atau <code>postgresql</code></td><td><code>host</code> <code>127.0.0.1</code>, <code>port</code> <code>5432</code>, <code>user</code> <code>postgres</code>. <code>password</code> boleh ditulis <code>pass</code>. <code>database</code> kosong memakai nama user</td></tr><tr><td><code>mysql</code> atau <code>mariadb</code></td><td><code>host</code> <code>127.0.0.1</code>, <code>port</code> <code>3306</code>, <code>user</code> <code>root</code>. <code>database</code> kosong memakai nama user</td></tr></tbody></table></div>
 <div class="tbl-wrap"><table><thead><tr><th scope="col">Metode</th><th scope="col">Hasil</th></tr></thead><tbody><tr><td><code>exec(sql[, params])</code></td><td>menjalankan SQL, tanpa nilai kembali</td></tr><tr><td><code>run(sql[, params])</code></td><td><code>{ changes, lastInsertRowid }</code></td></tr><tr><td><code>get(sql[, params])</code></td><td>satu objek, atau <code>null</code></td></tr><tr><td><code>all(sql[, params])</code></td><td>array objek</td></tr><tr><td><code>close()</code></td><td>menutup koneksi</td></tr></tbody></table></div>
-<p>PostgreSQL menerima sandi cleartext, <code>md5</code>, dan SCRAM-SHA-256. MySQL menerima <code>mysql_native_password</code> dan jalur cepat <code>caching_sha2_password</code>. Pertukaran autentikasi penuh <code>caching_sha2</code> (penanda <code>0x01</code> <code>0x04</code>) belum dikerjakan dan mengembalikan pesan kesalahan. SQLite menyalakan <code>foreign_keys</code> dan tidak memuat ekstensi.</p>
+<p>PostgreSQL menerima sandi cleartext, <code>md5</code>, dan SCRAM-SHA-256. MySQL menerima <code>mysql_native_password</code> dan <code>caching_sha2_password</code>, termasuk autentikasi penuh lewat kunci RSA server bila cache host belum ada. SQLite menyalakan <code>foreign_keys</code> dan tidak memuat ekstensi.</p>
 <p>Contoh <code>querystring</code>:</p>
 <pre class="doc-code mono"><code>const qs = require('querystring');
 qs.parse('a=1&amp;b=dua&amp;c=x%20y');       // { a: '1', b: 'dua', c: 'x y' }
@@ -504,7 +481,7 @@ wsl -d Ubuntu-22.04 -u root bash /mnt/d/server/nx8v-app/enable-proxy.sh</code></
 <hr />
 <h2 id="s-14-catatan-24-oktober-2026">14. Catatan 24 Oktober 2026</h2>
 <p>Yang sudah ada di runtime, dan apakah <code>nx8v init</code> ikut menuliskannya:</p>
-<div class="tbl-wrap"><table><thead><tr><th scope="col">Bagian</th><th scope="col">Runtime</th><th scope="col"><code>nx8v init</code></th></tr></thead><tbody><tr><td>SPA (<code>website.SPA</code> dan <code>&lt;nx8v-spa&gt;</code>)</td><td>ada</td><td>tidak</td></tr><tr><td>PWA (<code>website.PWA</code>, manifes, service worker)</td><td>ada</td><td>tidak</td></tr><tr><td>Judul, deskripsi, dan <code>og:*</code> saat tautan dibagikan</td><td>ada, ikut SPA</td><td>tidak</td></tr><tr><td><code>req.query</code>, <code>req.cookies</code>, <code>req.fields</code>, <code>req.files</code>, <code>res.cookie</code></td><td>ada pada setiap permintaan</td><td>tidak. Contoh init hanya <code>/api/hello</code></td></tr><tr><td>ETag, Range, dan gzip berkas publik selain HTML</td><td>ada</td><td>tidak perlu di template</td></tr><tr><td>Log <code>/.well-known/</code> tidak dicetak</td><td>ada</td><td>ada, satu syarat di <code>server.js</code></td></tr><tr><td><code>nx8v --fuzz</code> (korpus + 20.000 mutasi, benih <code>--fuzz=1:20000</code>)</td><td>ada</td><td>bukan berkas proyek</td></tr><tr><td><code>crypto.randomBytes</code> / <code>crypto.randomUUID</code> lewat <code>BCryptGenRandom</code> (Windows) dan <code>getrandom</code> (Linux)</td><td>ada</td><td>bukan berkas proyek</td></tr><tr><td>Hosting aaPanel, CyberPanel, dan Apache</td><td><a href="https://github.com/nx8v/web/blob/main/hosting.md">hosting.md</a></td><td>bukan berkas proyek</td></tr><tr><td><code>require('db')</code>: SQLite, PostgreSQL, MySQL</td><td>ada</td><td>bukan berkas proyek</td></tr><tr><td><code>modules/&lt;nama&gt;/server.cjs</code> untuk nama di <code>dependencies</code></td><td>ada. <code>handle</code> yang mengembalikan <code>true</code> menjawab sebelum <code>server.js</code></td><td>tidak. <code>server.js</code> tetap contoh <code>/api/hello</code></td></tr><tr><td>JavaScript, CSS, dan modul tanpa ekstensi: <code>Cache-Control: no-cache</code></td><td>ada</td><td>tidak perlu di template</td></tr><tr><td>Service worker <code>fetch</code> memakai <code>cache: 'no-store'</code></td><td>ada, bila <code>PWA</code> hidup</td><td>tidak</td></tr></tbody></table></div>
+<div class="tbl-wrap"><table><thead><tr><th scope="col">Bagian</th><th scope="col">Runtime</th><th scope="col"><code>nx8v init</code></th></tr></thead><tbody><tr><td>SPA (<code>website.SPA</code> dan <code>&lt;nx8v-spa&gt;</code>)</td><td>ada</td><td>tidak</td></tr><tr><td>PWA (<code>website.PWA</code>, manifes, service worker)</td><td>ada</td><td>tidak</td></tr><tr><td>Judul, deskripsi, dan <code>og:*</code> saat tautan dibagikan</td><td>ada, ikut SPA</td><td>tidak</td></tr><tr><td><code>req.query</code>, <code>req.cookies</code>, <code>req.fields</code>, <code>req.files</code>, <code>res.cookie</code></td><td>ada pada setiap permintaan</td><td>tidak. <code>server.js</code> hasil init hanya log dan <code>404</code></td></tr><tr><td>ETag, Range, dan gzip berkas publik selain HTML</td><td>ada</td><td>tidak perlu di template</td></tr><tr><td>Log <code>GET</code> berkas publik tidak dicetak. <code>server.js</code> juga diam untuk <code>GET</code> di luar <code>/api/</code> dan untuk <code>/.well-known/</code></td><td>ada</td><td>syarat di <code>server.js</code></td></tr><tr><td><code>nx8v --fuzz</code> (korpus + 20.000 mutasi, benih <code>--fuzz=1:20000</code>)</td><td>ada</td><td>bukan berkas proyek</td></tr><tr><td><code>crypto.randomBytes</code> / <code>crypto.randomUUID</code> lewat <code>BCryptGenRandom</code> (Windows) dan <code>getrandom</code> (Linux)</td><td>ada</td><td>bukan berkas proyek</td></tr><tr><td>Hosting aaPanel, CyberPanel, dan Apache</td><td><a href="https://github.com/nx8v/web/blob/main/hosting.md">hosting.md</a></td><td>bukan berkas proyek</td></tr><tr><td><code>require('db')</code>: SQLite, PostgreSQL, MySQL</td><td>ada</td><td>bukan berkas proyek</td></tr><tr><td><code>modules/&lt;nama&gt;/server.cjs</code> untuk nama di <code>dependencies</code></td><td>ada. <code>handle</code> yang mengembalikan <code>true</code> menjawab sebelum <code>server.js</code></td><td>tidak. <code>server.js</code> tetap log dan <code>404</code></td></tr><tr><td>JavaScript, CSS, dan modul tanpa ekstensi: <code>Cache-Control: no-cache</code></td><td>ada</td><td>tidak perlu di template</td></tr><tr><td>Service worker <code>fetch</code> memakai <code>cache: 'no-store'</code></td><td>ada, bila <code>PWA</code> hidup</td><td>tidak</td></tr></tbody></table></div>
 <p>Parser chunked menolak panjang yang lebih besar dari data yang benar-benar ada, jadi klaim ukuran tidak membuat buffer sebesar angka itu.</p>
 <p>Pemasangan lewat SSH, dicatat di <a href="https://github.com/nx8v/web/blob/main/hosting.md">hosting.md</a>:</p>
 <div class="tbl-wrap"><table><thead><tr><th scope="col">Server</th><th scope="col">Hasil</th></tr></thead><tbody><tr><td>aaPanel</td><td><code>nx8v/0.2.2</code> terpasang di <code>/home/admin/.local/bin/nx8v</code></td></tr><tr><td>Apache</td><td><code>nx8v/0.2.2</code> terpasang di <code>/home/admin/.local/bin/nx8v</code></td></tr><tr><td>CyberPanel</td><td>berkas terpasang di jalur yang sama, tetapi tidak jalan: <code>libssl.so.3</code> tidak ada</td></tr></tbody></table></div>
@@ -1013,45 +990,6 @@ dist/&lt;nama&gt;-&lt;versi&gt;-linux-x64.tar.gz</code></pre>
 <li>PHP RCE (2 CVE, 21 Okt 2026) — stack berbeda; pelajaran: parser</li>
 </ul>
 <p>  tanpa autentikasi harus selalu diasumsikan diserang.</p></section>
-      <article class="article article-en" aria-label="NX8V English documentation">
-        <div class="doc-ribbon mono">ENGLISH REFERENCE</div>
-        <h1>Build with NX8V</h1>
-        <p class="en-lead">NX8V is a self-contained JavaScript application runtime for web servers, APIs, data products, and native desktop windows. This reference covers the practical path from a new project to a packaged application.</p>
-        <blockquote>Use ordinary HTML, CSS, JavaScript, and JSON. NX8V provides the runtime, event loop, networking, modules, and desktop bridge.</blockquote>
-        <h2>1. Create a project</h2>
-        <pre class="doc-code mono"><code>$ nx8v init
-$ nx8v dev
-$ nx8v test
-$ nx8v package</code></pre>
-        <div class="en-card-grid"><div class="en-card"><strong>init</strong><span>Creates project.json, server.js, public/, and modules/.</span></div><div class="en-card"><strong>dev</strong><span>Watches the project and reloads the page or server when files change.</span></div><div class="en-card"><strong>test</strong><span>Runs built-in JavaScript tests with assertions.</span></div><div class="en-card"><strong>package</strong><span>Builds a distributable desktop or server folder.</span></div></div>
-        <h2>2. Server and Web</h2>
-        <p>Use the built-in <code>http</code> module for a server, or the <code>router</code> module for routes and middleware. Static files are served with caching, ETag, Range, HEAD, gzip, and path traversal protection.</p>
-        <pre class="doc-code mono"><code>const http = require('http');
-
-http.createServer((req, res) =&gt; {
-  res.writeHead(200, { 'Content-Type': 'application/json' });
-  res.end(JSON.stringify({ runtime: 'nx8v', ok: true }));
-}).listen(3000, () =&gt; console.log('listening on :3000'));</code></pre>
-        <h2>3. Data, APIs, and modules</h2>
-        <p>Built-in modules cover files, paths, URLs, events, streams, crypto, compression, TCP, DNS, child processes, HTTP, HTTPS, WebSockets, and databases. Project modules can expose browser helpers or handle server requests through <code>server.cjs</code>.</p>
-        <pre class="doc-code mono"><code>const db = require('db');
-const app = require('router')();
-
-app.get('/api/health', (req, res) =&gt; {
-  res.json({ ok: true, runtime: 'nx8v' });
-});</code></pre>
-        <h2>4. Desktop applications</h2>
-        <p>Run the same project in a native window with <code>nx8v window</code>. On Windows, NX8V uses WebView2. The <code>window.nx8v</code> bridge provides window controls, dialogs, tray menus, notifications, and multiple windows.</p>
-        <pre class="doc-code mono"><code>nx8v window
-
-// inside the page
-nx8v.setTitle('My application');
-nx8v.setSize(1200, 800);
-await nx8v.dialog.openFile();</code></pre>
-        <h2>5. Deployment checklist</h2>
-        <ol><li>Set the port in project.json or use <code>NX8V_PORT</code>.</li><li>Run <code>nx8v start</code> for production.</li><li>Put a reverse proxy such as Apache in front of the local port.</li><li>Use <code>nx8v package</code> when shipping a desktop application.</li></ol>
-        <p>Return to <a href="?lang=id">ID documentation</a> for the complete Indonesian reference and detailed API notes.</p>
-      </article>
     </main>
   </div>
   <footer class="doc-footer mono">Dokumentasi NX8V &middot; sumber: D:\NX8V (server.md &amp; desktop.md)</footer>

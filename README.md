@@ -3,7 +3,8 @@
 NX8V adalah **runtime aplikasi JavaScript yang mandiri — server dan desktop —
 dalam satu binary**. Dibangun dengan menanamkan **Google V8** sebagai mesin JS
 dan **libuv** sebagai event loop, ditulis dalam **C++17** menggunakan V8
-Embedding API.
+Embedding API. Pengembang cukup menguasai pondasi **HTML, CSS, JavaScript &
+JSON** — semua fitur kompleks ditangani runtime.
 
 ```
 script JS Anda ──▶ nx8v.exe ──▶ V8 (eksekusi JS)  +  libuv (event loop / I/O)
@@ -250,7 +251,10 @@ D:\NX8V\
 - `<nx8v-terminal>` menempelkan shell ConPTY di halaman. Lebar 100%, tinggi lewat atribut `height`. Ctrl+C menyalin bila ada pilihan, selain itu tombol itu milik program. Ctrl+V menempelkan papan klip.
 - Binary Linux sudah dibangun dan diuji di WSL.
 - `require('db')` membuka SQLite, PostgreSQL, dan MySQL. Pemanggilan menunggu sampai database menjawab.
-- Nama di `dependencies` yang punya `modules/<nama>/server.cjs` menjawab permintaannya sebelum `server.js`. Berkas `server.js` hasil `init` tetap pendek.
+- Nama di `dependencies` yang punya `modules/<nama>/server.cjs` menjawab permintaannya sebelum `server.js`. Berkas `server.js` hasil `init` tetap pendek. Urutan kunci `dependencies` adalah urutan pemanggilan `handle`.
+- Permintaan baru dijawab setelah badan pesan utuh. `Content-Length` harus sudah terpenuhi, jadi `req.files` terisi untuk unggahan multipart.
+- Berkas tersembunyi, `config.json`, serta ekstensi `.php`, `.sql`, `.pem`, `.key`, `.so`, `.dll`, dan `.env` tidak dikirim.
+- Simpan `.cjs` tidak me-restart server. Setelah `server.cjs` atau daftar `dependencies` berubah, jalankan ulang nx8v.
 - JavaScript, CSS, dan berkas modul tanpa ekstensi dikirim dengan `Cache-Control: no-cache`. Gambar dan font tetap `public, max-age=3600`. HTML tetap `no-store`.
 
 ## Roadmap
@@ -288,7 +292,9 @@ D:\NX8V\
 - [x] Perbaikan: duplikat request, RST saat close, keep-alive setengah jadi
 - [x] Static server mengirim `Content-Encoding: gzip` bila klien meminta `Accept-Encoding: gzip`
 - [x] JavaScript, CSS, dan modul tanpa ekstensi memakai `Cache-Control: no-cache`. Service worker mengambil jaringan dengan `cache: 'no-store'`
-- [x] Modul di `dependencies` yang mengekspor `handle(req, res)` dari `server.cjs` dipanggil sebelum listener `server.js`
+- [x] Modul di `dependencies` yang mengekspor `handle(req, res)` dari `server.cjs` dipanggil sebelum listener `server.js`. Urutan kuncinya adalah urutan pemanggilan
+- [x] Badan permintaan ditunggu sampai `Content-Length` terpenuhi, atau sampai badan chunked selesai, baru `handle` dipanggil. `req.files` terisi dari badan multipart yang utuh
+- [x] Berkas tersembunyi, `config.json`, dan ekstensi `.php`, `.sql`, `.pem`, `.key`, `.so`, `.dll`, serta `.env` tidak dikirim
 - [x] Binary Linux diuji di WSL; rilis `v0.2.2` memuat `nx8v-linux-x64.tar.gz` beserta server HTTP/2 dan TLS
 
 ### Selesai — desktop ([desktop.md](desktop.md))
